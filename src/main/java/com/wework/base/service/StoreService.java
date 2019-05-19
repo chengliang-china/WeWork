@@ -1,6 +1,6 @@
 package com.wework.base.service;
 
-import com.wework.base.domain.base.vo.StoreVO;
+import com.wework.base.domain.vo.StoreVO;
 
 import java.util.List;
 

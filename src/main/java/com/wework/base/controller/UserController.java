@@ -35,8 +35,6 @@ public class UserController {
     @Value("${weixin.appSecret}")
     private volatile String appSecret ;
 
-
-
     @ApiOperation("微信端登录通过code值获取 获取openid用户唯一标识")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "code", dataType = "String", required = true, value = "小程序调用wx.login返回的code", defaultValue = "chengliang") })

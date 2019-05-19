@@ -5,7 +5,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wework.base.mapper.StoreMapper">
 
-	<resultMap type="com.wework.base.domain.base.po.StorePO" id="storeMap">
+	<resultMap type="com.wework.base.domain.po.StorePO" id="storeMap">
 		<result property="store_id" column="storeId" jdbcType="BIGINT" />
 		<result property="store_name" column="storeName" jdbcType="VARCHAR" />
 		<result property="apply_fee" column="applyFee" jdbcType="DECIMAL" />

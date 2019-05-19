@@ -1,7 +1,7 @@
 package com.wework.base.service.serviceImpl;
 
-import com.wework.base.domain.base.po.StorePO;
-import com.wework.base.domain.base.vo.StoreVO;
+import com.wework.base.domain.po.StorePO;
+import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.mapper.StoreMapper;
 import com.wework.base.service.StoreService;
 import org.apache.commons.beanutils.PropertyUtils;

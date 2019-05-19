@@ -1,7 +1,7 @@
 package com.wework.base.controller;
 
 import com.wework.base.domain.base.BaseJSON;
-import com.wework.base.domain.base.vo.StoreVO;
+import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.service.StoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

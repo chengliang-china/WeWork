@@ -1,9 +1,9 @@
-package com.wework.base.domain.base.po;
+package com.wework.base.domain.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class StorePO {
+public class StoreVO {
     private long storeId;
     private String storeName;
     private BigDecimal applyFee;
