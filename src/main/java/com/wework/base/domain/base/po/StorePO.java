@@ -16,6 +16,7 @@ public class StorePO {
     private long isDel;
     private BigDecimal longitude;
     private BigDecimal latitude;
+    private String thumbnailUrl;
 
     public long getStoreId() {
         return storeId;
@@ -111,5 +112,13 @@ public class StorePO {
 
     public void setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

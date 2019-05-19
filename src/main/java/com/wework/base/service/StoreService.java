@@ -7,6 +7,9 @@ import java.util.List;
 public interface StoreService {
     /**
      * 查询门店
+     * @param longitude
+     * @param latitude
+     * @param storeType
      */
-    public List<StoreVO> findStoreList();
+    public List<StoreVO> findStoreList(String longitude, String latitude, String storeType);
 }

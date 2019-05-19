@@ -31,8 +31,8 @@ public class StoreController {
     public BaseJSON findStoreList(String longitude, String latitude,String storeType) {
 
         BaseJSON baseJSON = new BaseJSON();
-        List<StoreVO> storeList = storeService.findStoreList();
-        //baseJSON.setResult(account + "-" + password);
+        List<StoreVO> storeList = storeService.findStoreList(longitude,latitude,storeType);
+        baseJSON.setResult(storeList);
         return baseJSON;
     }
 }
