@@ -4,12 +4,16 @@ package com.wework.base.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wework.base.domain.base.BaseJSON;
+import com.wework.base.domain.vo.UserVO;
+import com.wework.base.service.UserService;
 import com.wework.base.util.HttpUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,11 +39,14 @@ public class UserController {
     @Value("${weixin.appSecret}")
     private volatile String appSecret ;
 
+    @Autowired
+    private UserService userService;
+
     @ApiOperation("微信端登录通过code值获取 获取openid用户唯一标识")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "code", dataType = "String", required = true, value = "小程序调用wx.login返回的code", defaultValue = "chengliang") })
+            @ApiImplicitParam(paramType = "query", name = "code", dataType = "String", required = true, value = "小程序调用wx.login返回的code", defaultValue = "071bhjLv07ZRIi1ATRJv0ptmLv0bhjL1") })
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public BaseJSON getTableList(String code) {
+    public BaseJSON getOpenId(String code) {
         BaseJSON baseJSON = new BaseJSON();
 
         Map<String,String> requestUrlParam = new HashMap<String,String>();
@@ -52,6 +59,23 @@ public class UserController {
         JSONObject jsonObject = JSON.parseObject(HttpUtils.sendPost(requestUrl, requestUrlParam));
 
         baseJSON.setResult(jsonObject);
+        return baseJSON;
+    }
+
+    @ApiOperation("用户信息保存")
+    @RequestMapping(value = "/save/userInfo", method = RequestMethod.POST)
+    public BaseJSON saveUserInfo(@RequestBody UserVO userVO) {
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+            int id = userService.addUserInfo(userVO);
+            baseJSON.setResult(id);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail();
+        }
+
         return baseJSON;
     }
 }

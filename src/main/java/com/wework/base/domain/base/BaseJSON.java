@@ -35,4 +35,9 @@ public class BaseJSON {
     public void setResult(Object result) {
         this.result = result;
     }
+
+    public void setFail(){
+        this.code=1;
+        this.message="系统异常，请稍后重试";
+    }
 }
