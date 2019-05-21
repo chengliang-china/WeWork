@@ -40,4 +40,9 @@ public class BaseJSON {
         this.code=1;
         this.message="系统异常，请稍后重试";
     }
+
+    public void setFail(String message){
+        this.code=1;
+        this.message=message;
+    }
 }

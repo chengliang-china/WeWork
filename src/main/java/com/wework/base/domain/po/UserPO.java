@@ -14,7 +14,7 @@ public class UserPO implements Serializable {
     private String userName;
     private Long userType;
     private String idNumber;
-    private Long sex;
+    private Long gender;
     private String passportNo;
     private String region;
     private String birthday;
@@ -23,156 +23,47 @@ public class UserPO implements Serializable {
     private String hobby;
     private String invitationCode;
     private String appId;
-    private String appSecret;
     private String phone;
     private BigDecimal walletBalance;
     private Date createTime;
     private Long isDel;
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setUserType(Long userType) {
-        this.userType = userType;
-    }
-
-
-    public void setSex(Long sex) {
-        this.sex = sex;
-    }
-
-    public void setPassportNo(String passportNo) {
-        this.passportNo = passportNo;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public void setBlod(String blod) {
-        this.blod = blod;
-    }
-
-    public void setEducation(String education) {
-        this.education = education;
-    }
-
-    public void setHobby(String hobby) {
-        this.hobby = hobby;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public void setAppSecret(String appSecret) {
-        this.appSecret = appSecret;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setWalletBalance(BigDecimal walletBalance) {
-        this.walletBalance = walletBalance;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public void setIsDel(Long isDel) {
-        this.isDel = isDel;
-    }
+    private String province;
+    private String city;
+    private String country;
+    private String nickName;
+    private String avatarUrl;
+    private String openId;
 
     public Long getUserId() {
         return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getParentId() {
         return parentId;
     }
 
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
     public String getUserName() {
         return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Long getUserType() {
         return userType;
     }
 
-
-    public Long getSex() {
-        return sex;
-    }
-
-    public String getPassportNo() {
-        return passportNo;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public String getBlod() {
-        return blod;
-    }
-
-    public String getEducation() {
-        return education;
-    }
-
-    public String getHobby() {
-        return hobby;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public String getAppSecret() {
-        return appSecret;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public BigDecimal getWalletBalance() {
-        return walletBalance;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public Long getIsDel() {
-        return isDel;
-    }
-
-    public String getInvitationCode() {
-        return invitationCode;
-    }
-
-    public void setInvitationCode(String invitationCode) {
-        this.invitationCode = invitationCode;
+    public void setUserType(Long userType) {
+        this.userType = userType;
     }
 
     public String getIdNumber() {
@@ -183,6 +74,158 @@ public class UserPO implements Serializable {
         this.idNumber = idNumber;
     }
 
+    public Long getGender() {
+        return gender;
+    }
+
+    public void setGender(Long gender) {
+        this.gender = gender;
+    }
+
+    public String getPassportNo() {
+        return passportNo;
+    }
+
+    public void setPassportNo(String passportNo) {
+        this.passportNo = passportNo;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getBlod() {
+        return blod;
+    }
+
+    public void setBlod(String blod) {
+        this.blod = blod;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
+
+    public void setHobby(String hobby) {
+        this.hobby = hobby;
+    }
+
+    public String getInvitationCode() {
+        return invitationCode;
+    }
+
+    public void setInvitationCode(String invitationCode) {
+        this.invitationCode = invitationCode;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public BigDecimal getWalletBalance() {
+        return walletBalance;
+    }
+
+    public void setWalletBalance(BigDecimal walletBalance) {
+        this.walletBalance = walletBalance;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(Long isDel) {
+        this.isDel = isDel;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getOpenid() {
+        return openId;
+    }
+
+    public void setOpenid(String openId) {
+        this.openId = openId;
+    }
+
     @Override
     public String toString() {
         return "UserPO{" +
@@ -191,7 +234,7 @@ public class UserPO implements Serializable {
                 ", userName='" + userName + '\'' +
                 ", userType=" + userType +
                 ", idNumber='" + idNumber + '\'' +
-                ", sex=" + sex +
+                ", gender=" + gender +
                 ", passportNo='" + passportNo + '\'' +
                 ", region='" + region + '\'' +
                 ", birthday='" + birthday + '\'' +
@@ -200,11 +243,16 @@ public class UserPO implements Serializable {
                 ", hobby='" + hobby + '\'' +
                 ", invitationCode='" + invitationCode + '\'' +
                 ", appId='" + appId + '\'' +
-                ", appSecret='" + appSecret + '\'' +
                 ", phone='" + phone + '\'' +
                 ", walletBalance=" + walletBalance +
                 ", createTime=" + createTime +
                 ", isDel=" + isDel +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", openid='" + openId + '\'' +
                 '}';
     }
 }

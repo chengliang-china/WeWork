@@ -4,7 +4,10 @@ import com.wework.base.domain.po.UserPO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository(value="UserMapper")
@@ -22,9 +25,13 @@ public interface UserMapper {
      *
      * @return: int
      */
-    @Insert({ "insert into user(parent_id, user_name, user_type, id_number,sex,passport_no,region,birthday,blod,education,hobby,invitation_code,app_id,app_secret,phone,wallet_balance,create_time,is_del) " +
-            "values(#{parentId}, #{userName}, #{userType}, #{idNumber}, #{sex}, #{passportNo}, #{region}, #{birthday}, #{blod}, #{education}, #{hobby}, #{invitationCode}," +
-            " #{appId}, #{appSecret}, #{phone},#{walletBalance},#{createTime},#{isDel})" })
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert({ "insert into user(parent_id, user_name, user_type, id_number,gender,passport_no,region,birthday,blod,education,hobby,invitation_code,app_id," +
+            "phone,wallet_balance,create_time,is_del,province,city,country,nick_name,avatar_url,openid) " +
+            "values(#{parentId}, #{userName}, #{userType}, #{idNumber}, #{gender}, #{passportNo}, #{region}, #{birthday}, #{blod}, #{education}, #{hobby}, #{invitationCode}," +
+            " #{appId},  #{phone},#{walletBalance},#{createTime},#{isDel},#{province},#{city},#{country},#{nickName},#{avatarUrl},#{openid})" })
+    @Options(useGeneratedKeys = true, keyProperty = "user_id")
     int saveUserInfo(UserPO userPO);
+
+    @Select("select * from user where openid = #{openId}")
+    public List<UserPO> findUserById(UserPO userPO);
 }

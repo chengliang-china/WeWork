@@ -4,6 +4,7 @@ package com.wework.base.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wework.base.domain.base.BaseJSON;
+import com.wework.base.domain.vo.UserInfoVO;
 import com.wework.base.domain.vo.UserVO;
 import com.wework.base.service.UserService;
 import com.wework.base.util.HttpUtils;
@@ -11,12 +12,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.math.BigDecimal;
@@ -30,35 +29,24 @@ import java.util.ResourceBundle;
 @Api(tags = { "用户模块" })
 public class UserController {
 
-    @Value("${weixin.login.url}")
-    private volatile String requestUrl ;
-
-    @Value("${weixin.appid}")
-    private volatile String appid ;
-
-    @Value("${weixin.appSecret}")
-    private volatile String appSecret ;
-
     @Autowired
     private UserService userService;
 
     @ApiOperation("微信端登录通过code值获取 获取openid用户唯一标识")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "code", dataType = "String", required = true, value = "小程序调用wx.login返回的code", defaultValue = "071bhjLv07ZRIi1ATRJv0ptmLv0bhjL1") })
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public BaseJSON getOpenId(String code) {
+            @ApiImplicitParam(paramType = "query", name = "code", dataType = "String", required = true, value = "小程序调用wx.login返回的code", defaultValue = "071bhjLv07ZRIi1ATRJv0ptmLv0bhjL1"),})
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public BaseJSON getOpenId(@RequestParam("code") String code, @RequestBody UserInfoVO userInfoVO) {
         BaseJSON baseJSON = new BaseJSON();
 
-        Map<String,String> requestUrlParam = new HashMap<String,String>();
-        requestUrlParam.put("appid", appid);	//开发者设置中的appId
-        requestUrlParam.put("secret", appSecret);	//开发者设置中的appSecret
-        requestUrlParam.put("js_code", code);	//小程序调用wx.login返回的code
-        requestUrlParam.put("grant_type", "authorization_code");	//默认参数
+        try{
+            baseJSON.setResult(userService.getOpenId(code,userInfoVO));
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail();
+        }
 
-        //发送post请求读取调用微信 https://api.weixin.qq.com/sns/jscode2session 接口获取openid用户唯一标识
-        JSONObject jsonObject = JSON.parseObject(HttpUtils.sendPost(requestUrl, requestUrlParam));
 
-        baseJSON.setResult(jsonObject);
         return baseJSON;
     }
 
@@ -66,16 +54,21 @@ public class UserController {
     @RequestMapping(value = "/save/userInfo", method = RequestMethod.POST)
     public BaseJSON saveUserInfo(@RequestBody UserVO userVO) {
         BaseJSON baseJSON = new BaseJSON();
-
         try{
             int id = userService.addUserInfo(userVO);
             baseJSON.setResult(id);
-
         }catch (Exception e){
             e.printStackTrace();
             baseJSON.setFail();
         }
-
         return baseJSON;
+    }
+
+    @ApiOperation("通过token获取用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),})
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    public BaseJSON getUserInfo(@Param("token") String token) {
+        return userService.getUserInfo(token);
     }
 }
