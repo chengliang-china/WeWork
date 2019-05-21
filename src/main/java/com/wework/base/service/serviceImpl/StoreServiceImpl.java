@@ -23,19 +23,21 @@ public class StoreServiceImpl implements StoreService {
     public List<StoreVO> findStoreList(String longitude, String latitude, String storeType) {
 
         List<StorePO> storePOlist = storeMapper.getStoreList(longitude,latitude,storeType);
+        List<StoreVO> storeVOlist = new ArrayList<>();
         if(storePOlist.size() >0){
-            List<StoreVO> storeVOlist = new ArrayList<>();
-            try {
-                PropertyUtils.copyProperties(storeVOlist,storePOlist);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+            for(StorePO storePo:storePOlist){
+                StoreVO storeVO = new StoreVO();
+                storeVO.setStoreId(storePo.getStoreId());
+                storeVO.setStoreName(storePo.getStoreName());
+                storeVO.setLatitude(storePo.getLatitude());
+                storeVO.setLongitude(storePo.getLongitude());
+                storeVO.setOpenStartTime(storePo.getOpenStartTime());
+                storeVO.setOpenEndTime(storePo.getOpenEndTime());
+                storeVO.setApplyFee(storePo.getApplyFee());
+                storeVO.setThumbnailUrl(storePo.getThumbnailUrl());
+                storeVOlist.add(storeVO);
             }
-            return storeVOlist;
         }
-        return null;
+        return storeVOlist;
     }
 }

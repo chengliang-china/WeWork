@@ -12,7 +12,7 @@ public class StorePO {
     private Date openStartTime;
     private Date openEndTime;
     private long couponId;
-    private long createTime;
+    private Date createTime;
     private long isDel;
     private BigDecimal longitude;
     private BigDecimal latitude;
@@ -82,11 +82,11 @@ public class StorePO {
         this.couponId = couponId;
     }
 
-    public long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
