@@ -3,6 +3,7 @@ package com.wework.base.service.serviceImpl;
 import com.wework.base.config.BaseCode;
 import com.wework.base.domain.po.OrderTablePO;
 import com.wework.base.domain.po.StorePO;
+import com.wework.base.domain.vo.OrderVO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.mapper.OrderMapper;
 import com.wework.base.mapper.StoreMapper;
@@ -29,5 +30,20 @@ public class OrderServiceImpl implements OrderService {
         orderTablePO.setUseStartTime(new Date());
         orderTablePO.setOrderStatus(BaseCode.ORDER_OPENED);
         return orderMapper.createOrder(orderTablePO);
+    }
+
+    @Override
+    public int deleteOrder(long orderId) {
+        return orderMapper.deleteOrder(orderId);
+    }
+
+    @Override
+    public int updateOrder(OrderVO orderVo) {
+        OrderTablePO orderTablePo =  new OrderTablePO();
+        orderTablePo.setOrderId(orderVo.getOrderId());
+        orderTablePo.setUseEndTime(orderVo.getUseEndTime());
+        orderTablePo.setApplyFee(orderVo.getApplyFee());
+        orderTablePo.setUseHours(orderVo.getUseHours());
+        return orderMapper.updateOrder(orderTablePo);
     }
 }
