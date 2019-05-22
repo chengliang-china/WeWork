@@ -43,7 +43,6 @@ public class MyInterceptor implements HandlerInterceptor {
             return false;
         }
 
-
         Object object = redisService.get(token);
 
         try{
