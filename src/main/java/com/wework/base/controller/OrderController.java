@@ -38,12 +38,19 @@ public class OrderController {
 
         BaseJSON baseJSON = new BaseJSON();
         //检测该用户是否存在未结算订单
-
+        int count = orderService.checkUserUnfinishOrder(userId);
+        if(count>0){
+            baseJSON.setCode(1);
+            baseJSON.setResult("失败");
+            baseJSON.setMessage("用户存在未结算订单，请先结算上一次订单！");
+            return baseJSON;
+        }
         //生成订单
         int i = orderService.createOrder(storeId,userId);
         if(i<=0){
             baseJSON.setCode(1);
             baseJSON.setResult("失败");
+            baseJSON.setMessage("创建订单失败，请联系管理员！");
         }
         return baseJSON;
     }
@@ -60,6 +67,7 @@ public class OrderController {
         if(i<=0){
             baseJSON.setCode(1);
             baseJSON.setResult("失败");
+            baseJSON.setMessage("删除订单失败，请联系管理员！");
         }
         return baseJSON;
     }
@@ -88,6 +96,7 @@ public class OrderController {
         if(i<=0){
             baseJSON.setCode(1);
             baseJSON.setResult("失败");
+            baseJSON.setMessage("更新订单失败，请联系管理员！");
         }
         return baseJSON;
     }

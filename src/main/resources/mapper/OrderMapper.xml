@@ -88,4 +88,11 @@
 	</select>
 
 
+	<select id="checkUserUnfinishOrder" resultType="INTEGER">
+		SELECT
+			COUNT(*)
+		FROM order_table
+		WHERE  is_del = 0
+		AND user_id =#{userId}
+	</select>
 </mapper>

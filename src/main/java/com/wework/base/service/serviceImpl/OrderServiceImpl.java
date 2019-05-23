@@ -46,4 +46,9 @@ public class OrderServiceImpl implements OrderService {
         orderTablePo.setUseHours(orderVo.getUseHours());
         return orderMapper.updateOrder(orderTablePo);
     }
+
+    @Override
+    public int checkUserUnfinishOrder(long userId) {
+        return orderMapper.checkUserUnfinishOrder(userId);
+    }
 }

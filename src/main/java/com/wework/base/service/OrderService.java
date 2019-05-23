@@ -27,4 +27,11 @@ public interface OrderService {
      * @return
      */
     public int updateOrder(OrderVO orderVo);
+
+    /**
+     * 检查用户是否开单
+     * @param userId
+     * @return
+     */
+    public int checkUserUnfinishOrder(long userId);
 }

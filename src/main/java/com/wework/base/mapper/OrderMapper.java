@@ -22,4 +22,6 @@ public interface OrderMapper {
 	public int updateOrder(@Param("po")OrderTablePO po);
 
 	public List<OrderTablePO> getOrderList(@Param("userId")long userId);
+
+	public int checkUserUnfinishOrder(@Param("userId")long userId);
 }
