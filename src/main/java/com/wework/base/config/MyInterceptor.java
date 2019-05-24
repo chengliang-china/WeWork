@@ -49,7 +49,7 @@ public class MyInterceptor implements HandlerInterceptor {
             if(object != null)
                 return true;
 
-            res.put("code","1");
+            res.put("code","110");
             res.put("message","token 失效");
             res.put("result",null);
             out = response.getWriter();

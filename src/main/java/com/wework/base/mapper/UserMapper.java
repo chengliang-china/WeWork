@@ -1,10 +1,8 @@
 package com.wework.base.mapper;
 
 import com.wework.base.domain.po.UserPO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,4 +32,19 @@ public interface UserMapper {
 
     @Select("select * from user where openid = #{openId}")
     public List<UserPO> findUserById(UserPO userPO);
+
+    @Select("select * from user where user_id = #{userId}")
+    public List<UserPO> getUserInfoById(@Param("userId") Long userId);
+
+    @Select("select * from user where invitation_code = #{invitation_code}")
+    public List<UserPO> existInvitationCode(@Param("invitation_code") String invitation_code);
+
+    @Update({ "update user set parent_id = #{parentId},user_name = #{userName},user_type = #{userType},id_number = #{idNumber}," +
+            "gender = #{gender},passport_no = #{passportNo},region = #{region},birthday = #{birthday}," +
+            "blod = #{blod},education = #{education},hobby = #{hobby},invitation_code = #{invitationCode}," +
+            "app_id = #{appId},phone = #{phone},wallet_balance = #{walletBalance},create_time = #{createTime}," +
+            "is_del = #{isDel},province = #{province},city = #{city},country = #{country}," +
+            "nick_name = #{nickName},avatar_url = #{avatarUrl}" +
+            " where user_id = #{userId}" })
+    int updateUserInfo(UserPO user);
 }

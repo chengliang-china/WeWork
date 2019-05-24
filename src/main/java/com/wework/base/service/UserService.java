@@ -27,4 +27,28 @@ public interface UserService {
      * @return
      */
     BaseJSON getUserInfo(String token) ;
+
+    /**
+     * 判断当前用户是否存在邀请码，如果存在返回父类信息，不存在返回code =2
+     *
+     * @param token
+     * @return
+     */
+    BaseJSON exitsInvitationCode(String token) ;
+
+
+    /**
+     * 生成邀请码
+     * @param token
+     * @return
+     */
+    BaseJSON createInvitationCode(String token);
+
+    /**
+     *  为用户添加邀请码
+     * @param token
+     * @param invitationCode
+     * @return
+     */
+    BaseJSON fillInInvitationCode(String token, String invitationCode);
 }

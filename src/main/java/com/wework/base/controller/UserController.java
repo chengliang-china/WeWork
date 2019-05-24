@@ -50,9 +50,11 @@ public class UserController {
         return baseJSON;
     }
 
-    @ApiOperation("用户信息保存")
+    @ApiOperation("更新用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),})
     @RequestMapping(value = "/save/userInfo", method = RequestMethod.POST)
-    public BaseJSON saveUserInfo(@RequestBody UserVO userVO) {
+    public BaseJSON saveUserInfo(@RequestParam("token") String token ,@RequestBody UserVO userVO) {
         BaseJSON baseJSON = new BaseJSON();
         try{
             int id = userService.addUserInfo(userVO);
@@ -70,5 +72,30 @@ public class UserController {
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
     public BaseJSON getUserInfo(@Param("token") String token) {
         return userService.getUserInfo(token);
+    }
+
+    @ApiOperation("检测用户是否存在邀请码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),})
+    @RequestMapping(value = "/exitsInvitationCode", method = RequestMethod.GET)
+    public BaseJSON exitsInvitationCode(@Param("token") String token) {
+        return userService.exitsInvitationCode(token);
+    }
+
+    @ApiOperation("生成邀请码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),})
+    @RequestMapping(value = "/createInvitationCode", method = RequestMethod.GET)
+    public BaseJSON createInvitationCode(@Param("token") String token) {
+        return userService.createInvitationCode(token);
+    }
+
+    @ApiOperation("填写邀请码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "invitationCode", dataType = "String", required = true, value = "邀请码", defaultValue = "")})
+    @RequestMapping(value = "/fillInInvitationCode", method = RequestMethod.GET)
+    public BaseJSON fillInInvitationCode(@Param("token") String token,@Param("invitationCode") String InvitationCode) {
+        return userService.fillInInvitationCode(token,InvitationCode);
     }
 }
