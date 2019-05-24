@@ -31,6 +31,7 @@ public class OrderController {
     private OrderService orderService;
     @ApiOperation("扫码生成订单")
     @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "long", required = true, value = "门店标识", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "userId", dataType = "long", required = true, value = "用户标识", defaultValue = "5")})
     @RequestMapping(value = "/scanCodeCreateOrder", method = RequestMethod.POST)
@@ -57,6 +58,7 @@ public class OrderController {
 
     @ApiOperation("删除订单")
     @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "long", required = true, value = "门店标识", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "userId", dataType = "long", required = true, value = "用户标识", defaultValue = "5")})
     @RequestMapping(value = "/deleteOrder", method = RequestMethod.POST)
@@ -74,6 +76,7 @@ public class OrderController {
 
     @ApiOperation("更新订单")
     @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "orderId", dataType = "long", required = true, value = "订单id", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "useEndTime", dataType = "String", required = true, value = "结束时间", defaultValue = "2019-0-22"),
             @ApiImplicitParam(paramType = "query", name = "useHours", dataType = "int", required = true, value = "使用时长", defaultValue = "5"),
@@ -98,6 +101,19 @@ public class OrderController {
             baseJSON.setResult("失败");
             baseJSON.setMessage("更新订单失败，请联系管理员！");
         }
+        return baseJSON;
+    }
+
+    @ApiOperation("查询用户订单")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "userId", dataType = "long", required = true, value = "用户标识", defaultValue = "5")})
+    @RequestMapping(value = "/searchOrder", method = RequestMethod.POST)
+    public BaseJSON searchOrder(String token,long userId) {
+
+        BaseJSON baseJSON = new BaseJSON();
+        List<OrderVO> list = orderService.findOrderList(userId);
+        baseJSON.setResult(list);
         return baseJSON;
     }
 }

@@ -40,5 +40,23 @@
 			AND A.store_type =#{storeType}
 		</if>
 	</select>
-	
+
+	<insert id="saveStoreEvaluate">
+		insert into store_evaluate(
+			store_id,
+			score,
+			description,
+			evaluate_name,
+			evaluate_time,
+			create_time,
+			is_del)
+			values(
+			#{po.storeId},
+			#{po.score},
+			#{po.description},
+			#{po.evaluateName},
+			now(),
+			now(),
+			0)
+	</insert>
 </mapper>

@@ -1,5 +1,6 @@
 package com.wework.base.service;
 
+import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.vo.StoreVO;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface StoreService {
      * @param storeType
      */
     public List<StoreVO> findStoreList(String longitude, String latitude, String storeType);
+
+    public int saveStoreEvaluate(StoreEvaluatePO po);
 }

@@ -45,7 +45,7 @@
 		update
 			order_table
 		set
-		<if test="po.useEndTime != null and po.useEndTime != ''">
+		<if test="po.useEndTime != null">
 			use_end_time =#{po.useEndTime}
 		</if>
 		<if test="po.useHours != null and po.useHours != ''">

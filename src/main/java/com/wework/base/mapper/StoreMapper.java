@@ -1,5 +1,6 @@
 package com.wework.base.mapper;
 
+import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,4 +20,6 @@ public interface StoreMapper {
 	 * @return
 	 */
 	public List<StorePO> getStoreList(@Param("longitude") String longitude, @Param("latitude") String latitude, @Param("storeType") String storeType);
+
+	public int saveStoreEvaluate(@Param("po")StoreEvaluatePO po);
 }

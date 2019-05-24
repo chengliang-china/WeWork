@@ -29,6 +29,11 @@ public interface OrderService {
     public int updateOrder(OrderVO orderVo);
 
     /**
+     * 查找订单
+     * @return
+     */
+    public List<OrderVO> findOrderList(long userId);
+    /**
      * 检查用户是否开单
      * @param userId
      * @return

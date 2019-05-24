@@ -1,5 +1,6 @@
 package com.wework.base.service.serviceImpl;
 
+import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.mapper.StoreMapper;
@@ -39,5 +40,10 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         return storeVOlist;
+    }
+
+    @Override
+    public int saveStoreEvaluate(StoreEvaluatePO po) {
+        return storeMapper.saveStoreEvaluate(po);
     }
 }

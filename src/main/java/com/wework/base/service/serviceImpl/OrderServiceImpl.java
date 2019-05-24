@@ -48,6 +48,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderVO> findOrderList(long userId) {
+        List<OrderTablePO> list = orderMapper.getOrderList(userId);
+        List<OrderVO> list1 = new ArrayList<>();
+        if(list.size() <=0){
+            return null;
+        }
+        for(OrderTablePO po : list){
+            OrderVO vo = new OrderVO();
+            vo.setOrderId(po.getOrderId());
+            vo.setStoreId(po.getStoreId());
+            vo.setUseHours(po.getUseHours());
+            vo.setOrderStatus(po.getOrderStatus());
+            vo.setUseStartTime(po.getUseStartTime());
+            vo.setUseEndTime(po.getUseEndTime());
+            list1.add(vo);
+        }
+        return list1;
+    }
+
+    @Override
     public int checkUserUnfinishOrder(long userId) {
         return orderMapper.checkUserUnfinishOrder(userId);
     }
