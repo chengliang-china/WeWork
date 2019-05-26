@@ -54,7 +54,7 @@
 			use_end_time =#{po.useEndTime}
 		</if>
 		<if test="po.useHours != null and po.useHours != ''">
-			user_hours =#{po.userHours}
+			use_hours =#{po.useHours}
 		</if>
 		<if test="po.applyFee != null and po.applyFee != ''">
 			apply_fee =#{po.applyFee}
@@ -79,7 +79,7 @@
 		A.store_id,
 		A.use_start_time,
 		A.use_end_time,
-		A.user_hours,
+		A.use_hours,
 		A.apply_fee,
 		A.order_status,
 		A.coupon_id,
