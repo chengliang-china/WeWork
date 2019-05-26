@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -24,4 +25,6 @@ public interface OrderMapper {
 	public List<OrderTablePO> getOrderList(@Param("userId")long userId);
 
 	public int checkUserUnfinishOrder(@Param("userId")long userId);
+
+    int updateUseIntegral(@Param("userId")long userId, @Param("integral") BigDecimal integral);
 }

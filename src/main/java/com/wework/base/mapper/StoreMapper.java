@@ -2,6 +2,8 @@ package com.wework.base.mapper;
 
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
+import com.wework.base.domain.po.StoreServicePO;
+import com.wework.base.domain.vo.StoreDetailVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -22,4 +24,10 @@ public interface StoreMapper {
 	public List<StorePO> getStoreList(@Param("longitude") String longitude, @Param("latitude") String latitude, @Param("storeType") String storeType);
 
 	public int saveStoreEvaluate(@Param("po")StoreEvaluatePO po);
+
+	public StoreEvaluatePO findEvaluate(@Param("storeId") long storeId);
+
+	public StorePO findStoreDetail(@Param("storeId") long storeId);
+
+	public List<String> findStoreService(@Param("storeId") long storeId);
 }

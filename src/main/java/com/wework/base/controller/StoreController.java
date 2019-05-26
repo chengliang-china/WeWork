@@ -2,6 +2,7 @@ package com.wework.base.controller;
 
 import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.po.StoreEvaluatePO;
+import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.service.StoreService;
 import io.swagger.annotations.Api;
@@ -37,6 +38,18 @@ public class StoreController {
         BaseJSON baseJSON = new BaseJSON();
         List<StoreVO> storeList = storeService.findStoreList(longitude,latitude,storeType);
         baseJSON.setResult(storeList);
+        return baseJSON;
+    }
+
+    @ApiOperation("查看门店明细")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "long", required = true, value = "门店id", defaultValue = "1")})
+    @RequestMapping(value = "/findStoreDetail", method = RequestMethod.POST)
+    public BaseJSON findStoreDetail(long storeId) {
+        BaseJSON baseJSON = new BaseJSON();
+        StoreDetailVO storeDetail = storeService.findStoreDetail(storeId);
+        baseJSON.setResult(storeDetail);
         return baseJSON;
     }
 

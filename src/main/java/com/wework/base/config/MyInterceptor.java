@@ -23,7 +23,7 @@ public class MyInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         // 进行逻辑判断，如果ok就返回true，不行就返回false，返回false就不会处理改请求
-        PrintWriter out = null ;
+        PrintWriter out = null;
         JSONObject res = new JSONObject();
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
@@ -42,8 +42,9 @@ public class MyInterceptor implements HandlerInterceptor {
             out.append(res.toString());
             return false;
         }
-
-        Object object = redisService.get(token);
+        return true;
+    }
+        /*Object object = redisService.get(token);
 
         try{
             if(object != null)
@@ -60,9 +61,9 @@ public class MyInterceptor implements HandlerInterceptor {
             e.printStackTrace();
             response.sendError(500);
             return false;
-        }
+        }*/
 
-    }
+
 
     /**
      * 请求处理之后进行调用，但是在视图被渲染之前（Controller方法调用之后）

@@ -2,10 +2,13 @@ package com.wework.base.controller;
 
 import com.wework.base.config.BaseCode;
 import com.wework.base.domain.base.BaseJSON;
+import com.wework.base.domain.po.UserPO;
 import com.wework.base.domain.vo.OrderVO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.service.OrderService;
+import com.wework.base.service.RedisService;
 import com.wework.base.service.StoreService;
+import com.wework.base.service.UserService;
 import com.wework.base.util.DateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,6 +32,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private RedisService redisService;
     @ApiOperation("扫码生成订单")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
@@ -83,11 +89,13 @@ public class OrderController {
             @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "支付金额", defaultValue = "5"),
             @ApiImplicitParam(paramType = "query", name = "orderStatus", dataType = "int", required = true, value = "订单状态", defaultValue = "10011002")})
     @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
-    public BaseJSON updateOrder(long orderId, String useEndTime, int useHours, BigDecimal applyFee,int orderStatus) {
+    public BaseJSON updateOrder(String token,long orderId, String useEndTime, int useHours, BigDecimal applyFee,int orderStatus) {
 
         BaseJSON baseJSON = new BaseJSON();
+        UserPO userPO = (UserPO) redisService.get(token);
         OrderVO orderVo = new OrderVO();
         orderVo.setOrderId(orderId);
+        orderVo.setUserId(userPO.getUserId());
         orderVo.setUseHours(useHours);
         orderVo.setOrderStatus(orderStatus);
         try {

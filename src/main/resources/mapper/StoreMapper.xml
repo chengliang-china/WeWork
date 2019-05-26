@@ -19,7 +19,12 @@
 		<result column="thumbnail_url" property="thumbnailUrl" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="DATE" />
 		<result column="is_deL" property="isDel" jdbcType="TINYINT" />
+	</resultMap>
 
+	<resultMap type="com.wework.base.domain.po.StoreServicePO" id="storeServiceMap">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="store_id" column="storeId" jdbcType="BIGINT" />
+		<result property="service_name" column="serviceName" jdbcType="VARCHAR" />
 	</resultMap>
 	<!-- 获取门店列表 -->
 	<select id="getStoreList" resultMap="storeMap">
@@ -39,6 +44,43 @@
 		<if test="storeType != null and storeType != ''">
 			AND A.store_type =#{storeType}
 		</if>
+	</select>
+
+	<!-- 获取门店明细 -->
+	<select id="findStoreDetail" resultMap="storeMap">
+		SELECT
+		A.store_id,
+		A.store_name,
+		A.apply_fee,
+		A.store_introduction,
+		A.open_start_time,
+		A.open_end_time,
+		A.longitude,
+		A.latitude
+		FROM store A
+		WHERE  A.is_del = 0
+		AND A.store_id = #{storeId}
+	</select>
+	<select id="findStoreService" resultType="String">
+		SELECT
+			B.service_name
+		FROM store_service A,service B
+		WHERE  A.is_del = 0
+		AND A.service_id = B.service_id
+		AND A.store_id = #{storeId}
+	</select>
+
+	<select id="findEvaluate" resultType="com.wework.base.domain.po.StoreEvaluatePO">
+		SELECT
+			A.score,
+			A.description,
+			A.evaluate_name,
+			A.evaluate_time
+		FROM store_evaluate A
+		WHERE  A.is_del = 0
+		AND A.store_id = #{storeId}
+		ORDER BY ABS(NOW() - A.evaluate_time) ASC
+		limit 1
 	</select>
 
 	<insert id="saveStoreEvaluate">

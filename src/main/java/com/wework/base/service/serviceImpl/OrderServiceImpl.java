@@ -11,6 +11,7 @@ import com.wework.base.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,12 +40,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int updateOrder(OrderVO orderVo) {
+        int orderStatus = orderVo.getOrderStatus();
+        BigDecimal applyFee = orderVo.getApplyFee();
+        BigDecimal integral = applyFee.divide(new BigDecimal(100));
         OrderTablePO orderTablePo =  new OrderTablePO();
         orderTablePo.setOrderId(orderVo.getOrderId());
         orderTablePo.setUseEndTime(orderVo.getUseEndTime());
-        orderTablePo.setApplyFee(orderVo.getApplyFee());
+        orderTablePo.setApplyFee(applyFee);
         orderTablePo.setUseHours(orderVo.getUseHours());
-        return orderMapper.updateOrder(orderTablePo);
+        orderTablePo.setOrderStatus(orderStatus);
+        int a = orderMapper.updateOrder(orderTablePo);//更新订单
+        if(orderStatus == BaseCode.ORDER_COMPLETED){
+            orderMapper.updateUseIntegral(orderVo.getUserId(),integral);
+        }
+        return a;
     }
 
     @Override

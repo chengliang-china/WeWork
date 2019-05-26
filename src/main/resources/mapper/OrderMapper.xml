@@ -41,6 +41,11 @@
 		update  order_table set is_del = 1 where order_id = #{orderId}
 	</update>
 
+
+	<update id="updateUseIntegral">
+		update  user set integral = #{integral} where user_id = #{userId}
+	</update>
+
 	<update id="updateOrder">
 		update
 			order_table
