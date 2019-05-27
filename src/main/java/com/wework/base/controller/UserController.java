@@ -93,7 +93,7 @@ public class UserController {
     @ApiOperation("填写邀请码")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "invitationCode", dataType = "String", required = true, value = "邀请码", defaultValue = "")})
+            @ApiImplicitParam(paramType = "query", name = "InvitationCode", dataType = "String", required = true, value = "邀请码", defaultValue = "")})
     @RequestMapping(value = "/fillInInvitationCode", method = RequestMethod.GET)
     public BaseJSON fillInInvitationCode(@Param("token") String token,@Param("invitationCode") String InvitationCode) {
         return userService.fillInInvitationCode(token,InvitationCode);

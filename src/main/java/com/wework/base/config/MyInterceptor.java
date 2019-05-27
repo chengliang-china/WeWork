@@ -29,6 +29,7 @@ public class MyInterceptor implements HandlerInterceptor {
         response.setContentType("application/json; charset=utf-8");
 
         if(request.getRequestURI().indexOf("login") != -1 ){
+            System.out.println("登陆 放行。。。");
             return true;
         }
 

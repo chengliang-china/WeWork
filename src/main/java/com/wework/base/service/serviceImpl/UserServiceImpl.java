@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
             userPO.setIsDel(0L);
 
             List<UserPO> userList = userMapper.findUserById(userPO);
-
+            System.out.println("userList:"+userList.size());
             if(userList.size() - 0 == 0){
                 // 新建
                 userMapper.saveUserInfo(userPO);
@@ -197,6 +197,15 @@ public class UserServiceImpl implements UserService {
         }else if(userList.size() - 1 == 0){
             UserPO user = userList.get(0);
 
+            System.out.println("验证码："+user.getInvitationCode().equals(""));
+            System.out.println("验证码："+user.getInvitationCode().length());
+            if(user.getInvitationCode() != null && !user.getInvitationCode().equals("")){
+                baseJSON.setFail("验证码已存在");
+                baseJSON.setCode(3); // 100 表示用户不存在
+                baseJSON.setResult(user.getInvitationCode());
+                return baseJSON;
+            }
+
             user.setInvitationCode(this.getCode(CODE_SIZE));
             user.setUserType(USER_COMPANY);
             userMapper.updateUserInfo(user);
@@ -238,12 +247,17 @@ public class UserServiceImpl implements UserService {
 
             UserPO parentPO = parentList.get(0);
 
-            user.setParentId(parentPO.getParentId());
+            user.setParentId(parentPO.getUserId());
+
+            System.out.println("parentPo："+parentPO.getUserId());
+            System.out.println("user："+user);
+
+            userMapper.updateUserInfo(user);
 
             redisService.remove(token); // 删除redis
             redisService.set(token,userList.get(0),30000L); // 更新redis
 
-            baseJSON.setResult(user.getInvitationCode());
+            baseJSON.setResult(user);
 
             return baseJSON;
         }
