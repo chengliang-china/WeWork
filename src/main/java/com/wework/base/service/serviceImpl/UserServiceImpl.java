@@ -124,6 +124,7 @@ public class UserServiceImpl implements UserService {
 
         if(userPO == null){
             baseJSON.setFail("token 过期 请重新登陆！");
+            baseJSON.setCode(110);
             return baseJSON;
         }
 
@@ -139,6 +140,7 @@ public class UserServiceImpl implements UserService {
 
         if(userPO == null){
             baseJSON.setFail("token 过期 请重新登陆！");
+            baseJSON.setCode(110);
             return baseJSON;
         }
 
@@ -185,6 +187,7 @@ public class UserServiceImpl implements UserService {
 
         if(userPO == null){
             baseJSON.setFail("token 过期 请重新登陆！");
+            baseJSON.setCode(110);
             return baseJSON;
         }
 
@@ -233,6 +236,7 @@ public class UserServiceImpl implements UserService {
 
         if(userPO == null){
             baseJSON.setFail("token 过期 请重新登陆！");
+            baseJSON.setCode(110);
             return baseJSON;
         }
 
@@ -265,7 +269,6 @@ public class UserServiceImpl implements UserService {
         baseJSON.setFail("系统异常，请稍后再试");
 
         return baseJSON;
-
 
     }
 
