@@ -3,6 +3,7 @@ package com.wework.base.service.serviceImpl;
 import com.wework.base.config.BaseCode;
 import com.wework.base.domain.po.OrderTablePO;
 import com.wework.base.domain.po.StorePO;
+import com.wework.base.domain.vo.OrderDetailVO;
 import com.wework.base.domain.vo.OrderVO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.mapper.OrderMapper;
@@ -21,6 +22,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private StoreMapper storeMapper;
 
     @Override
     public int createOrder(long storeId, long userId) {
@@ -57,14 +61,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderVO> findOrderList(long userId) {
+    public List<OrderDetailVO> findOrderList(long userId) {
         List<OrderTablePO> list = orderMapper.getOrderList(userId);
-        List<OrderVO> list1 = new ArrayList<>();
+        List<OrderDetailVO> list1 = new ArrayList<>();
         if(list.size() <=0){
             return null;
         }
         for(OrderTablePO po : list){
-            OrderVO vo = new OrderVO();
+            StorePO storePO = storeMapper.findStoreDetail(po.getStoreId());
+            OrderDetailVO vo = new OrderDetailVO();
+            vo.setStoreNm(storePO.getStoreName());
+            vo.setLatitude(storePO.getLatitude());
+            vo.setLongitude(storePO.getLongitude());
             vo.setOrderId(po.getOrderId());
             vo.setStoreId(po.getStoreId());
             vo.setUseHours(po.getUseHours());

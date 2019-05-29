@@ -1,5 +1,6 @@
 package com.wework.base.service;
 
+import com.wework.base.domain.vo.OrderDetailVO;
 import com.wework.base.domain.vo.OrderVO;
 import com.wework.base.domain.vo.StoreVO;
 
@@ -32,7 +33,7 @@ public interface OrderService {
      * 查找订单
      * @return
      */
-    public List<OrderVO> findOrderList(long userId);
+    public List<OrderDetailVO> findOrderList(long userId);
     /**
      * 检查用户是否开单
      * @param userId

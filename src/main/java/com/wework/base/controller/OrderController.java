@@ -3,6 +3,7 @@ package com.wework.base.controller;
 import com.wework.base.config.BaseCode;
 import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.po.UserPO;
+import com.wework.base.domain.vo.OrderDetailVO;
 import com.wework.base.domain.vo.OrderVO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.service.OrderService;
@@ -120,7 +121,7 @@ public class OrderController {
     public BaseJSON searchOrder(String token,long userId) {
 
         BaseJSON baseJSON = new BaseJSON();
-        List<OrderVO> list = orderService.findOrderList(userId);
+        List<OrderDetailVO> list = orderService.findOrderList(userId);
         baseJSON.setResult(list);
         return baseJSON;
     }
