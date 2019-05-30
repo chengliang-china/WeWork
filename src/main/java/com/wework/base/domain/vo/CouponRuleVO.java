@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(value="couponrule", description="用户对象")
+@ApiModel(value="couponrule", description="优惠卷规则对象")
 public class CouponRuleVO implements Serializable {
 
     private String couponRuleName;

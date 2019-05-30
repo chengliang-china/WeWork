@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @RestController
 @EnableSwagger2
-@RequestMapping("/user")
+@RequestMapping("/coupon/rule")
 @Api(tags = { "优惠卷规则模块" })
 public class CouponRuleController {
 
