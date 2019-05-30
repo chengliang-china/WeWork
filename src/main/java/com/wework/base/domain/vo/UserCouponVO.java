@@ -1,18 +1,16 @@
-package com.wework.base.domain.po;
+package com.wework.base.domain.vo;
 
 import com.wework.base.config.BaseCode;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserCouponPO implements Serializable {
+public class UserCouponVO implements Serializable {
 
     private long id;
     private long userId;
     private Long couponId;
     private long status;
-    private Date createTime = new Date();
-    private int isDel = BaseCode.UNDEL;
 
     public long getId() {
         return id;
@@ -46,31 +44,13 @@ public class UserCouponPO implements Serializable {
         this.status = status;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public int getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(int isDel) {
-        this.isDel = isDel;
-    }
-
     @Override
     public String toString() {
-        return "UserCouponPO{" +
+        return "UserCouponVO{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", couponId=" + couponId +
                 ", status=" + status +
-                ", createTime=" + createTime +
-                ", isDel=" + isDel +
                 '}';
     }
 }

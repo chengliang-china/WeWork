@@ -117,4 +117,41 @@ public class CouponServiceImpl implements CouponService {
         }
         return baseJSON;
     }
+
+    @Override
+    public BaseJSON receiveCoupon(String token, long couponId) {
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+            UserPO userPO = (UserPO) redisService.get(token);
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+            // 检测优惠卷是否领取过
+            List<UserCouponPO> userCouponPOS = userCouponMapper.receivedCoupon(userPO.getUserId(), couponId);
+
+            if(userCouponPOS.size() > 0){
+                baseJSON.setFail("优惠卷已经领取，不可重复领取！");
+                return baseJSON;
+            }
+
+            UserCouponPO userCouponPO = new UserCouponPO();
+            userCouponPO.setCouponId(couponId);
+            userCouponPO.setUserId(userPO.getUserId());
+
+            int i = userCouponMapper.receiveCoupon(userCouponPO);
+
+            if(i == 1){
+                baseJSON.setMessage("获取优惠卷成功！");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+        return baseJSON;
+    }
 }

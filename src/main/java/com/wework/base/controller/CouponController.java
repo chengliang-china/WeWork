@@ -30,13 +30,6 @@ public class CouponController {
         return couponService.addCoupon(token, couponVO);
     }
 
-//    @ApiOperation("获取全部优惠卷信息")
-//    @ApiImplicitParams(value = {
-//            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
-//    @RequestMapping(value = "/findCouponDetails", method = RequestMethod.POST)
-//    public BaseJSON findCouponDetails(@RequestParam String token) {
-//        return couponService.findCouponDetails(token);
-//    }
 
     @ApiOperation("获取可领取与不可领取的优惠卷信息")
     @ApiImplicitParams(value = {
@@ -44,6 +37,15 @@ public class CouponController {
     @RequestMapping(value = "/findCouponAvailables", method = RequestMethod.POST)
     public BaseJSON findCouponAvailables(@RequestParam String token) {
         return couponService.findCouponAvailables(token);
+    }
+
+    @ApiOperation("领取优惠卷")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "couponId", dataType = "long", required = true, value = "long", defaultValue = "")})
+    @RequestMapping(value = "/receiveCoupon", method = RequestMethod.POST)
+    public BaseJSON receiveCoupon(@RequestParam String token,@RequestParam long couponId) {
+        return couponService.receiveCoupon(token,couponId);
     }
 
 }
