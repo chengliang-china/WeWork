@@ -51,4 +51,12 @@ public interface CouponService {
      * @return
      */
     BaseJSON addRCode(long couponId);
+
+    /**
+     * 使用兑换码获取优惠卷
+     * @param token
+     * @param rCode
+     * @return
+     */
+    BaseJSON getCoupon4RCode(String token, String rCode);
 }

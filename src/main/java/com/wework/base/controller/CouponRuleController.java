@@ -29,7 +29,7 @@ public class CouponRuleController {
         return couponRuleService.addCouponRule(token,couponRuleVO);
     }
 
-    @ApiOperation("设置优惠卷规则")
+    @ApiOperation("获取全部优惠卷规则")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
     @RequestMapping(value = "/getAllCouponRule", method = RequestMethod.GET)

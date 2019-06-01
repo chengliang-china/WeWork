@@ -226,6 +226,60 @@ public class CouponServiceImpl implements CouponService {
         return baseJSON;
     }
 
+    @Override
+    public BaseJSON getCoupon4RCode(String token, String rCode) {
+
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+
+            UserPO userPO = (UserPO) redisService.get(token);
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+
+            couponMapper.updateAll();
+
+            // 通过rCode 获取优惠卷信息
+            List<CouponDetailDTO> coupon4RCode = couponMapper.getCoupon4RCode(rCode);
+
+            if(coupon4RCode.size() != 1){
+                baseJSON.setFail("兑换码已失效！");
+                return baseJSON;
+            }
+
+            // 查看当前用户是否存在该优惠卷
+            List<UserCouponPO> userCouponPOS = userCouponMapper.receivedCoupon(userPO.getUserId(), coupon4RCode.get(0).getCouponId());
+
+            if(userCouponPOS.size() != 0){
+                baseJSON.setFail("您已领取该优惠卷，不可重复领取！");
+                return baseJSON;
+            }
+
+            // 保存
+            UserCouponPO userCouponPO = new UserCouponPO();
+            userCouponPO.setCouponId(coupon4RCode.get(0).getCouponId());
+            userCouponPO.setUserId(userPO.getUserId());
+
+            int i = userCouponMapper.receiveCoupon(userCouponPO);
+
+            if(i == 1){
+                baseJSON.setMessage("获取优惠卷成功！");
+                baseJSON.setResult(coupon4RCode.get(0));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+
+        return baseJSON;
+
+    }
+
     // 私有方法
 
     private CouponDetailVO getAllCoupon(UserPO userPO,String token){

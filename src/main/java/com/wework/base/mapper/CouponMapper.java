@@ -34,7 +34,7 @@ public interface CouponMapper {
     @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less FROM coupon c LEFT JOIN coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id where c.coupon_status = " + BaseCode.INVALID)
     List<CouponDetailDTO> findCouponDetails4Invalid();
 
-    @Update("update coupon set coupon_status = "+BaseCode.INVALID+" where end_date < NOW()")
+    @Update("update coupon set coupon_status = "+BaseCode.INVALID+" where DATE_FORMAT(end_date,'%Y-%m-%d')  < DATE_FORMAT(NOW(),'%Y-%m-%d')")
     int updateAll();
 
     @Update("update coupon set redemption_code = #{redemptionCode} where coupon_id = #{couponId}")
@@ -42,4 +42,8 @@ public interface CouponMapper {
 
     @Select("select * from coupon where coupon_status = "+BaseCode.VALID+" and is_del = "+BaseCode.UNDEL)
     List<CouponPO> getAllCoupon();
+
+
+    @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less from coupon c left join coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id where c.redemption_code = #{rCode} and c.coupon_status = "+BaseCode.VALID+" and c.is_del = "+BaseCode.UNDEL+" and cr.is_del = "+BaseCode.UNDEL)
+    List<CouponDetailDTO> getCoupon4RCode(@Param("rCode") String rCode);
 }

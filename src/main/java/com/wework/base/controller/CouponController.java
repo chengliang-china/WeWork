@@ -47,8 +47,17 @@ public class CouponController {
         return couponService.addRCode(couponId);
     }
 
+    @ApiOperation("使用兑换码获取优惠卷接口")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "rCode", dataType = "String", required = true, value = "rCode", defaultValue = "")})
+    @RequestMapping(value = "/getCoupon4RCode", method = RequestMethod.POST)
+    public BaseJSON getCoupon4RCode(@RequestParam String token,@RequestParam String rCode) {
+        return couponService.getCoupon4RCode(token,rCode);
+    }
 
-    @ApiOperation("获取可领取与不可领取的优惠卷信息")
+
+    @ApiOperation("获取可领取与不可领取的优惠卷信息 页面弹框领取使用")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
     @RequestMapping(value = "/findCouponAvailables", method = RequestMethod.POST)
@@ -56,14 +65,14 @@ public class CouponController {
         return couponService.findCouponAvailables(token);
     }
 
-    @ApiOperation("领取优惠卷")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "couponId", dataType = "long", required = true, value = "long", defaultValue = "")})
-    @RequestMapping(value = "/receiveCoupon", method = RequestMethod.POST)
-    public BaseJSON receiveCoupon(@RequestParam String token,@RequestParam long couponId) {
-        return couponService.receiveCoupon(token,couponId);
-    }
+//    @ApiOperation("领取优惠卷")
+//    @ApiImplicitParams(value = {
+//            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+//            @ApiImplicitParam(paramType = "query", name = "couponId", dataType = "long", required = true, value = "long", defaultValue = "")})
+//    @RequestMapping(value = "/receiveCoupon", method = RequestMethod.POST)
+//    public BaseJSON receiveCoupon(@RequestParam String token,@RequestParam long couponId) {
+//        return couponService.receiveCoupon(token,couponId);
+//    }
 
     @ApiOperation("领取所有优惠卷")
     @ApiImplicitParams(value = {
