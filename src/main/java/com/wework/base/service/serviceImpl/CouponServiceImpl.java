@@ -14,6 +14,7 @@ import com.wework.base.mapper.CouponMapper;
 import com.wework.base.mapper.UserCouponMapper;
 import com.wework.base.service.CouponService;
 import com.wework.base.service.RedisService;
+import com.wework.base.util.InvitationCodeUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,17 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public BaseJSON getAllCoupon() {
-        return null;
+
+        BaseJSON baseJSON = new BaseJSON();
+        try{
+            couponMapper.updateAll();
+            List<CouponPO> couponPOS = couponMapper.getAllCoupon();
+            baseJSON.setResult(couponPOS);
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+        return baseJSON;
     }
 
     @Override
@@ -181,6 +192,40 @@ public class CouponServiceImpl implements CouponService {
         return baseJSON;
     }
 
+    @Override
+    public BaseJSON addRCode(long couponId) {
+
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+
+            String rCode = this.createRcode();
+
+            List<CouponPO> userCouponByUserId = couponMapper.findUserCouponByUserId(couponId);
+
+            if(userCouponByUserId.size() != 1){
+                baseJSON.setFail("优惠卷已失效或不存在，请检查后在提交！");
+                return baseJSON;
+            }
+
+            CouponPO couponPO = userCouponByUserId.get(0);
+
+            // 允许生成新的邀请码
+
+            couponPO.setRedemptionCode(rCode);
+
+            couponMapper.updateByCouponId(couponPO);
+
+            baseJSON.setResult(rCode);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+
+        return baseJSON;
+    }
+
     // 私有方法
 
     private CouponDetailVO getAllCoupon(UserPO userPO,String token){
@@ -245,5 +290,17 @@ public class CouponServiceImpl implements CouponService {
             dest.add(dto);
         }
         return dest;
+    }
+
+    private String createRcode(){
+        String rCode = InvitationCodeUtils.getCode(BaseCode.R_CODE_SIZE);
+
+        List<CouponPO> userCouponByRcode = couponMapper.findUserCouponByRcode(rCode);
+
+        if(userCouponByRcode.size() != 0){
+            createRcode();
+        }
+
+        return rCode;
     }
 }

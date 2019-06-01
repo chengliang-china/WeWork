@@ -45,4 +45,10 @@ public interface CouponService {
      * @return
      */
     BaseJSON getUserCouponList(String token);
+
+    /**
+     * 生成兑换码
+     * @return
+     */
+    BaseJSON addRCode(long couponId);
 }

@@ -13,6 +13,7 @@ public class CouponPO implements Serializable {
     private Date CreateTime;
     private Date startDate;
     private int isDel;
+    private String redemptionCode;
 
     public int getIsDel() {
         return isDel;
@@ -76,6 +77,14 @@ public class CouponPO implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public String getRedemptionCode() {
+        return redemptionCode;
+    }
+
+    public void setRedemptionCode(String redemptionCode) {
+        this.redemptionCode = redemptionCode;
     }
 
     @Override

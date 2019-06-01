@@ -30,6 +30,23 @@ public class CouponController {
         return couponService.addCoupon(token, couponVO);
     }
 
+    @ApiOperation("获取所有有效的优惠卷")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
+    @RequestMapping(value = "/getAllCoupon", method = RequestMethod.POST)
+    public BaseJSON getAllCoupon(@RequestParam String token) {
+        return couponService.getAllCoupon();
+    }
+
+    @ApiOperation("生成兑换码接口")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "couponId", dataType = "long", required = true, value = "long", defaultValue = "")})
+    @RequestMapping(value = "/addRCode", method = RequestMethod.POST)
+    public BaseJSON addRCode(@RequestParam String token,@RequestParam long couponId) {
+        return couponService.addRCode(couponId);
+    }
+
 
     @ApiOperation("获取可领取与不可领取的优惠卷信息")
     @ApiImplicitParams(value = {

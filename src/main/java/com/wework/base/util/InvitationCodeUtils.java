@@ -30,12 +30,6 @@ public class InvitationCodeUtils implements Serializable {
 
 
         boolean b = userMapper == null;
-        System.out.println("sb:"+b);
-//        List<UserPO> userPOList = userMapper.existInvitationCode(sb.toString());
-
-//        if(userPOList == null && userPOList.size() > 0){
-//            getCode(codeSize);
-//        }
         return sb.toString().toUpperCase();
     }
 
