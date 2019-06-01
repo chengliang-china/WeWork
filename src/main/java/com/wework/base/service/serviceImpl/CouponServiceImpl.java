@@ -78,38 +78,7 @@ public class CouponServiceImpl implements CouponService {
                 return baseJSON;
             }
 
-            List<CouponDetailDTO> couponDetails4Valid = couponMapper.findCouponDetails4Valid(); // 有效的优惠卷
-
-            List<UserCouponPO> userCouponByUserId = userCouponMapper.findUserCouponByUserId(userPO.getUserId()); // 用户拥有的所有的优惠卷
-
-            // 可以领取的优惠卷集合
-            List<CouponDetailDTO> availableList = new ArrayList<>();
-            // 已经拥有的优惠卷集合
-            List<CouponDetailDTO> notAvailableList = new ArrayList<>();
-
-            CouponDetailVO couponDetailVO = new CouponDetailVO();
-
-            for(int i=0;i<userCouponByUserId.size();i++){
-                for(int j=0;j<couponDetails4Valid.size();j++){
-                    if(userCouponByUserId.get(i).getCouponId() - couponDetails4Valid.get(i).getCouponId() ==0 ){
-                        notAvailableList.add(couponDetails4Valid.get(j));
-                    }else{
-                        availableList.add(couponDetails4Valid.get(j));
-                    }
-                }
-            }
-
-            if(userCouponByUserId.size() == 0){
-                availableList = couponDetails4Valid;
-            }
-
-            couponDetailVO.setAvailableList(availableList);
-            couponDetailVO.setNotAvailableList(notAvailableList);
-
-            baseJSON.setResult(couponDetailVO);
-
-            System.out.println("couponDetails4Valid"+couponDetails4Valid);
-            System.out.println("userCouponByUserId"+userCouponByUserId);
+            baseJSON.setResult(this.getAllCoupon(userPO,token));
 
         }catch (Exception e){
             e.printStackTrace();
@@ -153,5 +122,94 @@ public class CouponServiceImpl implements CouponService {
             baseJSON.setFail("系统异常，请稍后再试！");
         }
         return baseJSON;
+    }
+
+    @Override
+    public BaseJSON receiveAllCoupon(String token) {
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+            UserPO userPO = (UserPO) redisService.get(token);
+            UserCouponPO userCouponPO = new UserCouponPO();
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+
+            CouponDetailVO allCoupon = this.getAllCoupon(userPO, token);
+            List<CouponDetailDTO> availableList = allCoupon.getAvailableList();
+
+            for(int i=0;i<availableList.size();i++){
+                receiveCouponPrivate(userPO,availableList.get(i).getCouponId()); // 领取
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+        return baseJSON;
+    }
+
+    private CouponDetailVO getAllCoupon(UserPO userPO,String token){
+
+        List<CouponDetailDTO> couponDetails4Valid = couponMapper.findCouponDetails4Valid(); // 有效的优惠卷
+
+        List<UserCouponPO> userCouponByUserId = userCouponMapper.findUserCouponByUserId(userPO.getUserId()); // 用户拥有的所有的优惠卷
+
+        // 可以领取的优惠卷集合
+        List<CouponDetailDTO> availableList = copyList(couponDetails4Valid);
+        // 已经拥有的优惠卷集合
+        List<CouponDetailDTO> notAvailableList = new ArrayList<>();
+
+        CouponDetailVO couponDetailVO = new CouponDetailVO();
+
+        for(int i=0;i<userCouponByUserId.size();i++){
+            for(int j=0;j<couponDetails4Valid.size();j++){
+                System.out.println("aaaaa:"+ (userCouponByUserId.get(i).getCouponId() - couponDetails4Valid.get(i).getCouponId() == 0));
+                if(userCouponByUserId.get(i).getCouponId() - couponDetails4Valid.get(j).getCouponId() == 0 ) {
+                    notAvailableList.add(couponDetails4Valid.get(j)); // 不可领取
+                    availableList.remove(couponDetails4Valid.get(j));
+                }
+            }
+        }
+
+
+        if(userCouponByUserId.size() == 0){
+            availableList = couponDetails4Valid;
+        }
+
+        System.out.println("availableList:"+availableList);
+        couponDetailVO.setAvailableList(availableList);
+        couponDetailVO.setNotAvailableList(notAvailableList);
+
+        return couponDetailVO;
+    }
+
+    private int receiveCouponPrivate(UserPO userPO,long couponId){
+        // 检测优惠卷是否领取过
+        List<UserCouponPO> userCouponPOS = userCouponMapper.receivedCoupon(userPO.getUserId(), couponId);
+
+        if(userCouponPOS.size() > 0){
+
+            return -1;
+        }
+
+        UserCouponPO userCouponPO = new UserCouponPO();
+        userCouponPO.setCouponId(couponId);
+        userCouponPO.setUserId(userPO.getUserId());
+
+        int i = userCouponMapper.receiveCoupon(userCouponPO);
+
+        return i;
+    }
+
+    private List<CouponDetailDTO> copyList(List<CouponDetailDTO> source){
+        List<CouponDetailDTO> dest = new ArrayList<>();
+        for(CouponDetailDTO dto : source){
+            dest.add(dto);
+        }
+        return dest;
     }
 }

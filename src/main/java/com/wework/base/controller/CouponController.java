@@ -48,4 +48,12 @@ public class CouponController {
         return couponService.receiveCoupon(token,couponId);
     }
 
+    @ApiOperation("领取所有优惠卷")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
+    @RequestMapping(value = "/receiveAllCoupon", method = RequestMethod.POST)
+    public BaseJSON receiveAllCoupon(@RequestParam String token) {
+        return couponService.receiveAllCoupon(token);
+    }
+
 }
