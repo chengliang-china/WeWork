@@ -66,8 +66,7 @@ public class OrderController {
     @ApiOperation("删除订单")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "long", required = true, value = "门店标识", defaultValue = "1"),
-            @ApiImplicitParam(paramType = "query", name = "userId", dataType = "long", required = true, value = "用户标识", defaultValue = "5")})
+            @ApiImplicitParam(paramType = "query", name = "orderId", dataType = "long", required = true, value = "订单id", defaultValue = "1")})
     @RequestMapping(value = "/deleteOrder", method = RequestMethod.POST)
     public BaseJSON deleteOrder(long orderId) {
 
@@ -86,11 +85,11 @@ public class OrderController {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "orderId", dataType = "long", required = true, value = "订单id", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "useEndTime", dataType = "String", required = true, value = "结束时间", defaultValue = "2019-0-22"),
-            @ApiImplicitParam(paramType = "query", name = "useHours", dataType = "int", required = true, value = "使用时长", defaultValue = "5"),
+            @ApiImplicitParam(paramType = "query", name = "useHours", dataType = "BigDecimal", required = true, value = "使用时长", defaultValue = "5"),
             @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "支付金额", defaultValue = "5"),
             @ApiImplicitParam(paramType = "query", name = "orderStatus", dataType = "int", required = true, value = "订单状态", defaultValue = "10011002")})
     @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
-    public BaseJSON updateOrder(String token,long orderId, String useEndTime, int useHours, BigDecimal applyFee,int orderStatus) {
+    public BaseJSON updateOrder(String token,long orderId, String useEndTime, BigDecimal useHours, BigDecimal applyFee,int orderStatus) {
 
         BaseJSON baseJSON = new BaseJSON();
         UserPO userPO = (UserPO) redisService.get(token);
@@ -99,6 +98,7 @@ public class OrderController {
         orderVo.setUserId(userPO.getUserId());
         orderVo.setUseHours(useHours);
         orderVo.setOrderStatus(orderStatus);
+        orderVo.setApplyFee(applyFee);
         try {
             orderVo.setUseEndTime(DateUtils.stringToDate(useEndTime));
         } catch (ParseException e) {

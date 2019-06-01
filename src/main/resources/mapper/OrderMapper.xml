@@ -13,7 +13,7 @@
 		<result property="use_end_time" column="useEndTime" jdbcType="DATE" />
 		<result property="apply_fee" column="applyFee" jdbcType="DECIMAL" />
 		<result property="order_status" column="orderStatus" jdbcType="TINYINT" />
-		<result property="use_hours" column="useHours" jdbcType="TINYINT" />
+		<result property="use_hours" column="useHours" jdbcType="DECIMAL" />
 		<result property="coupon_id" column="couponId" jdbcType="BIGINT" />
 		<result column="create_time" property="createTime" jdbcType="DATE" />
 		<result column="is_deL" property="isDel" jdbcType="TINYINT" />
@@ -51,23 +51,21 @@
 			order_table
 		set
 		<if test="po.useEndTime != null">
-			use_end_time =#{po.useEndTime}
+			use_end_time =#{po.useEndTime},
 		</if>
 		<if test="po.useHours != null and po.useHours != ''">
-			use_hours =#{po.useHours}
+			use_hours =#{po.useHours},
 		</if>
 		<if test="po.applyFee != null and po.applyFee != ''">
-			apply_fee =#{po.applyFee}
+			apply_fee =#{po.applyFee},
 		</if>
-		<if test="orderStatus != null and orderStatus != ''">
-			order_status =#{po.orderStatus}
+		<if test="po.orderStatus != null and po.orderStatus != ''">
+			order_status =#{po.orderStatus},
 		</if>
 		<if test="po.couponId != null and po.couponId != ''">
-			coupon_id =#{po.couponId}
+			coupon_id =#{po.couponId},
 		</if>
-		<if test="po.isDel != null and po.isDel != ''">
-			is_del =#{po.isDel}
-		</if>
+			is_del =0,
 		where
 			order_id = #{po.orderId}
 	</update>

@@ -10,7 +10,7 @@ public class OrderDetailVO {
     private long userId;
     private Date useStartTime;
     private Date useEndTime;
-    private int  useHours;
+    private BigDecimal  useHours;
     private BigDecimal applyFee;
     private BigDecimal longitude;
     private BigDecimal latitude;
@@ -83,11 +83,11 @@ public class OrderDetailVO {
         this.useEndTime = useEndTime;
     }
 
-    public int getUseHours() {
+    public BigDecimal getUseHours() {
         return useHours;
     }
 
-    public void setUseHours(int useHours) {
+    public void setUseHours(BigDecimal useHours) {
         this.useHours = useHours;
     }
 

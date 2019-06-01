@@ -9,7 +9,7 @@ public class OrderVO {
     private long userId;
     private Date useStartTime;
     private Date useEndTime;
-    private int  useHours;
+    private BigDecimal  useHours;
     private BigDecimal applyFee;
     private int orderStatus;
     private long couponId;
@@ -56,11 +56,11 @@ public class OrderVO {
         this.useEndTime = useEndTime;
     }
 
-    public int getUseHours() {
+    public BigDecimal getUseHours() {
         return useHours;
     }
 
-    public void setUseHours(int useHours) {
+    public void setUseHours(BigDecimal useHours) {
         this.useHours = useHours;
     }
 

@@ -35,14 +35,14 @@ public class MyInterceptor implements HandlerInterceptor {
 
         String token = request.getParameter("token");
 
-        if(token == null){
+        /*if(token == null){
             res.put("code","1");
             res.put("message","token 为空");
             res.put("result",null);
             out = response.getWriter();
             out.append(res.toString());
             return false;
-        }
+        }*/
         return true;
     }
         /*Object object = redisService.get(token);
