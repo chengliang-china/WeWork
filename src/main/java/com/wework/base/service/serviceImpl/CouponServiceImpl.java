@@ -3,11 +3,13 @@ package com.wework.base.service.serviceImpl;
 import com.wework.base.config.BaseCode;
 import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.dto.CouponDetailDTO;
+import com.wework.base.domain.dto.UserCouponDetailDTO;
 import com.wework.base.domain.po.CouponPO;
 import com.wework.base.domain.po.UserCouponPO;
 import com.wework.base.domain.po.UserPO;
 import com.wework.base.domain.vo.CouponDetailVO;
 import com.wework.base.domain.vo.CouponVO;
+import com.wework.base.domain.vo.UserCouponListVO;
 import com.wework.base.mapper.CouponMapper;
 import com.wework.base.mapper.UserCouponMapper;
 import com.wework.base.service.CouponService;
@@ -149,6 +151,37 @@ public class CouponServiceImpl implements CouponService {
         }
         return baseJSON;
     }
+
+    @Override
+    public BaseJSON getUserCouponList(String token) {
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+            UserPO userPO = (UserPO) redisService.get(token);
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+
+            List<UserCouponDetailDTO> unUsed = userCouponMapper.getUserCouponListForUnUsed(userPO.getUserId());
+            List<UserCouponDetailDTO> Used = userCouponMapper.getUserCouponListForUsed(userPO.getUserId());
+
+            UserCouponListVO UserCouponListVO = new UserCouponListVO();
+            UserCouponListVO.setUnUsed(unUsed);
+            UserCouponListVO.setUsedAndExpired(Used);
+
+            baseJSON.setResult(UserCouponListVO);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+        return baseJSON;
+    }
+
+    // 私有方法
 
     private CouponDetailVO getAllCoupon(UserPO userPO,String token){
 

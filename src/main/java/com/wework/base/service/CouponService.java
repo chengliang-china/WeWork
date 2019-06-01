@@ -38,4 +38,11 @@ public interface CouponService {
      * @return
      */
     BaseJSON receiveAllCoupon(String token);
+
+    /**
+     * 获取用户已使用/未使用/已过期优惠卷列表
+     * @param token
+     * @return
+     */
+    BaseJSON getUserCouponList(String token);
 }

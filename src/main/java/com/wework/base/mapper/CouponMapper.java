@@ -21,7 +21,6 @@ public interface CouponMapper {
     @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less FROM coupon c LEFT JOIN coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id ")
     List<CouponDetailDTO> findCouponDetails();
 
-
     @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less FROM coupon c LEFT JOIN coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id where c.coupon_status = " + BaseCode.VALID)
     List<CouponDetailDTO> findCouponDetails4Valid();
 

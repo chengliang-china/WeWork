@@ -56,4 +56,12 @@ public class CouponController {
         return couponService.receiveAllCoupon(token);
     }
 
+
+    @ApiOperation("获取用户已使用/未使用/已过期优惠卷列表")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
+    @RequestMapping(value = "/getUserCouponList", method = RequestMethod.POST)
+    public BaseJSON getUserCouponList(@RequestParam String token) {
+        return couponService.getUserCouponList(token);
+    }
 }
