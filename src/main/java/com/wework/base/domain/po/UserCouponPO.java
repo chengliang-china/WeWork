@@ -10,7 +10,7 @@ public class UserCouponPO implements Serializable {
     private long id;
     private long userId;
     private Long couponId;
-    private long status;
+    private long status = BaseCode.TO_BE_USED;
     private Date createTime = new Date();
     private int isDel = BaseCode.UNDEL;
 

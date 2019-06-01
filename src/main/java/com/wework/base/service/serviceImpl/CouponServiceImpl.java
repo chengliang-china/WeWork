@@ -69,7 +69,6 @@ public class CouponServiceImpl implements CouponService {
         BaseJSON baseJSON = new BaseJSON();
 
         try{
-
             UserPO userPO = (UserPO) redisService.get(token);
 
             if(userPO == null){
@@ -77,7 +76,6 @@ public class CouponServiceImpl implements CouponService {
                 baseJSON.setCode(110);
                 return baseJSON;
             }
-
             baseJSON.setResult(this.getAllCoupon(userPO,token));
 
         }catch (Exception e){
@@ -142,7 +140,7 @@ public class CouponServiceImpl implements CouponService {
             List<CouponDetailDTO> availableList = allCoupon.getAvailableList();
 
             for(int i=0;i<availableList.size();i++){
-                receiveCouponPrivate(userPO,availableList.get(i).getCouponId()); // 领取
+                this.receiveCouponPrivate(userPO,availableList.get(i).getCouponId()); // 领取
             }
 
         }catch (Exception e){
@@ -153,6 +151,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     private CouponDetailVO getAllCoupon(UserPO userPO,String token){
+
+        couponMapper.updateAll();
 
         List<CouponDetailDTO> couponDetails4Valid = couponMapper.findCouponDetails4Valid(); // 有效的优惠卷
 
@@ -167,7 +167,7 @@ public class CouponServiceImpl implements CouponService {
 
         for(int i=0;i<userCouponByUserId.size();i++){
             for(int j=0;j<couponDetails4Valid.size();j++){
-                System.out.println("aaaaa:"+ (userCouponByUserId.get(i).getCouponId() - couponDetails4Valid.get(i).getCouponId() == 0));
+
                 if(userCouponByUserId.get(i).getCouponId() - couponDetails4Valid.get(j).getCouponId() == 0 ) {
                     notAvailableList.add(couponDetails4Valid.get(j)); // 不可领取
                     availableList.remove(couponDetails4Valid.get(j));
@@ -180,7 +180,6 @@ public class CouponServiceImpl implements CouponService {
             availableList = couponDetails4Valid;
         }
 
-        System.out.println("availableList:"+availableList);
         couponDetailVO.setAvailableList(availableList);
         couponDetailVO.setNotAvailableList(notAvailableList);
 
@@ -188,6 +187,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     private int receiveCouponPrivate(UserPO userPO,long couponId){
+        int i1 = couponMapper.updateAll();
+        System.out.println("aaaaa:"+ i1);
         // 检测优惠卷是否领取过
         List<UserCouponPO> userCouponPOS = userCouponMapper.receivedCoupon(userPO.getUserId(), couponId);
 

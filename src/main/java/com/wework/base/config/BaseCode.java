@@ -13,10 +13,9 @@ public class BaseCode {
 
 	public final static int TO_BE_USED = 10012001;// 待使用
 	public final static int USED = 10012002;// 已使用
-	public final static int EXPIRED = 10012003;// 已过期
 
-	public final static int  VALID = 10012004 ;// 有效
-	public final static int  INVALID = 10012005 ;// 无效
+	public final static int  VALID = 10012004 ;// 有效 未过期
+	public final static int  INVALID = 10012005 ;// 无效  已经过期
 
 	
 	public static enum NewsCategory {
