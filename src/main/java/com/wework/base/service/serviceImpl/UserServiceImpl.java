@@ -47,17 +47,27 @@ public class UserServiceImpl implements UserService {
     private static final Long USER_COMPANY = 0L; //个人
 
     @Override
-    public int addUserInfo(UserVO userVO) throws Exception{
-
+    public UserPO addUserInfo(String token,UserVO userVO) throws Exception{
+        int id = 0;
         UserPO userPO = new UserPO();
-        PropertyUtils.copyProperties(userPO,userVO);
-        
-        System.out.print("userPo:"+userPO);
+        try{
+            PropertyUtils.copyProperties(userPO,userVO);
 
-        // TODO  不够完善 应该校验一下用户id   接着校验更新是否成功
+            System.out.print("userPo:"+userPO);
 
-        int id = userMapper.updateUserInfo(userPO);
-        return id;
+            // TODO  不够完善 应该校验一下用户id   接着校验更新是否成功
+
+            id = userMapper.updateUserInfo(userPO);
+
+            // 更新redis
+            redisService.remove(token); // 删除redis
+            redisService.set(token,userPO,30000L); // 更新redis
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return userPO;
     }
 
     @Override
@@ -120,15 +130,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseJSON getUserInfo(String token) {
         BaseJSON baseJSON = new BaseJSON();
-        UserPO userPO = (UserPO) redisService.get(token);
 
-        if(userPO == null){
-            baseJSON.setFail("token 过期 请重新登陆！");
-            baseJSON.setCode(110);
-            return baseJSON;
+        try{
+            UserPO userPO = (UserPO) redisService.get(token);
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+
+            baseJSON.setResult(userPO);
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
         }
 
-        baseJSON.setResult(userPO);
         return baseJSON;
     }
 
@@ -136,45 +153,51 @@ public class UserServiceImpl implements UserService {
     public BaseJSON exitsInvitationCode(String token) {
         BaseJSON baseJSON =  new BaseJSON();
 
-        UserPO userPO = (UserPO) redisService.get(token);
+        try{
+            UserPO userPO = (UserPO) redisService.get(token);
 
-        if(userPO == null){
-            baseJSON.setFail("token 过期 请重新登陆！");
-            baseJSON.setCode(110);
-            return baseJSON;
-        }
-
-        System.out.println("getOpenid:"+userPO.getOpenid());
-        System.out.println("getUserId:"+userPO.getUserId());
-
-        List<UserPO> userList = userMapper.getUserInfoById(userPO.getUserId());
-
-        if(userList.size() - 0 == 0){
-            baseJSON.setFail("用户不存在，请重新登陆");
-            baseJSON.setCode(100); // 100 表示用户不存在
-            return baseJSON;
-        }else if(userList.size() - 1 == 0){
-            UserPO user = userList.get(0);
-            //  查看user的 parent 是否存在
-            if((user.getParentId() == null ? 0 : user.getParentId()) - 0 == 0){
-                baseJSON.setCode(2);
-                baseJSON.setMessage("邀请码不存在");
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
                 return baseJSON;
             }
 
-            List<UserPO> parentList = userMapper.getUserInfoById(user.getParentId());
+            System.out.println("getOpenid:"+userPO.getOpenid());
+            System.out.println("getUserId:"+userPO.getUserId());
 
-            if(parentList.size() - 0 == 0){
-                baseJSON.setFail("邀请码失效");
-                return  baseJSON;
+            List<UserPO> userList = userMapper.getUserInfoById(userPO.getUserId());
+
+            if(userList.size() - 0 == 0){
+                baseJSON.setFail("用户不存在，请重新登陆");
+                baseJSON.setCode(100); // 100 表示用户不存在
+                return baseJSON;
+            }else if(userList.size() - 1 == 0){
+                UserPO user = userList.get(0);
+                //  查看user的 parent 是否存在
+                if((user.getParentId() == null ? 0 : user.getParentId()) - 0 == 0){
+                    baseJSON.setCode(2);
+                    baseJSON.setMessage("邀请码不存在");
+                    return baseJSON;
+                }
+
+                List<UserPO> parentList = userMapper.getUserInfoById(user.getParentId());
+
+                if(parentList.size() - 0 == 0){
+                    baseJSON.setFail("邀请码失效");
+                    return  baseJSON;
+                }
+
+                baseJSON.setResult(parentList.get(0));
+
+                return baseJSON;
             }
 
-            baseJSON.setResult(parentList.get(0));
+            baseJSON.setFail("系统异常，请稍后再试");
 
-            return baseJSON;
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
         }
-
-        baseJSON.setFail("系统异常，请稍后再试");
 
         return baseJSON;
     }
@@ -182,46 +205,50 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseJSON createInvitationCode(String token) {
         BaseJSON baseJSON =  new BaseJSON();
+        try{
+            UserPO userPO = (UserPO) redisService.get(token);
 
-        UserPO userPO = (UserPO) redisService.get(token);
-
-        if(userPO == null){
-            baseJSON.setFail("token 过期 请重新登陆！");
-            baseJSON.setCode(110);
-            return baseJSON;
-        }
-
-        List<UserPO> userList = userMapper.getUserInfoById(userPO.getUserId());
-
-        if(userList.size() - 0 == 0){
-            baseJSON.setFail("用户不存在，请重新登陆");
-            baseJSON.setCode(100); // 100 表示用户不存在
-            return baseJSON;
-        }else if(userList.size() - 1 == 0){
-            UserPO user = userList.get(0);
-
-            System.out.println("验证码："+user.getInvitationCode().equals(""));
-            System.out.println("验证码："+user.getInvitationCode().length());
-            if(user.getInvitationCode() != null && !user.getInvitationCode().equals("")){
-                baseJSON.setFail("验证码已存在");
-                baseJSON.setCode(3); // 100 表示用户不存在
-                baseJSON.setResult(user.getInvitationCode());
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
                 return baseJSON;
             }
 
-            user.setInvitationCode(this.getCode(CODE_SIZE));
-            user.setUserType(USER_COMPANY);
-            userMapper.updateUserInfo(user);
+            List<UserPO> userList = userMapper.getUserInfoById(userPO.getUserId());
 
-            redisService.remove(token); // 删除redis
-            redisService.set(token,userList.get(0),30000L); // 更新redis
+            if(userList.size() - 0 == 0){
+                baseJSON.setFail("用户不存在，请重新登陆");
+                baseJSON.setCode(100); // 100 表示用户不存在
+                return baseJSON;
+            }else if(userList.size() - 1 == 0){
+                UserPO user = userList.get(0);
 
-            baseJSON.setResult(user.getInvitationCode());
+                System.out.println("验证码："+user.getInvitationCode().equals(""));
+                System.out.println("验证码："+user.getInvitationCode().length());
+                if(user.getInvitationCode() != null && !user.getInvitationCode().equals("")){
+                    baseJSON.setFail("验证码已存在");
+                    baseJSON.setCode(3); // 100 表示用户不存在
+                    baseJSON.setResult(user.getInvitationCode());
+                    return baseJSON;
+                }
 
-            return baseJSON;
+                user.setInvitationCode(this.getCode(CODE_SIZE));
+                user.setUserType(USER_COMPANY);
+                userMapper.updateUserInfo(user);
+
+                redisService.remove(token); // 删除redis
+                redisService.set(token,userList.get(0),30000L); // 更新redis
+
+                baseJSON.setResult(user.getInvitationCode());
+
+                return baseJSON;
+            }
+
+            baseJSON.setFail("系统异常，请稍后再试");
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
         }
-
-        baseJSON.setFail("系统异常，请稍后再试");
 
         return baseJSON;
     }
@@ -230,46 +257,83 @@ public class UserServiceImpl implements UserService {
     public BaseJSON fillInInvitationCode(String token, String invitationCode) {
 
         BaseJSON baseJSON =  new BaseJSON();
-        List<UserPO> parentList = userMapper.existInvitationCode(invitationCode); // 通过验证码获取公司信息
+        try{
+            List<UserPO> parentList = userMapper.existInvitationCode(invitationCode); // 通过验证码获取公司信息
 
-        UserPO userPO = (UserPO) redisService.get(token);
+            UserPO userPO = (UserPO) redisService.get(token);
 
-        if(userPO == null){
-            baseJSON.setFail("token 过期 请重新登陆！");
-            baseJSON.setCode(110);
-            return baseJSON;
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+
+            List<UserPO> userList = userMapper.getUserInfoById(userPO.getUserId());
+
+            if(userList.size() - 0 == 0){
+                baseJSON.setFail("用户不存在，请重新登陆");
+                baseJSON.setCode(100); // 100 表示用户不存在
+                return baseJSON;
+            }else if(userList.size() - 1 == 0){
+                UserPO user = userList.get(0);
+
+                UserPO parentPO = parentList.get(0);
+
+                user.setParentId(parentPO.getUserId());
+
+                System.out.println("parentPo："+parentPO.getUserId());
+                System.out.println("user："+user);
+
+                userMapper.updateUserInfo(user);
+
+                redisService.remove(token); // 删除redis
+                redisService.set(token,userList.get(0),30000L); // 更新redis
+
+                baseJSON.setResult(user);
+
+                return baseJSON;
+            }
+
+            baseJSON.setFail("系统异常，请稍后再试");
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
         }
 
-        List<UserPO> userList = userMapper.getUserInfoById(userPO.getUserId());
 
-        if(userList.size() - 0 == 0){
-            baseJSON.setFail("用户不存在，请重新登陆");
-            baseJSON.setCode(100); // 100 表示用户不存在
-            return baseJSON;
-        }else if(userList.size() - 1 == 0){
-            UserPO user = userList.get(0);
-
-            UserPO parentPO = parentList.get(0);
-
-            user.setParentId(parentPO.getUserId());
-
-            System.out.println("parentPo："+parentPO.getUserId());
-            System.out.println("user："+user);
-
-            userMapper.updateUserInfo(user);
-
-            redisService.remove(token); // 删除redis
-            redisService.set(token,userList.get(0),30000L); // 更新redis
-
-            baseJSON.setResult(user);
-
-            return baseJSON;
-        }
-
-        baseJSON.setFail("系统异常，请稍后再试");
 
         return baseJSON;
 
+    }
+
+    @Override
+    public BaseJSON unbind(String token) {
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+            UserPO userPO = (UserPO) redisService.get(token);
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+            userPO.setParentId(null);
+
+            userMapper.updateUserInfo(userPO);
+
+            redisService.remove(token); // 删除redis
+            redisService.set(token,userPO,30000L); // 更新redis
+
+            baseJSON.setResult(userPO);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试");
+        }
+
+
+        return baseJSON;
     }
 
     private String createToken(String openid,String session_key){

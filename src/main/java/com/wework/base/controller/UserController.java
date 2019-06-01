@@ -4,6 +4,7 @@ package com.wework.base.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wework.base.domain.base.BaseJSON;
+import com.wework.base.domain.po.UserPO;
 import com.wework.base.domain.vo.UserInfoVO;
 import com.wework.base.domain.vo.UserVO;
 import com.wework.base.service.UserService;
@@ -57,8 +58,8 @@ public class UserController {
     public BaseJSON saveUserInfo(@RequestParam("token") String token ,@RequestBody UserVO userVO) {
         BaseJSON baseJSON = new BaseJSON();
         try{
-            int id = userService.addUserInfo(userVO);
-            baseJSON.setResult(id);
+            UserPO userPO = userService.addUserInfo(token,userVO);
+            baseJSON.setResult(userPO);
         }catch (Exception e){
             e.printStackTrace();
             baseJSON.setFail();
@@ -97,5 +98,13 @@ public class UserController {
     @RequestMapping(value = "/fillInInvitationCode", method = RequestMethod.GET)
     public BaseJSON fillInInvitationCode(@Param("token") String token,@Param("invitationCode") String InvitationCode) {
         return userService.fillInInvitationCode(token,InvitationCode);
+    }
+
+    @ApiOperation("解除与公司的绑定")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
+    @RequestMapping(value = "/fillInInvitationCode", method = RequestMethod.POST)
+    public BaseJSON unbind(@Param("token") String token) {
+        return userService.unbind(token);
     }
 }

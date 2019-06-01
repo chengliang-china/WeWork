@@ -200,7 +200,7 @@ public class CouponServiceImpl implements CouponService {
         try{
 
             String rCode = this.createRcode();
-
+            couponMapper.updateAll();
             List<CouponPO> userCouponByUserId = couponMapper.findUserCouponByUserId(couponId);
 
             if(userCouponByUserId.size() != 1){

@@ -2,6 +2,7 @@ package com.wework.base.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wework.base.domain.base.BaseJSON;
+import com.wework.base.domain.po.UserPO;
 import com.wework.base.domain.vo.UserInfoVO;
 import com.wework.base.domain.vo.UserVO;
 
@@ -11,7 +12,7 @@ public interface UserService {
      * @param userVO 用户信息
      * @return 主键
      */
-    int addUserInfo (UserVO userVO) throws Exception;
+    UserPO addUserInfo (String token, UserVO userVO) throws Exception;
 
     /**
      *
@@ -51,4 +52,11 @@ public interface UserService {
      * @return
      */
     BaseJSON fillInInvitationCode(String token, String invitationCode);
+
+    /**
+     * 解除与公司的绑定
+     * @param token
+     * @return
+     */
+    BaseJSON unbind(String token);
 }
