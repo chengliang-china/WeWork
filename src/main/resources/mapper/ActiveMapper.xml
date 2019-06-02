@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wework.base.mapper.ActiveMapper">
+
+	<resultMap type="com.wework.base.domain.po.ActivePO" id="activeMap">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="phone" column="phone" jdbcType="VARCHAR" />
+		<result property="wechat_no" column="wechatNo" jdbcType="VARCHAR" />
+		<result property="mail" column="mail" jdbcType="VARCHAR" />
+		<result property="company" column="company" jdbcType="VARCHAR" />
+		<result property="position" column="position" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="DATE" />
+		<result column="is_deL" property="isDel" jdbcType="TINYINT" />
+
+	</resultMap>
+
+	<insert id="saveActiveInfo">
+		insert into active(
+			name,
+			phone,
+			wechat_no,
+			mail,
+			company,
+			position,
+			create_time,
+			is_del)
+			values(
+			#{po.name},
+			#{po.phone},
+			#{po.wechatNo},
+			#{po.mail},
+			#{po.company},
+			#{po.position},
+			now(),
+			0)
+	</insert>
+
+
+	<select id="findActiveList" resultMap="activeMap">
+		SELECT
+			A.id,
+			A.name,
+			A.phone,
+			A.wechat_no,
+			A.mail,
+			A.company,
+			A.position
+		FROM
+			active A
+		WHERE
+			A.is_del = 0
+	</select>
+
+</mapper>

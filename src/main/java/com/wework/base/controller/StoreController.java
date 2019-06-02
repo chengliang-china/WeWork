@@ -30,7 +30,7 @@ public class StoreController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "String", required = true, value = "经度", defaultValue = "116.40"),
-            @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "String", required = true, value = "维度", defaultValue = "39.90"),
+            @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "String", required = true, value = "纬度", defaultValue = "39.90"),
             @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "String", required = false, value = "门店类型", defaultValue = "")})
     @RequestMapping(value = "/findStoreList", method = RequestMethod.POST)
     public BaseJSON findStoreList(String longitude, String latitude,String storeType) {

@@ -19,17 +19,18 @@ public class BaseCode {
 
 	public final static int R_CODE_SIZE = 8; // 兑换码长度
 
-	
-	public static enum NewsCategory {
-		NEWS("新闻",1), SERVICE("服务",2);
+	public static enum StoreType {
+		STATION("工位",10013001),
+		METTING("会议室",10013002),
+		OFFICE("办公室",10013003),
+		SHOWHALL("路演厅",10013004);
 		
 		private String name;
 		private int code;
-		private NewsCategory(String name, int code) {  
+		private StoreType(String name, int code) {
 	        this.name = name;  
 	        this.code = code;  
-	    }  
-		
+	    }
 		public String getName() {
 			return this.name;
 		}
