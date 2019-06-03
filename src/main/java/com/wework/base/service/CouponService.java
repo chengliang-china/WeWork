@@ -59,4 +59,11 @@ public interface CouponService {
      * @return
      */
     BaseJSON getCoupon4RCode(String token, String rCode);
+
+    /**
+     * 获取未使用优惠卷数量
+     * @param token
+     * @return
+     */
+    BaseJSON getUnUsedCouponCount(String token);
 }

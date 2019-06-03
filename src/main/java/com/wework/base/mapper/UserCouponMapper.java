@@ -19,7 +19,7 @@ public interface UserCouponMapper {
     @Select("select * from user_coupon where user_id = #{userId} and is_del = "+ BaseCode.UNDEL)
     List<UserCouponPO> findUserCouponByUserId(@Param("userId") long userId);
 
-    @Select("select * from user_coupon where user_id = #{userId} and coupon_id = #{couponId} and is_del = "+ BaseCode.UNDEL)
+    @Select("select * from user_coupon uc left join coupon c on uc.coupon_id = c.coupon_id where uc.user_id = #{userId} and uc.coupon_id = #{couponId} and uc.is_del = "+ BaseCode.UNDEL+" and uc.status = " + BaseCode.TO_BE_USED + " and c.coupon_status = " + BaseCode.VALID)
     List<UserCouponPO> receivedCoupon(@Param("userId") long userId,@Param("couponId") long couponId);
 
     @Insert("insert into user_coupon(user_id,coupon_id,create_time,is_del,status) values(#{userId},#{couponId},#{createTime},#{isDel},#{status})")

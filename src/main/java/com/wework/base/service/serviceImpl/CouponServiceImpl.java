@@ -280,6 +280,32 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
+    @Override
+    public BaseJSON getUnUsedCouponCount(String token) {
+        BaseJSON baseJSON = new BaseJSON();
+
+        try{
+
+            UserPO userPO = (UserPO) redisService.get(token);
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+
+            List<UserCouponDetailDTO> unUsed = userCouponMapper.getUserCouponListForUnUsed(userPO.getUserId());
+
+            baseJSON.setResult(unUsed.size());
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+
+        return baseJSON;
+    }
+
     // 私有方法
 
     private CouponDetailVO getAllCoupon(UserPO userPO,String token){

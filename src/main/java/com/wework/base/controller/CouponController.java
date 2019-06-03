@@ -90,4 +90,13 @@ public class CouponController {
     public BaseJSON getUserCouponList(@RequestParam String token) {
         return couponService.getUserCouponList(token);
     }
+
+
+    @ApiOperation("获取未使用优惠卷数量")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
+    @RequestMapping(value = "/getUnUsedCouponCount", method = RequestMethod.POST)
+    public BaseJSON getUnUsedCouponCount(@RequestParam String token) {
+        return couponService.getUnUsedCouponCount(token);
+    }
 }

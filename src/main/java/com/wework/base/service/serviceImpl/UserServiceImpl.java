@@ -118,9 +118,7 @@ public class UserServiceImpl implements UserService {
             }
 
             redisService.set(token,userList.get(0),30000L);
-//            System.out.println("openid:"+openid);
-//            System.out.println("session_key:"+session_key);
-//            System.out.println("userVO:"+userPO);
+
             jsonObject.put("userInfo",userList.get(0));
             jsonObject.put("token",token);
 
