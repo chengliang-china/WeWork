@@ -24,7 +24,7 @@ public interface OrderMapper {
 
 	public List<OrderTablePO> getOrderList(@Param("userId")long userId);
 
-	public int checkUserUnfinishOrder(@Param("userId")long userId);
+	public int findOrderNumByStatus(@Param("userId")long userId,@Param("orderStatus")int orderStatus);
 
     int updateUseIntegral(@Param("userId")long userId, @Param("integral") BigDecimal integral);
 }

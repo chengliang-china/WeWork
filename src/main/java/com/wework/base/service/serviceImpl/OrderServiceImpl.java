@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int checkUserUnfinishOrder(long userId) {
-        return orderMapper.checkUserUnfinishOrder(userId);
+    public int findOrderNumByStatus(long userId,int orderStatus) {
+        return orderMapper.findOrderNumByStatus(userId,orderStatus);
     }
 }

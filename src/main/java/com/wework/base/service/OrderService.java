@@ -35,9 +35,10 @@ public interface OrderService {
      */
     public List<OrderDetailVO> findOrderList(long userId);
     /**
-     * 检查用户是否开单
+     * 根据状态查询用户订单数量
      * @param userId
      * @return
      */
-    public int checkUserUnfinishOrder(long userId);
+    public int findOrderNumByStatus(long userId, int orderStatus);
+
 }

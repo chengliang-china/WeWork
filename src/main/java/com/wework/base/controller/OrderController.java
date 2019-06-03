@@ -46,7 +46,7 @@ public class OrderController {
 
         BaseJSON baseJSON = new BaseJSON();
         //检测该用户是否存在未结算订单
-        int count = orderService.checkUserUnfinishOrder(userId);
+        int count = orderService.findOrderNumByStatus(userId,BaseCode.ORDER_OPENED);
         if(count>0){
             baseJSON.setCode(1);
             baseJSON.setResult("失败");
@@ -123,6 +123,18 @@ public class OrderController {
         BaseJSON baseJSON = new BaseJSON();
         List<OrderDetailVO> list = orderService.findOrderList(userId);
         baseJSON.setResult(list);
+        return baseJSON;
+    }
+
+    @ApiOperation("查询用户未评价订单数量")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "userId", dataType = "long", required = true, value = "用户标识", defaultValue = "5")})
+    @RequestMapping(value = "/searchUnEvaluateOrderNum", method = RequestMethod.POST)
+    public BaseJSON searchUnEvaluateOrderNum(String token,long userId) {
+        BaseJSON baseJSON = new BaseJSON();
+        int num  = orderService.findOrderNumByStatus(userId,BaseCode.ORDER_SETTLED);
+        baseJSON.setResult(num);
         return baseJSON;
     }
 }
