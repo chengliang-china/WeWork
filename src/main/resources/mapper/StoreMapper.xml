@@ -19,6 +19,7 @@
 		<result column="thumbnail_url" property="thumbnailUrl" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="DATE" />
 		<result column="is_deL" property="isDel" jdbcType="TINYINT" />
+		<result column="seat_num" property="seatNum" jdbcType="TINYINT" />
 	</resultMap>
 
 	<resultMap type="com.wework.base.domain.po.StoreServicePO" id="storeServiceMap">
@@ -41,7 +42,8 @@
 		A.open_end_time,
 		A.longitude,
 		A.latitude,
-		A.thumbnail_url
+		A.thumbnail_url,
+		A.seat_num
 		FROM store A
 		WHERE  A.is_del = 0
 		AND A.longitude = #{longitude}

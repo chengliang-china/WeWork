@@ -17,6 +17,15 @@ public class StorePO {
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String thumbnailUrl;
+    private  int seatNum;
+
+    public int getSeatNum() {
+        return seatNum;
+    }
+
+    public void setSeatNum(int seatNum) {
+        this.seatNum = seatNum;
+    }
 
     public long getStoreId() {
         return storeId;

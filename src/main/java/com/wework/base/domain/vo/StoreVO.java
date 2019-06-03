@@ -17,6 +17,15 @@ public class StoreVO {
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String thumbnailUrl;
+    private int seatIsEnough;
+
+    public int getSeatIsEnough() {
+        return seatIsEnough;
+    }
+
+    public void setSeatIsEnough(int seatIsEnough) {
+        this.seatIsEnough = seatIsEnough;
+    }
 
     public long getStoreId() {
         return storeId;
