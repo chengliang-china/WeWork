@@ -103,7 +103,7 @@ public class UserController {
     @ApiOperation("解除与公司的绑定")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
-    @RequestMapping(value = "/fillInInvitationCode", method = RequestMethod.POST)
+    @RequestMapping(value = "/unbind", method = RequestMethod.POST)
     public BaseJSON unbind(@Param("token") String token) {
         return userService.unbind(token);
     }
