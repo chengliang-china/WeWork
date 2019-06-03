@@ -97,6 +97,8 @@
 		FROM order_table
 		WHERE  is_del = 0
 		AND order_status = #{orderStatus}
+		<if test="userId != 0 and userId != ''">
 		AND user_id =#{userId}
+		</if>
 	</select>
 </mapper>
