@@ -1,5 +1,6 @@
 package com.wework.base.service;
 
+import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
@@ -18,4 +19,6 @@ public interface StoreService {
     public int saveStoreEvaluate(StoreEvaluatePO po);
 
     public StoreDetailVO findStoreDetail(long storeId);
+
+    public List<CityStoreNumPO> findCityStoreNum ();
 }

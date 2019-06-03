@@ -1,6 +1,7 @@
 package com.wework.base.controller;
 
 import com.wework.base.domain.base.BaseJSON;
+import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
@@ -74,6 +75,17 @@ public class StoreController {
             baseJSON.setResult("失败");
             baseJSON.setMessage("创建评价失败，请联系管理员！");
         }
+        return baseJSON;
+    }
+
+    @ApiOperation("查看城市所有门店数量")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
+    @RequestMapping(value = "/findCityStoreNum", method = RequestMethod.GET)
+    public BaseJSON findCityStoreNum() {
+        BaseJSON baseJSON = new BaseJSON();
+        List<CityStoreNumPO> records = storeService.findCityStoreNum();
+        baseJSON.setResult(records);
         return baseJSON;
     }
 }

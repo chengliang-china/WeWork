@@ -22,9 +22,14 @@
 	</resultMap>
 
 	<resultMap type="com.wework.base.domain.po.StoreServicePO" id="storeServiceMap">
-		<result property="id" column="id" jdbcType="BIGINT" />
-		<result property="store_id" column="storeId" jdbcType="BIGINT" />
-		<result property="service_name" column="serviceName" jdbcType="VARCHAR" />
+	<result property="id" column="id" jdbcType="BIGINT" />
+	<result property="store_id" column="storeId" jdbcType="BIGINT" />
+	<result property="service_name" column="serviceName" jdbcType="VARCHAR" />
+</resultMap>
+
+	<resultMap type="com.wework.base.domain.po.CityStoreNumPO" id="cityStoreMap">
+		<result property="num" column="num" jdbcType="BIGINT" />
+		<result property="city" column="city" jdbcType="VARCHAR" />
 	</resultMap>
 	<!-- 获取门店列表 -->
 	<select id="getStoreList" resultMap="storeMap">
@@ -70,6 +75,13 @@
 		AND A.store_id = #{storeId}
 	</select>
 
+	<select id="findStoreImage" resultType="String">
+		SELECT
+			A.image_url
+		FROM store_image A
+		WHERE  A.is_del = 0
+		AND A.store_id = #{storeId}
+	</select>
 	<select id="findEvaluate" resultType="com.wework.base.domain.po.StoreEvaluatePO">
 		SELECT
 			A.score,
@@ -101,4 +113,8 @@
 			now(),
 			0)
 	</insert>
+
+	<select id="findCityStoreNum" resultMap="cityStoreMap">
+		select count(*) num, city from store where is_del = 0 group by city;
+	</select>
 </mapper>

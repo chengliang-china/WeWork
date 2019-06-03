@@ -1,5 +1,6 @@
 package com.wework.base.service.serviceImpl;
 
+import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
 import com.wework.base.domain.vo.StoreDetailVO;
@@ -53,8 +54,10 @@ public class StoreServiceImpl implements StoreService {
 
         StoreDetailVO storeDetailVO = new StoreDetailVO();
         List<String> serviceList = storeMapper.findStoreService(storeId);
+        List<String> imageList = storeMapper.findStoreImage(storeId);
         StorePO storePO = storeMapper.findStoreDetail(storeId);
         storeDetailVO.setServiceList(serviceList);
+        storeDetailVO.setImageList(imageList);
         storeDetailVO.setStoreId(storePO.getStoreId());
         storeDetailVO.setStoreName(storePO.getStoreName());
         storeDetailVO.setStoreIntroduction(storePO.getStoreIntroduction());
@@ -64,6 +67,7 @@ public class StoreServiceImpl implements StoreService {
         storeDetailVO.setOpenStartTime(storePO.getOpenStartTime());
         storeDetailVO.setOpenEndTime(storePO.getOpenEndTime());
 
+        //获取最新评价
         StoreEvaluatePO storeEvaluatePO = storeMapper.findEvaluate(storeId);
         storeDetailVO.setScore(storeEvaluatePO.getScore());
         storeDetailVO.setDescription(storeEvaluatePO.getDescription());
@@ -71,5 +75,10 @@ public class StoreServiceImpl implements StoreService {
         storeDetailVO.setEvaluateTime(storeEvaluatePO.getEvaluateTime());
 
         return storeDetailVO;
+    }
+
+    @Override
+    public List<CityStoreNumPO> findCityStoreNum() {
+        return storeMapper.findCityStoreNum();
     }
 }

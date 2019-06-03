@@ -55,6 +55,16 @@ public class StoreDetailVO {
         this.evaluateTime = evaluateTime;
     }
 
+    private List<String> imageList;
+
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
+    }
+
     private List<String> serviceList;
 
     public List<String> getServiceList() {

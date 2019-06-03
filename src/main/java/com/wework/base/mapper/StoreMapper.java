@@ -1,5 +1,6 @@
 package com.wework.base.mapper;
 
+import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
 import com.wework.base.domain.po.StoreServicePO;
@@ -9,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 门店mapper
@@ -30,4 +32,8 @@ public interface StoreMapper {
 	public StorePO findStoreDetail(@Param("storeId") long storeId);
 
 	public List<String> findStoreService(@Param("storeId") long storeId);
+
+	public List<String> findStoreImage(@Param("storeId") long storeId);
+
+	public List<CityStoreNumPO> findCityStoreNum();
 }
