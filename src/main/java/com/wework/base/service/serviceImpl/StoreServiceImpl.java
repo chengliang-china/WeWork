@@ -83,11 +83,12 @@ public class StoreServiceImpl implements StoreService {
 
         //获取最新评价
         StoreEvaluatePO storeEvaluatePO = storeMapper.findEvaluate(storeId);
-        storeDetailVO.setScore(storeEvaluatePO.getScore());
-        storeDetailVO.setDescription(storeEvaluatePO.getDescription());
-        storeDetailVO.setEvaluateName(storeEvaluatePO.getEvaluateName());
-        storeDetailVO.setEvaluateTime(storeEvaluatePO.getEvaluateTime());
-
+        if(storeEvaluatePO != null){
+            storeDetailVO.setScore(storeEvaluatePO.getScore());
+            storeDetailVO.setDescription(storeEvaluatePO.getDescription());
+            storeDetailVO.setEvaluateName(storeEvaluatePO.getEvaluateName());
+            storeDetailVO.setEvaluateTime(storeEvaluatePO.getEvaluateTime());
+        }
         return storeDetailVO;
     }
 
