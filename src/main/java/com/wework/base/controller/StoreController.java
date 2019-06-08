@@ -88,4 +88,16 @@ public class StoreController {
         baseJSON.setResult(records);
         return baseJSON;
     }
+
+    @ApiOperation("选择城市查看门店")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "city", dataType = "String", required = true, value = "城市名", defaultValue = "北京市")})
+    @RequestMapping(value = "/findCityStore", method = RequestMethod.GET)
+    public BaseJSON findCityStore(String city) {
+        BaseJSON baseJSON = new BaseJSON();
+        List<StoreVO> storeList = storeService.findCityStore(city);
+        baseJSON.setResult(storeList);
+        return baseJSON;
+    }
 }

@@ -21,4 +21,6 @@ public interface StoreService {
     public StoreDetailVO findStoreDetail(long storeId);
 
     public List<CityStoreNumPO> findCityStoreNum ();
+
+    List<StoreVO> findCityStore(String city);
 }

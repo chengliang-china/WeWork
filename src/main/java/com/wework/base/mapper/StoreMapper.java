@@ -36,4 +36,6 @@ public interface StoreMapper {
 	public List<String> findStoreImage(@Param("storeId") long storeId);
 
 	public List<CityStoreNumPO> findCityStoreNum();
+
+	public List<StorePO> getStoreListByCity(@Param("city") String city);
 }

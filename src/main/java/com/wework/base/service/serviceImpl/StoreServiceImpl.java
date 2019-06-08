@@ -96,4 +96,34 @@ public class StoreServiceImpl implements StoreService {
     public List<CityStoreNumPO> findCityStoreNum() {
         return storeMapper.findCityStoreNum();
     }
+
+    @Override
+    public List<StoreVO> findCityStore(String city) {
+        List<StorePO> storePOlist = storeMapper.getStoreListByCity(city);
+        List<StoreVO> storeVOlist = new ArrayList<>();
+        if(storePOlist.size() >0){
+            for(StorePO storePo:storePOlist){
+                StoreVO storeVO = new StoreVO();
+                storeVO.setStoreId(storePo.getStoreId());
+                storeVO.setStoreName(storePo.getStoreName());
+                storeVO.setLatitude(storePo.getLatitude());
+                storeVO.setLongitude(storePo.getLongitude());
+                storeVO.setOpenStartTime(storePo.getOpenStartTime());
+                storeVO.setOpenEndTime(storePo.getOpenEndTime());
+                storeVO.setApplyFee(storePo.getApplyFee());
+                storeVO.setThumbnailUrl(storePo.getThumbnailUrl());
+
+                //查看已开订单数量，订单和工位一一对应
+                int num = orderMapper.findOrderNumByStatus(0, BaseCode.ORDER_OPENED);
+                int seatNum = storePo.getSeatNum();
+                if(seatNum - num < 10){//座位减去使用数量，等于未使用数量，查看座位是否充足
+                    storeVO.setSeatIsEnough(0);
+                }else{
+                    storeVO.setSeatIsEnough(1);
+                }
+                storeVOlist.add(storeVO);
+            }
+        }
+        return storeVOlist;
+    }
 }
