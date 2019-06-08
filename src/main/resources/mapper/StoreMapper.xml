@@ -69,7 +69,7 @@
 		AND A.city = #{city}
 		<if test="storeType != null and storeType != ''">
 			AND A.store_type =#{storeType}
-		</if>``
+		</if>
 	</select>
 	<!-- 获取门店明细 -->
 	<select id="findStoreDetail" resultMap="storeMap">
