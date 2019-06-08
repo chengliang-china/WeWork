@@ -37,5 +37,5 @@ public interface StoreMapper {
 
 	public List<CityStoreNumPO> findCityStoreNum();
 
-	public List<StorePO> getStoreListByCity(@Param("city") String city);
+	public List<StorePO> getStoreListByCity(@Param("city") String city,@Param("storeType") String storeType);
 }

@@ -22,5 +22,5 @@ public interface StoreService {
 
     public List<CityStoreNumPO> findCityStoreNum ();
 
-    List<StoreVO> findCityStore(String city);
+    List<StoreVO> findCityStore(String city,String storeType);
 }

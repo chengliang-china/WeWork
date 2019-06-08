@@ -67,6 +67,9 @@
 		FROM store A
 		WHERE  A.is_del = 0
 		AND A.city = #{city}
+		<if test="storeType != null and storeType != ''">
+			AND A.store_type =#{storeType}
+		</if>``
 	</select>
 	<!-- 获取门店明细 -->
 	<select id="findStoreDetail" resultMap="storeMap">

@@ -98,8 +98,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<StoreVO> findCityStore(String city) {
-        List<StorePO> storePOlist = storeMapper.getStoreListByCity(city);
+    public List<StoreVO> findCityStore(String city,String storeType) {
+        List<StorePO> storePOlist = storeMapper.getStoreListByCity(city,storeType);
         List<StoreVO> storeVOlist = new ArrayList<>();
         if(storePOlist.size() >0){
             for(StorePO storePo:storePOlist){
