@@ -59,4 +59,6 @@ public interface UserService {
      * @return
      */
     BaseJSON unbind(String token);
+
+    UserPO addUserInfoNew(String token, UserVO userVO)throws Exception;
 }

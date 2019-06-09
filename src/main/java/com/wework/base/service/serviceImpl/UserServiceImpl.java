@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
         int id = 0;
         UserPO userPO = new UserPO();
         try{
+            System.out.print("userVO:"+userVO);
             PropertyUtils.copyProperties(userPO,userVO);
 
             System.out.print("userPo:"+userPO);
@@ -59,6 +60,38 @@ public class UserServiceImpl implements UserService {
 
             id = userMapper.updateUserInfo(userPO);
 
+            // 更新redis
+            redisService.remove(token); // 删除redis
+            redisService.set(token,userPO,30000L); // 更新redis
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return userPO;
+    }
+
+    @Override
+    public UserPO addUserInfoNew(String token,UserVO userVO) throws Exception{
+        int id = 0;
+        UserPO userPO = new UserPO();
+        try{
+            System.out.print("userVO:"+userVO);
+            PropertyUtils.copyProperties(userPO,userVO);
+
+            System.out.print("userPo:"+userPO);
+
+            // TODO  不够完善 应该校验一下用户id   接着校验更新是否成功
+
+            id = userMapper.updateUserInfoNew(userPO);
+
+            List<UserPO> userById = userMapper.findUserByUserId(userPO);
+
+            if(userById.size() != 1){
+                throw new Exception("系统异常");
+            }
+
+            userPO = userById.get(0);
             // 更新redis
             redisService.remove(token); // 删除redis
             redisService.set(token,userPO,30000L); // 更新redis

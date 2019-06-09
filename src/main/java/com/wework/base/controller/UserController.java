@@ -51,14 +51,47 @@ public class UserController {
         return baseJSON;
     }
 
-    @ApiOperation("更新用户信息")
+//    @ApiOperation("更新用户信息")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),})
+//    @RequestMapping(value = "/save/userInfo", method = RequestMethod.POST)
+//    public BaseJSON saveUserInfo(@RequestParam("token") String token ,@RequestBody UserVO userVO) {
+//        BaseJSON baseJSON = new BaseJSON();
+//
+//        try{
+//            UserPO userPO = userService.addUserInfo(token,userVO);
+//            baseJSON.setResult(userPO);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            baseJSON.setFail();
+//        }
+//        return baseJSON;
+//    }
+
+
+    @ApiOperation("更新用户信息-新的")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),})
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "userId", dataType = "Long", required = true, value = "userId", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "userName", dataType = "String", required = true, value = "userName", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "idNumber", dataType = "String", required = true, value = "idNumber", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "gender", dataType = "Long", required = true, value = "gender", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "birthday", dataType = "String", required = true, value = "birthday", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "education", dataType = "String", required = true, value = "education", defaultValue = "")})
     @RequestMapping(value = "/save/userInfo", method = RequestMethod.POST)
-    public BaseJSON saveUserInfo(@RequestParam("token") String token ,@RequestBody UserVO userVO) {
+    public BaseJSON saveUserInfoNew(@RequestParam("token") String token ,@RequestParam("userId") Long userId ,@RequestParam("userName") String userName ,@RequestParam("idNumber") String idNumber
+            ,@RequestParam("gender") Long gender ,@RequestParam("birthday") String birthday ,@RequestParam("education") String education ) {
         BaseJSON baseJSON = new BaseJSON();
+        UserVO userVO = new UserVO();
+        userVO.setUserId(userId);
+        userVO.setUserName(userName);
+        userVO.setIdNumber(idNumber);
+        userVO.setGender(gender);
+        userVO.setBirthday(birthday);
+        userVO.setEducation(education);
+
         try{
-            UserPO userPO = userService.addUserInfo(token,userVO);
+            UserPO userPO = userService.addUserInfoNew(token,userVO);
             baseJSON.setResult(userPO);
         }catch (Exception e){
             e.printStackTrace();

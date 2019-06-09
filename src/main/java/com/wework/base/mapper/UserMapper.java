@@ -34,6 +34,9 @@ public interface UserMapper {
     public List<UserPO> findUserById(UserPO userPO);
 
     @Select("select * from user where user_id = #{userId}")
+    public List<UserPO> findUserByUserId(UserPO userPO);
+
+    @Select("select * from user where user_id = #{userId}")
     public List<UserPO> getUserInfoById(@Param("userId") Long userId);
 
     @Select("select * from user where invitation_code = #{invitation_code}")
@@ -47,4 +50,9 @@ public interface UserMapper {
             "nick_name = #{nickName},avatar_url = #{avatarUrl}" +
             " where user_id = #{userId}" })
     int updateUserInfo(UserPO user);
+
+    @Update({ "update user set user_name = #{userName},id_number = #{idNumber}," +
+            "gender = #{gender},birthday = #{birthday},education = #{education}"+
+            " where user_id = #{userId}" })
+    int updateUserInfoNew(UserPO userPO);
 }
