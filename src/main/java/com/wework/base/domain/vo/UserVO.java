@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@ApiModel(value="user", description="用户对象")
+@ApiModel(value="userVO", description="用户对象")
 public class UserVO implements Serializable {
 
     private Long userId;
