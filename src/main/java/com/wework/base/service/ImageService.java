@@ -14,5 +14,5 @@ public interface ImageService {
      * @param userId
      * @return
      */
-    public String uploadImage(MultipartFile file, long userId) throws Exception;
+    public String uploadImage(MultipartFile file) throws Exception;
 }

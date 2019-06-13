@@ -32,7 +32,7 @@ public class ImageController {
         value.put("errorCode", 0);
         value.put("errorMsg", "");
         try {
-            String head = imageService.uploadImage(file, 4);//此处是调用上传服务接口，4是需要更新的userId 测试数据。
+            String head = imageService.uploadImage(file);//此处是调用上传服务接口
             value.put("data", head);
         } catch (Exception e) {
             e.printStackTrace();

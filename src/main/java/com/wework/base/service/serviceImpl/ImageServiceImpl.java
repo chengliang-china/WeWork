@@ -30,7 +30,7 @@ public class ImageServiceImpl implements ImageService {
     private OSSClientUtil ossClient;
 
     @Override
-    public String uploadImage(MultipartFile file, long userId) throws Exception {
+    public String uploadImage(MultipartFile file) throws Exception {
         if (file == null || file.getSize() <= 0) {
             try {
                 throw new Exception("图片不能为空");
@@ -40,7 +40,6 @@ public class ImageServiceImpl implements ImageService {
         }
         String name = ossClient.uploadImg2Oss(file);
         String imgUrl = ossClient.getImgUrl(name);
-        //userDao.updateHead(userId, imgUrl);//只是本地上传使用的
         return imgUrl;
     }
 }

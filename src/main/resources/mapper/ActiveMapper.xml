@@ -7,19 +7,20 @@
 
 	<resultMap type="com.wework.base.domain.po.ActivePO" id="activeMap">
 		<result property="id" column="id" jdbcType="BIGINT" />
-		<result property="name" column="name" jdbcType="VARCHAR" />
-		<result property="phone" column="phone" jdbcType="VARCHAR" />
-		<result property="wechat_no" column="wechatNo" jdbcType="VARCHAR" />
-		<result property="mail" column="mail" jdbcType="VARCHAR" />
-		<result property="company" column="company" jdbcType="VARCHAR" />
-		<result property="position" column="position" jdbcType="VARCHAR" />
+		<result property="active_name" column="activeName" jdbcType="VARCHAR" />
+		<result property="active_status" column="activeStatus" jdbcType="VARCHAR" />
+		<result property="active_addr" column="activeAddr" jdbcType="VARCHAR" />
+		<result property="active_time" column="activeTime" jdbcType="TIMESTAMP" />
+		<result property="active_introduction" column="activeIntroduction" jdbcType="VARCHAR" />
+		<result property="active_url" column="activeUrl" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="DATE" />
 		<result column="is_deL" property="isDel" jdbcType="TINYINT" />
-
 	</resultMap>
 
 	<insert id="saveActiveInfo">
-		insert into active(
+		insert into active_user(
+			user_id,
+			active_id,
 			name,
 			phone,
 			wechat_no,
@@ -29,6 +30,8 @@
 			create_time,
 			is_del)
 			values(
+			#{po.userId},
+			#{po.activeId},
 			#{po.name},
 			#{po.phone},
 			#{po.wechatNo},
@@ -40,19 +43,58 @@
 	</insert>
 
 
-	<select id="findActiveList" resultMap="activeMap">
+	<select id="findActiveByStatus" resultMap="activeMap">
 		SELECT
 			A.id,
-			A.name,
-			A.phone,
-			A.wechat_no,
-			A.mail,
-			A.company,
-			A.position
+			A.active_name,
+			A.active_status,
+			A.active_addr,
+			A.active_time,
+			A.active_introduction,
+			A.active_url
 		FROM
 			active A
 		WHERE
 			A.is_del = 0
+		AND
+			A.active_status = #{activeStatus}
 	</select>
 
+	<select id="findUserIsJoinActive" resultType="INTEGER" >
+		SELECT
+			count(*)
+		FROM
+			active_user
+		WHERE
+			is_del = 0
+		AND
+			active_id = #{activeId}
+		AND
+			user_id = #{userId}
+	</select>
+
+	<insert id="saveActive">
+		insert into active(
+			active_name,
+			active_status,
+			active_addr,
+			active_time,
+			active_introduction,
+			active_url,
+			create_time,
+			is_del)
+			values(
+			#{po.activeName},
+			#{po.activeStatus},
+			#{po.activeAddr},
+			#{po.activeTime},
+			#{po.activeIntroduction},
+			#{po.activeUrl},
+			now(),
+			0)
+	</insert>
+
+	<update id="updateActive">
+		update active set active_status = 10013002 where active_status = 10013001
+	</update>
 </mapper>

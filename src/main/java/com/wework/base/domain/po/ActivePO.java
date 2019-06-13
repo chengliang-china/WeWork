@@ -4,14 +4,20 @@ import java.util.Date;
 
 public class ActivePO {
     private long id;
-    private String name;
-    private String phone;
-    private String wechatNo;
-    private String mail;
-    private String company;
-    private String position;
-    private int isDel;
-    private Date createTime;
+    private String activeName;
+    private int activeStatus;
+    private String activeAddr;
+    private Date activeTime;
+    private String activeIntroduction;
+    private String activeUrl;
+
+    public String getActiveUrl() {
+        return activeUrl;
+    }
+
+    public void setActiveUrl(String activeUrl) {
+        this.activeUrl = activeUrl;
+    }
 
     public long getId() {
         return id;
@@ -21,67 +27,44 @@ public class ActivePO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getActiveName() {
+        return activeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setActiveName(String activeName) {
+        this.activeName = activeName;
     }
 
-    public String getPhone() {
-        return phone;
+    public int getActiveStatus() {
+        return activeStatus;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setActiveStatus(int activeStatus) {
+        this.activeStatus = activeStatus;
     }
 
-    public String getWechatNo() {
-        return wechatNo;
+    public String getActiveAddr() {
+        return activeAddr;
     }
 
-    public void setWechatNo(String wechatNo) {
-        this.wechatNo = wechatNo;
+    public void setActiveAddr(String activeAddr) {
+        this.activeAddr = activeAddr;
     }
 
-    public String getMail() {
-        return mail;
+    public Date getActiveTime() {
+        return activeTime;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setActiveTime(Date activeTime) {
+        this.activeTime = activeTime;
     }
 
-    public String getCompany() {
-        return company;
+    public String getActiveIntroduction() {
+        return activeIntroduction;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setActiveIntroduction(String activeIntroduction) {
+        this.activeIntroduction = activeIntroduction;
     }
 
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public int getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(int isDel) {
-        this.isDel = isDel;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 }

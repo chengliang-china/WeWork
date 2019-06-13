@@ -65,7 +65,7 @@
 		<if test="po.couponId != null and po.couponId != ''">
 			coupon_id =#{po.couponId},
 		</if>
-			is_del =0,
+			is_del =0
 		where
 			order_id = #{po.orderId}
 	</update>

@@ -17,6 +17,9 @@ public class BaseCode {
 	public final static int  VALID = 10012004 ;// 有效 未过期
 	public final static int  INVALID = 10012005 ;// 无效  已经过期
 
+	public final static int  PROCESSING = 10013001 ;// 进行中
+		public final static int  OVER = 10013002 ;// 已结束
+
 	public final static int R_CODE_SIZE = 8; // 兑换码长度
 
 	public static enum StoreType {

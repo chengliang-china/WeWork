@@ -1,6 +1,7 @@
 package com.wework.base.mapper;
 
 import com.wework.base.domain.po.ActivePO;
+import com.wework.base.domain.po.ActiveUserPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,5 +19,13 @@ public interface ActiveMapper {
 
 	public List<ActivePO> findActiveList();
 
-	public int saveActiveInfo(@Param("po") ActivePO activePo);
+	public List<ActivePO> findActiveByStatus(@Param("activeStatus") int activeStatus);
+
+	public int saveActiveInfo(@Param("po") ActiveUserPO activeUserPo);
+
+	public int findUserIsJoinActive(@Param("userId")long userId, @Param("activeId")long activeId);
+
+	public int saveActive(@Param("po") ActivePO activePo);
+
+	public void updateActive();
 }
