@@ -23,6 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -135,6 +136,47 @@ public class OrderController {
         BaseJSON baseJSON = new BaseJSON();
         int num  = orderService.findOrderNumByStatus(userId,BaseCode.ORDER_SETTLED);
         baseJSON.setResult(num);
+        return baseJSON;
+    }
+
+    @ApiOperation("结算订单接口")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "useStartTime", dataType = "String", required = true, value = "开始使用时间", defaultValue = "2019-06-16 10:08:45"),
+            @ApiImplicitParam(paramType = "query", name = "useEndTime", dataType = "String", required = true, value = "结束使用时间", defaultValue = "2019-06-16 15:08:55"),
+            @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "单价/小时为单位", defaultValue = "9.9")})
+    @RequestMapping(value = "/settlementOrder", method = RequestMethod.POST)
+    public BaseJSON settlementOrder(String useStartTime,String useEndTime,BigDecimal applyFee) {
+        BaseJSON baseJSON = new BaseJSON();
+        long nd = 1000 * 24 * 60 * 60;
+        long nh = 1000 * 60 * 60;
+        long nm = 1000 * 60;
+        //价格计算
+        try {
+            Date useStart = DateUtils.stringToDateTime(useStartTime);
+            Date useEnd = DateUtils.stringToDateTime(useEndTime);
+
+            long diff = useEnd.getTime() - useStart.getTime();
+            // 计算差多少小时
+            long hour = diff % nd / nh;
+            // 计算差多少分钟
+            long min = diff % nd % nh / nm;
+
+            if(min<=5&&hour==0) {
+                baseJSON.setResult(0);
+            }else{
+                if(min>0){
+                    BigDecimal fee = applyFee.multiply(new BigDecimal(hour+1));
+                    baseJSON.setResult(fee);
+                }else{
+                    BigDecimal fee = applyFee.multiply(new BigDecimal(hour));
+                    baseJSON.setResult(fee);
+                }
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return baseJSON;
     }
 }

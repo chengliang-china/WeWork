@@ -1,6 +1,7 @@
 package com.wework.base.domain.vo;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Date;
 
 public class StoreVO {
@@ -9,8 +10,8 @@ public class StoreVO {
     private BigDecimal applyFee;
     private String storeIntroduction;
     private String arrivalWay;
-    private Date openStartTime;
-    private Date openEndTime;
+    private Time openStartTime;
+    private Time openEndTime;
     private long couponId;
     private long createTime;
     private long isDel;
@@ -71,15 +72,15 @@ public class StoreVO {
         return openStartTime;
     }
 
-    public void setOpenStartTime(Date openStartTime) {
+    public void setOpenStartTime(Time openStartTime) {
         this.openStartTime = openStartTime;
     }
 
-    public Date getOpenEndTime() {
+    public Time getOpenEndTime() {
         return openEndTime;
     }
 
-    public void setOpenEndTime(Date openEndTime) {
+    public void setOpenEndTime(Time openEndTime) {
         this.openEndTime = openEndTime;
     }
 

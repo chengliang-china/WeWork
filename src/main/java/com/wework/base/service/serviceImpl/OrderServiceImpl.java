@@ -73,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
             vo.setStoreNm(storePO.getStoreName());
             vo.setLatitude(storePO.getLatitude());
             vo.setLongitude(storePO.getLongitude());
+            vo.setApplyFee(storePO.getApplyFee());
             vo.setOrderId(po.getOrderId());
             vo.setStoreId(po.getStoreId());
             vo.setUseHours(po.getUseHours());

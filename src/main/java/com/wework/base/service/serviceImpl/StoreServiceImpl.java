@@ -76,6 +76,7 @@ public class StoreServiceImpl implements StoreService {
         storeDetailVO.setStoreName(storePO.getStoreName());
         storeDetailVO.setStoreIntroduction(storePO.getStoreIntroduction());
         storeDetailVO.setApplyFee(storePO.getApplyFee());
+        storeDetailVO.setArrivalWay(storePO.getArrivalWay());
         storeDetailVO.setLatitude(storePO.getLatitude());
         storeDetailVO.setLongitude(storePO.getLongitude());
         storeDetailVO.setOpenStartTime(storePO.getOpenStartTime());

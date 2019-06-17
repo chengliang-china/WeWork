@@ -11,8 +11,8 @@
 		<result property="apply_fee" column="applyFee" jdbcType="DECIMAL" />
 		<result property="store_introduction" column="storeIntroduction" jdbcType="VARCHAR" />
 		<result property="arrival_way" column="arrivalWay" jdbcType="VARCHAR" />
-		<result property="open_start_time" column="openStartTime" jdbcType="TIME" />
-		<result property="open_end_time" column="openEndTime" jdbcType="TIME" />
+		<result property="open_start_time" column="openStartTime" jdbcType="TIMESTAMP" />
+		<result property="open_end_time" column="openEndTime" jdbcType="TIMESTAMP" />
 		<result property="coupon_id" column="couponId" jdbcType="BIGINT" />
 		<result property="longitude" column="longitude" jdbcType="DECIMAL" />
 		<result property="latitude" column="latitude" jdbcType="DECIMAL" />
@@ -77,6 +77,7 @@
 		A.store_id,
 		A.store_name,
 		A.apply_fee,
+		A.arrival_way,
 		A.store_introduction,
 		A.open_start_time,
 		A.open_end_time,
