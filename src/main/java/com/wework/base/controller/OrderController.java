@@ -15,13 +15,22 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -35,23 +44,63 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    public static final String url = "http://www.papershanghai.com:8088/api/door/remoteOpenById";
+
     @Autowired
     private RedisService redisService;
+
+    @ApiOperation("扫码接口")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "doorId", dataType = "long", required = true, value = "门标识", defaultValue = "8")})
+    @RequestMapping(value = "/scanCode", method = RequestMethod.GET)
+    public String scanCode(long doorId) {
+        String response = null;
+        try {
+            // 创建一个URL对象
+            URL targetUrl = new URL(url);
+            // 从URL对象中获得一个连接对象
+            HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
+            // 设置请求方式 注意这里的POST或者GET必须大写
+            conn.setRequestMethod("POST");
+            // 设置POST请求是有请求体的
+            conn.setDoOutput(true);
+            // 拼接发送的短信内容
+            StringBuilder params = new StringBuilder(100)
+                    .append("doorId=").append(8)
+                    .append("&interval=").append(5)
+                    .append("&access_token=").append("test");
+
+            // 写入参数
+            conn.getOutputStream().write(params.toString().getBytes());
+            // 读入响应
+            response = StreamUtils.copyToString(
+                    conn.getInputStream(), Charset.forName("UTF-8"));
+
+            //baseJSON.setResult(response);
+        } catch (ProtocolException | MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return response;
+
+    }
     @ApiOperation("扫码生成订单")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "long", required = true, value = "门店标识", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "userId", dataType = "long", required = true, value = "用户标识", defaultValue = "5")})
-    @RequestMapping(value = "/scanCodeCreateOrder", method = RequestMethod.POST)
-    public BaseJSON scanCodeCreateOrder(long storeId, long userId) {
+    @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
+    public BaseJSON createOrder(long storeId, long userId)  {
 
         BaseJSON baseJSON = new BaseJSON();
         //检测该用户是否存在未结算订单
         int count = orderService.findOrderNumByStatus(userId,BaseCode.ORDER_OPENED);
         if(count>0){
-            baseJSON.setCode(1);
-            baseJSON.setResult("失败");
-            baseJSON.setMessage("用户存在未结算订单，请先结算上一次订单！");
+            baseJSON.setMessage("门已打开，用户存在未结算订单，请先结算上一次订单！");
             return baseJSON;
         }
         //生成订单
@@ -62,6 +111,7 @@ public class OrderController {
             baseJSON.setMessage("创建订单失败，请联系管理员！");
         }
         return baseJSON;
+
     }
 
     @ApiOperation("删除订单")

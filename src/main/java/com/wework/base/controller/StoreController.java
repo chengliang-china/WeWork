@@ -1,5 +1,5 @@
 package com.wework.base.controller;
-
+;
 import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
@@ -10,13 +10,24 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +36,8 @@ import java.util.List;
 @RequestMapping("/store")
 @Api(tags = { "门店模块" })
 public class StoreController {
+    public static final String url = "http://apis.haoservice.com/lifeservice/parking/getparking";
+    public static final String key = "9bf345fc7b5c43e3b71d5ef7c276f030";
     @Autowired
     StoreService storeService;
     @ApiOperation("查找门店")
@@ -100,5 +113,41 @@ public class StoreController {
         List<StoreVO> storeList = storeService.findCityStore(city,storeType);
         baseJSON.setResult(storeList);
         return baseJSON;
+    }
+
+    @ApiOperation("获取附近停车场")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "location", dataType = "String", required = true, value = "location", defaultValue = "116.422396,40.039667")})
+    @RequestMapping(value = "/getNearbyParking", method = RequestMethod.GET)
+    public JSONObject getNearbyParking(String location) {
+        JSONObject json = null;
+        try {
+            // 创建一个URL对象
+            URL targetUrl = new URL(url);
+            // 从URL对象中获得一个连接对象
+            HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
+            // 设置请求方式 注意这里的POST或者GET必须大写
+            conn.setRequestMethod("POST");
+            // 设置POST请求是有请求体的
+            conn.setDoOutput(true);
+            // 拼接发送的短信内容
+            StringBuilder params = new StringBuilder(100)
+                    .append("location=").append(location)
+                    .append("&key=").append(key);
+            // 写入参数
+            conn.getOutputStream().write(params.toString().getBytes());
+            // 读入响应
+            String response = StreamUtils.copyToString(
+                    conn.getInputStream(), Charset.forName("UTF-8"));
+            json = JSONObject.fromObject(response);
+        } catch (ProtocolException | MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return json;
     }
 }

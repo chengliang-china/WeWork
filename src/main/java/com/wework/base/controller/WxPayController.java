@@ -25,13 +25,11 @@ public class WxPayController {
     @ApiOperation("统一下单")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "", dataType = "String", required = true, value = "", defaultValue = "")})
+            @ApiImplicitParam(paramType = "query", name = "outTradeNo", dataType = "String", required = true, value = "outTradeNo", defaultValue = "")})
     @RequestMapping(value = "/unifiedOrder", method = RequestMethod.GET)
-    public void unifiedOrder(@Param("token") String token) throws Exception {
+    public void unifiedOrder(@Param("token") String token,@Param("outTradeNo") String outTradeNo) throws Exception {
         MyWxPayConfig config = new MyWxPayConfig();
         WXPay wxpay = new WXPay(config, WXPayConstants.SignType.HMACSHA256);
-
-
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", "腾讯充值中心-QQ会员充值");
         data.put("out_trade_no", "2016090910595900000012");
