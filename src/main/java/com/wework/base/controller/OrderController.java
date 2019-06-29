@@ -45,6 +45,7 @@ public class OrderController {
     private OrderService orderService;
 
     public static final String url = "http://www.papershanghai.com:8088/api/door/remoteOpenById";
+    public static final String key = "RTg5RDU4QzA2Qjg4OTA5NkU2RDkyQz";
 
     @Autowired
     private RedisService redisService;
@@ -69,7 +70,7 @@ public class OrderController {
             StringBuilder params = new StringBuilder(100)
                     .append("doorId=").append(8)
                     .append("&interval=").append(5)
-                    .append("&access_token=").append("test");
+                    .append("&access_token=").append(key);
 
             // 写入参数
             conn.getOutputStream().write(params.toString().getBytes());
@@ -137,10 +138,11 @@ public class OrderController {
             @ApiImplicitParam(paramType = "query", name = "orderId", dataType = "long", required = true, value = "订单id", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "useEndTime", dataType = "String", required = true, value = "结束时间", defaultValue = "2019-10-22 10:08:00"),
             @ApiImplicitParam(paramType = "query", name = "useHours", dataType = "BigDecimal", required = true, value = "使用时长", defaultValue = "5"),
+            @ApiImplicitParam(paramType = "query", name = "couponId", dataType = "long", required = false, value = "优惠券id", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "支付金额", defaultValue = "5"),
             @ApiImplicitParam(paramType = "query", name = "orderStatus", dataType = "int", required = true, value = "订单状态", defaultValue = "10011002")})
     @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
-    public BaseJSON updateOrder(String token,long orderId, String useEndTime, BigDecimal useHours, BigDecimal applyFee,int orderStatus) {
+    public BaseJSON updateOrder(String token,long orderId, String useEndTime, BigDecimal useHours,Long couponId, BigDecimal applyFee,int orderStatus) {
 
         BaseJSON baseJSON = new BaseJSON();
         UserPO userPO = (UserPO) redisService.get(token);
@@ -150,6 +152,9 @@ public class OrderController {
         orderVo.setUseHours(useHours);
         orderVo.setOrderStatus(orderStatus);
         orderVo.setApplyFee(applyFee);
+        if(couponId !=null&&couponId !=0){
+            orderVo.setCouponId(couponId);
+        }
         try {
             orderVo.setUseEndTime(DateUtils.stringToDateTime(useEndTime));
         } catch (ParseException e) {
@@ -222,7 +227,6 @@ public class OrderController {
                     BigDecimal fee = applyFee.multiply(new BigDecimal(hour));
                     baseJSON.setResult(fee);
                 }
-
             }
         } catch (ParseException e) {
             e.printStackTrace();

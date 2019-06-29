@@ -2,6 +2,7 @@ package com.wework.base.mapper;
 
 import com.wework.base.domain.po.OrderTablePO;
 import com.wework.base.domain.po.StorePO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -27,4 +28,5 @@ public interface OrderMapper {
 	public int findOrderNumByStatus(@Param("userId")long userId,@Param("orderStatus")int orderStatus);
 
     int updateUseIntegral(@Param("userId")long userId, @Param("integral") BigDecimal integral);
+
 }

@@ -5,6 +5,7 @@ import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
 import com.wework.base.domain.po.StoreServicePO;
 import com.wework.base.domain.vo.StoreDetailVO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -25,7 +26,7 @@ public interface StoreMapper {
 	 */
 	public List<StorePO> getStoreList(@Param("longitude") String longitude, @Param("latitude") String latitude, @Param("storeType") String storeType);
 
-	public int saveStoreEvaluate(@Param("po")StoreEvaluatePO po);
+	public long saveStoreEvaluate(@Param("po")StoreEvaluatePO po);
 
 	public StoreEvaluatePO findEvaluate(@Param("storeId") long storeId);
 
@@ -38,4 +39,7 @@ public interface StoreMapper {
 	public List<CityStoreNumPO> findCityStoreNum();
 
 	public List<StorePO> getStoreListByCity(@Param("city") String city,@Param("storeType") String storeType);
+
+	@Insert("insert into store_evaluate_image (evaluate_id,image_url,create_time,is_del) values(#{evaluateId},#{url},now(),0)")
+	void saveStoreEvaluateUrl(@Param("evaluateId")long evaluateId, @Param("url")String url);
 }

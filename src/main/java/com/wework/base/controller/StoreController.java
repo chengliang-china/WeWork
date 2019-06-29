@@ -1,5 +1,6 @@
 package com.wework.base.controller;
 ;
+import com.alibaba.fastjson.JSON;
 import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
@@ -12,22 +13,16 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,24 +65,38 @@ public class StoreController {
     @ApiOperation("评价门店")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "userNm", dataType = "long", required = true, value = "用户名", defaultValue = "1"),
-            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "long", required = true, value = "门店id", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "userNm", dataType = "Sting", required = true, value = "用户名", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "score", dataType = "BigDecimal", required = false, value = "评分", defaultValue = "4.5"),
-            @ApiImplicitParam(paramType = "query", name = "description", dataType = "String", required = false, value = "评价内容", defaultValue = "未添加任何评价内容"),})
+            @ApiImplicitParam(paramType = "query", name = "description", dataType = "String", required = false, value = "评价内容", defaultValue = "未添加任何评价内容"),
+            @ApiImplicitParam(paramType = "body", name = "listUrl", dataType = "String", required = false, value = "图片列表", defaultValue = "")})
     @RequestMapping(value = "/saveStoreEvaluate", method = RequestMethod.POST)
-    public BaseJSON saveStoreEvaluate(String token, String userNm, long storeId, BigDecimal score, String description) {
+    public BaseJSON saveStoreEvaluate(String token, String userNm, Long storeId, BigDecimal score, String description,String listUrl) {
         BaseJSON baseJSON = new BaseJSON();
         StoreEvaluatePO po = new StoreEvaluatePO();
         po.setStoreId(storeId);
         po.setEvaluateName(userNm);
         po.setScore(score);
         po.setDescription(description);
-        int i = storeService.saveStoreEvaluate(po);
-        if(i<=0){
+        long a = storeService.saveStoreEvaluate(po);
+        long id = po.getId();
+        if(a<=0){
             baseJSON.setCode(1);
             baseJSON.setResult("失败");
             baseJSON.setMessage("创建评价失败，请联系管理员！");
         }
+        String decode = null;
+        try {
+            decode = URLDecoder.decode(listUrl,"UTF-8");
+            List<String> list = JSON.parseObject(decode, List.class);
+            System.out.println(list);
+            if(list.size()>0){
+                storeService.saveStoreEvaluateImage(id,list);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         return baseJSON;
     }
 

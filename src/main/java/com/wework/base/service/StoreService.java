@@ -16,11 +16,13 @@ public interface StoreService {
      */
     public List<StoreVO> findStoreList(String longitude, String latitude, String storeType);
 
-    public int saveStoreEvaluate(StoreEvaluatePO po);
+    public long saveStoreEvaluate(StoreEvaluatePO po);
 
     public StoreDetailVO findStoreDetail(long storeId);
 
     public List<CityStoreNumPO> findCityStoreNum ();
 
     List<StoreVO> findCityStore(String city,String storeType);
+
+    void saveStoreEvaluateImage(long evaluateId,List<String> listUrl);
 }

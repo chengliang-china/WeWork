@@ -59,7 +59,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public int saveStoreEvaluate(StoreEvaluatePO po) {
+    public long saveStoreEvaluate(StoreEvaluatePO po) {
         return storeMapper.saveStoreEvaluate(po);
     }
 
@@ -126,5 +126,12 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         return storeVOlist;
+    }
+
+    @Override
+    public void saveStoreEvaluateImage(long evaluateId,List<String> listUrl) {
+        for(String url:listUrl){
+            storeMapper.saveStoreEvaluateUrl(evaluateId,url);
+        }
     }
 }

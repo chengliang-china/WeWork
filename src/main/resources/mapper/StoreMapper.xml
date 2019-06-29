@@ -116,7 +116,8 @@
 		limit 1
 	</select>
 
-	<insert id="saveStoreEvaluate">
+	<insert id="saveStoreEvaluate"  parameterType="com.wework.base.domain.po.StoreEvaluatePO" keyProperty="po.id" useGeneratedKeys="true" >
+		<!--<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" > SELECT LAST_INSERT_ID()  AS id </selectKey>-->
 		insert into store_evaluate(
 			store_id,
 			score,
@@ -124,7 +125,7 @@
 			evaluate_name,
 			evaluate_time,
 			create_time,
-			is_del)
+			is_del)saveStoreEvaluate
 			values(
 			#{po.storeId},
 			#{po.score},

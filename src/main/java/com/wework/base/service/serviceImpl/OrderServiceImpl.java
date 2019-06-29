@@ -53,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
         orderTablePo.setApplyFee(applyFee);
         orderTablePo.setUseHours(orderVo.getUseHours());
         orderTablePo.setOrderStatus(orderStatus);
+        orderTablePo.setCouponId(orderVo.getCouponId());
         int a = orderMapper.updateOrder(orderTablePo);//更新订单
         if(orderStatus == BaseCode.ORDER_COMPLETED){
             orderMapper.updateUseIntegral(orderVo.getUserId(),integral);
