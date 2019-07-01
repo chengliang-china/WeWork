@@ -90,4 +90,12 @@ public class OrderServiceImpl implements OrderService {
     public int findOrderNumByStatus(long userId,int orderStatus) {
         return orderMapper.findOrderNumByStatus(userId,orderStatus);
     }
+
+    @Override
+    public void updateOrderFin(Long orderId) {
+        OrderTablePO orderTablePo =  new OrderTablePO();
+        orderTablePo.setOrderId(orderId);
+        orderTablePo.setOrderStatus(BaseCode.ORDER_COMPLETED);
+        orderMapper.updateOrder(orderTablePo);
+    }
 }

@@ -125,7 +125,7 @@
 			evaluate_name,
 			evaluate_time,
 			create_time,
-			is_del)saveStoreEvaluate
+			is_del)
 			values(
 			#{po.storeId},
 			#{po.score},

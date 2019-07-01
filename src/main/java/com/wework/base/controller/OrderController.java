@@ -212,8 +212,10 @@ public class OrderController {
             Date useEnd = DateUtils.stringToDateTime(useEndTime);
 
             long diff = useEnd.getTime() - useStart.getTime();
+            // 计算差多少天
+            long day = diff / nd;
             // 计算差多少小时
-            long hour = diff % nd / nh;
+            long hour = day*24+diff % nd / nh;
             // 计算差多少分钟
             long min = diff % nd % nh / nm;
 

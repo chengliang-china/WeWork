@@ -25,34 +25,6 @@ import java.util.*;
 @Api(tags = { "微信支付" })
 public class WxPayController {
 
-    public static String createSign(Map<String,String> parameters,String key) throws Exception {
-        StringBuffer sb = new StringBuffer();
-        StringBuffer sbkey = new StringBuffer();
-        Set es = parameters.entrySet();  //所有参与传参的参数按照accsii排序（升序）
-        Iterator it = es.iterator();
-        while(it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
-            String k = (String)entry.getKey();
-            Object v = entry.getValue();
-            //空值不传递，不参与签名组串
-            if(null != v && !"".equals(v)) {
-                sb.append(k + "=" + v + "&");
-                sbkey.append(k + "=" + v + "&");
-            }
-        }
-        //System.out.println("字符串:"+sb.toString());
-        sbkey=sbkey.append("key="+key);
-        System.out.println("字符串:"+sbkey.toString());
-        //MD5加密,结果转换为大写字符
-       String sign = MD5Utils.MD5Encode(sbkey.toString(), "UTF-8").toUpperCase();
-        //MD5加密,结果转换为大写字符
-       // String sign = WXPayUtil.generateSignature(parameters, key, WXPayConstants.SignType.MD5);
-        //String sign = hash_hmac("sha256",sbkey.toString(),key).toUpperCase();
-        System.out.println("MD5加密值:"+sign);
-        //return sb.toString()+"sign="+sign;
-        return sign;
-    }
-
     @ApiOperation("统一下单")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
@@ -100,9 +72,9 @@ public class WxPayController {
         MyWxPayConfig config = new MyWxPayConfig();
         Map<String, String> signMap = new HashMap<String, String>();
         signMap.put("appId", config.getAppID());
-        signMap.put("timeStamp", String.valueOf(System.currentTimeMillis()/1000));
+        signMap.put("timeStamp", timeStamp);
         signMap.put("nonceStr", WXPayUtil.generateNonceStr());
-        signMap.put("package", package1);
+        signMap.put("package", "prepay_id="+package1);
         signMap.put("signType",  "MD5");
         String paySign = WXPayUtil.generateSignature(signMap,config.getKey(), WXPayConstants.SignType.MD5);
         signMap.put("paySign",paySign);
@@ -110,7 +82,25 @@ public class WxPayController {
         baseJSON.setResult(signMap);
         return baseJSON;
     }
-
+    @ApiOperation("撤回订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "outTradeNo", dataType = "String", required = true, value = "outTradeNo", defaultValue = "no000012")})
+    @RequestMapping(value = "/reverse", method = RequestMethod.GET)
+    public BaseJSON reverse(@Param("token") String token,@Param("outTradeNo") String outTradeNo) throws Exception {
+        BaseJSON baseJSON  = new BaseJSON();
+        MyWxPayConfig config = new MyWxPayConfig();
+        WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no", outTradeNo);
+        try {
+            Map<String, String> resp = wxpay.reverse(data);
+            baseJSON.setResult(resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return baseJSON;
+    }
     @ApiOperation("订单查询")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),

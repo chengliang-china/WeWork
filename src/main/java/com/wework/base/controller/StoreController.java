@@ -6,6 +6,7 @@ import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
+import com.wework.base.service.OrderService;
 import com.wework.base.service.StoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -35,6 +36,9 @@ public class StoreController {
     public static final String key = "9bf345fc7b5c43e3b71d5ef7c276f030";
     @Autowired
     StoreService storeService;
+
+    @Autowired
+    OrderService orderService;
     @ApiOperation("查找门店")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
@@ -67,11 +71,12 @@ public class StoreController {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "userNm", dataType = "Sting", required = true, value = "用户名", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "orderId", dataType = "Long", required = true, value = "订单id", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "score", dataType = "BigDecimal", required = false, value = "评分", defaultValue = "4.5"),
             @ApiImplicitParam(paramType = "query", name = "description", dataType = "String", required = false, value = "评价内容", defaultValue = "未添加任何评价内容"),
             @ApiImplicitParam(paramType = "body", name = "listUrl", dataType = "String", required = false, value = "图片列表", defaultValue = "")})
     @RequestMapping(value = "/saveStoreEvaluate", method = RequestMethod.POST)
-    public BaseJSON saveStoreEvaluate(String token, String userNm, Long storeId, BigDecimal score, String description,String listUrl) {
+    public BaseJSON saveStoreEvaluate(String token, String userNm, Long storeId,Long orderId, BigDecimal score, String description,String listUrl) {
         BaseJSON baseJSON = new BaseJSON();
         StoreEvaluatePO po = new StoreEvaluatePO();
         po.setStoreId(storeId);
@@ -85,18 +90,21 @@ public class StoreController {
             baseJSON.setResult("失败");
             baseJSON.setMessage("创建评价失败，请联系管理员！");
         }
-        String decode = null;
-        try {
-            decode = URLDecoder.decode(listUrl,"UTF-8");
-            List<String> list = JSON.parseObject(decode, List.class);
-            System.out.println(list);
-            if(list.size()>0){
-                storeService.saveStoreEvaluateImage(id,list);
+        if(listUrl != null&&listUrl != ""){
+            String decode = null;
+            try {
+                decode = URLDecoder.decode(listUrl,"UTF-8");
+                List<String> list = JSON.parseObject(decode, List.class);
+                System.out.println(list);
+                if(list.size()>0){
+                    storeService.saveStoreEvaluateImage(id,list);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
-
+        //更新订单状态
+        orderService.updateOrderFin(orderId);
         return baseJSON;
     }
 

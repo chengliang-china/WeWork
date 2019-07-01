@@ -41,4 +41,9 @@ public interface OrderService {
      */
     public int findOrderNumByStatus(long userId, int orderStatus);
 
+    /**
+     * 完成订单
+     * @param orderId
+     */
+    public void updateOrderFin(Long orderId);
 }
