@@ -134,4 +134,21 @@ public class StoreServiceImpl implements StoreService {
             storeMapper.saveStoreEvaluateUrl(evaluateId,url);
         }
     }
+
+    @Override
+    public void saveStoreinfo(StorePO po) {
+        storeMapper.saveStoreinfo(po);
+    }
+
+    @Override
+    public void saveStoreimage(Long storeId, List<String> list) {
+        for(String url:list){
+            storeMapper.saveStoreImage(storeId,url);
+        }
+    }
+
+    @Override
+    public void deleteStroe(Long storeId) {
+        storeMapper.deleteStroe(storeId);
+    }
 }

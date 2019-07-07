@@ -8,6 +8,7 @@ import com.wework.base.domain.vo.StoreDetailVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,4 +43,14 @@ public interface StoreMapper {
 
 	@Insert("insert into store_evaluate_image (evaluate_id,image_url,create_time,is_del) values(#{evaluateId},#{url},now(),0)")
 	void saveStoreEvaluateUrl(@Param("evaluateId")long evaluateId, @Param("url")String url);
+
+	@Insert("insert into store(store_name,store_type,apply_fee,city,store_introduction,arrival_way,open_start_time,open_end_time,longitude,latitude,thumbnail_url,seat_num,create_time,is_del) " +
+			"values(#{storeName},#{storeType},#{applyFee},#{city},#{storeIntroduction},#{arrivalWay},#{openStartTime},#{openEndTime},#{longitude},#{latitude},#{thumbnailUrl},#{seatNum},,now(),0)")
+    void saveStoreinfo(StorePO po);
+
+	@Insert("insert into store_image (store_id,image_url,create_time,is_del) values(#{storeId},#{url},now(),0)")
+	void saveStoreImage(Long storeId, String url);
+
+	@Update("update store set is_del = 1 where store_id = #{storeId}")
+	void deleteStroe(Long storeId);
 }

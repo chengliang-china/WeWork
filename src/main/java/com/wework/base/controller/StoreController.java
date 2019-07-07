@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
+import com.wework.base.domain.po.StorePO;
 import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.service.OrderService;
@@ -23,6 +24,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.net.*;
 import java.nio.charset.Charset;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +39,70 @@ public class StoreController {
     @Autowired
     StoreService storeService;
 
+    @ApiOperation("新增门店")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "storeName", dataType = "Sting", required = true, value = "门店名", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "每小时收费金额", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "arrivalWay", dataType = "String", required = true, value = "到达方式", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "评分", defaultValue = "4.5"),
+            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "评价内容", defaultValue = "未添加任何评价内容"),
+            @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "BigDecimal", required = true, value = "经度", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "BigDecimal", required = true, value = "纬度", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "seatNum", dataType = "Integer", required = true, value = "座位数量", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "Integer", required = true, value = "门店类型", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "city", dataType = "String", required = true, value = "门店城市", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "storeIntroduction", dataType = "String", required = true, value = "门店简介", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "缩略图", defaultValue = "")})
+    @RequestMapping(value = "/saveStoreInfo", method = RequestMethod.POST)
+    public BaseJSON saveStoreInfo(String token, String storeName, BigDecimal applyFee, String arrivalWay, Time openStartTime, Time openEndTime, BigDecimal longitude,BigDecimal latitude,Integer seatNum, Integer storeType,String storeIntroduction, String thumbnailUrl,String city) {
+        BaseJSON baseJSON = new BaseJSON();
+        StorePO po = new StorePO();
+        po.setStoreName(storeName);
+        po.setApplyFee(applyFee);
+        po.setArrivalWay(arrivalWay);
+        po.setOpenStartTime(openStartTime);
+        po.setOpenEndTime(openEndTime);
+        po.setLongitude(longitude);
+        po.setLatitude(latitude);
+        po.setStoreType(storeType);
+        po.setSeatNum(seatNum);
+        po.setStoreIntroduction(storeIntroduction);
+        po.setThumbnailUrl(thumbnailUrl);
+        po.setCity(city);
+        storeService.saveStoreinfo(po);
+        return baseJSON;
+    }
+
+    @ApiOperation("门店添加图片")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = ""),
+            @ApiImplicitParam(paramType = "body", name = "listUrl", dataType = "String", required = true, value = "图片列表", defaultValue = "")})
+    @RequestMapping(value = "/saveStoreImage", method = RequestMethod.POST)
+    public BaseJSON saveStoreInfo(String token, Long storeId,String listUrl) {
+        BaseJSON baseJSON = new BaseJSON();
+        String decode = null;
+        try {
+            decode = URLDecoder.decode(listUrl,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        List<String> list = JSON.parseObject(decode, List.class);
+        storeService.saveStoreimage(storeId,list);
+        return baseJSON;
+    }
+
+    @ApiOperation("门店添加图片")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = "")})
+    @RequestMapping(value = "/deleteStore", method = RequestMethod.GET)
+    public BaseJSON deleteStore(String token, Long storeId) {
+        BaseJSON baseJSON = new BaseJSON();
+        storeService.deleteStroe(storeId);
+        return baseJSON;
+    }
     @Autowired
     OrderService orderService;
     @ApiOperation("查找门店")

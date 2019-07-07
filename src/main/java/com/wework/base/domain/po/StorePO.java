@@ -7,8 +7,10 @@ import java.util.Date;
 public class StorePO {
     private long storeId;
     private String storeName;
+    private String city;
     private BigDecimal applyFee;
     private String storeIntroduction;
+    private Integer storeType;
     private String arrivalWay;
     private Time openStartTime;
     private Time openEndTime;
@@ -19,6 +21,22 @@ public class StorePO {
     private BigDecimal latitude;
     private String thumbnailUrl;
     private  int seatNum;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Integer getStoreType() {
+        return storeType;
+    }
+
+    public void setStoreType(Integer storeType) {
+        this.storeType = storeType;
+    }
 
     public int getSeatNum() {
         return seatNum;
