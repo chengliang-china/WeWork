@@ -5,6 +5,7 @@ import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.po.UserPO;
 import com.wework.base.domain.vo.OrderDetailVO;
 import com.wework.base.domain.vo.OrderVO;
+import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.service.OrderService;
 import com.wework.base.service.RedisService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
@@ -32,6 +34,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -50,14 +53,24 @@ public class OrderController {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private StoreService StoreService;
+
     @ApiOperation("扫码接口")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "doorId", dataType = "long", required = true, value = "门标识", defaultValue = "8")})
+            @ApiImplicitParam(paramType = "query", name = "doorId", dataType = "long", required = true, value = "门标识", defaultValue = "8"),
+            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "long", required = true, value = "门店标识", defaultValue = "1")})
     @RequestMapping(value = "/scanCode", method = RequestMethod.GET)
-    public String scanCode(long doorId) {
+    public String scanCode(long doorId,long storeId) {
         String response = null;
         try {
+            boolean flag =  dataValid(storeId); // 时间检验
+
+            if(!flag){
+                return "不在营业时间内！";
+            }
+
             // 创建一个URL对象
             URL targetUrl = new URL(url);
             // 从URL对象中获得一个连接对象
@@ -89,6 +102,35 @@ public class OrderController {
         return response;
 
     }
+
+    private boolean dataValid(long storeId) { // 返回false 说明不再营业时间范围内
+        StoreDetailVO storeDetail = StoreService.findStoreDetail(storeId);
+
+        Date nowDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+        String now = sdf.format(nowDate);
+        String begin = sdf.format(storeDetail.getOpenStartTime());
+        String end = sdf.format(storeDetail.getOpenEndTime());
+
+
+        try {
+            Date nowTime = sdf.parse(now);
+            Date beginTime = sdf.parse(begin);
+            Date endTime = sdf.parse(end);
+
+            int i1 = nowTime.compareTo(beginTime); // nowTime > beginTime = 1
+            int i2 = endTime.compareTo(nowTime); // endTIme > nowTime = 1
+
+            if(i1 - i2 == 0){
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @ApiOperation("扫码生成订单")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
