@@ -9,7 +9,7 @@ public interface CouponService {
     /**
      * 保存优惠卷
      */
-    public BaseJSON addCoupon(String token, CouponVO couponVO);
+    public BaseJSON addCoupon(CouponVO couponVO);
 
     /**
      * 获取所有优惠卷

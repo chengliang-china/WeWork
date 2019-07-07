@@ -73,8 +73,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("WeWork")
-                .description("开发文档")
+                .title("wakup")
+                .description("管理文档")
                 .termsOfServiceUrl("")
                 .version("1.0")
                 .build();

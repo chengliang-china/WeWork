@@ -22,11 +22,9 @@ public class CouponRuleController {
     private CouponRuleService couponRuleService;
 
     @ApiOperation("设置优惠卷规则")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
     @RequestMapping(value = "/addCouponRule", method = RequestMethod.POST)
-    public BaseJSON addCouponRule(@RequestParam String token, @RequestBody CouponRuleVO couponRuleVO) {
-        return couponRuleService.addCouponRule(token,couponRuleVO);
+    public BaseJSON addCouponRule(@RequestBody CouponRuleVO couponRuleVO) {
+        return couponRuleService.addCouponRule(couponRuleVO);
     }
 
     @ApiOperation("获取全部优惠卷规则")

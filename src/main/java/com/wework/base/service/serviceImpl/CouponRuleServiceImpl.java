@@ -21,7 +21,7 @@ public class CouponRuleServiceImpl implements CouponRuleService {
     private CouponRuleMapper couponRuleMapper;
 
     @Override
-    public BaseJSON addCouponRule(String token, CouponRuleVO couponRuleVO) {
+    public BaseJSON addCouponRule(CouponRuleVO couponRuleVO) {
         BaseJSON baseJSON = new BaseJSON();
 
         try {

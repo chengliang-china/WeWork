@@ -11,7 +11,7 @@ public interface CouponRuleService {
     /**
      * 保存优惠卷规则
      */
-    public BaseJSON addCouponRule(String token, CouponRuleVO couponRuleVO);
+    public BaseJSON addCouponRule( CouponRuleVO couponRuleVO);
 
     /**
      * 获取所有规则

@@ -23,11 +23,9 @@ public class CouponController {
     private CouponService couponService;
 
     @ApiOperation("添加优惠卷")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = "")})
     @RequestMapping(value = "/addCoupon", method = RequestMethod.POST)
-    public BaseJSON addCoupon(@RequestParam String token, @RequestBody CouponVO couponVO) {
-        return couponService.addCoupon(token, couponVO);
+    public BaseJSON addCoupon( @RequestBody CouponVO couponVO) {
+        return couponService.addCoupon(couponVO);
     }
 
     @ApiOperation("获取所有有效的优惠卷")

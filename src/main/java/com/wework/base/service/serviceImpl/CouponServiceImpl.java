@@ -36,7 +36,7 @@ public class CouponServiceImpl implements CouponService {
     private RedisService redisService;
 
     @Override
-    public BaseJSON addCoupon(String token, CouponVO couponVO) {
+    public BaseJSON addCoupon(CouponVO couponVO) {
 
         BaseJSON baseJSON = new BaseJSON();
 

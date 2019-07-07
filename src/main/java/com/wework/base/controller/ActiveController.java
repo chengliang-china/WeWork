@@ -107,7 +107,7 @@ public class ActiveController {
             @ApiImplicitParam(paramType = "query", name = "activeIntroduction", dataType = "String", required = false, value = "活动介绍", defaultValue = "123@163.com")})
     @ResponseBody
     @RequestMapping(value = "/saveActive", method = RequestMethod.POST)
-    public BaseJSON saveActive(String token, String activeName, String activeAddr, String activeTime, String activeIntroduction, HttpServletRequest request, MultipartFile file) {
+    public BaseJSON saveActive(String activeName, String activeAddr, String activeTime, String activeIntroduction, HttpServletRequest request, MultipartFile file) {
 
         BaseJSON baseJSON = new BaseJSON();
         ActivePO activePo =new ActivePO();

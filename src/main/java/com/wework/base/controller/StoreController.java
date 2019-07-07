@@ -41,8 +41,8 @@ public class StoreController {
             @ApiImplicitParam(paramType = "query", name = "storeName", dataType = "Sting", required = true, value = "门店名", defaultValue = "wakup门店"),
             @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "每小时收费金额", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "arrivalWay", dataType = "String", required = true, value = "到达方式", defaultValue = "地铁二号线"),
-            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "评分", defaultValue = "08:00:00"),
-            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "评价内容", defaultValue = "22:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "门店开始营业时间", defaultValue = "08:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "门店接结束营业时间", defaultValue = "22:00:00"),
             @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "BigDecimal", required = true, value = "经度", defaultValue = "121.46626"),
             @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "BigDecimal", required = true, value = "纬度", defaultValue = "31.22046"),
             @ApiImplicitParam(paramType = "query", name = "seatNum", dataType = "Integer", required = true, value = "座位数量", defaultValue = "100"),
@@ -76,8 +76,8 @@ public class StoreController {
             @ApiImplicitParam(paramType = "query", name = "storeName", dataType = "Sting", required = true, value = "门店名", defaultValue = "wakup门店"),
             @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "每小时收费金额", defaultValue = "1"),
             @ApiImplicitParam(paramType = "query", name = "arrivalWay", dataType = "String", required = true, value = "到达方式", defaultValue = "地铁二号线"),
-            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "评分", defaultValue = "08:00:00"),
-            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "评价内容", defaultValue = "22:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "门店开始营业时间", defaultValue = "08:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "门店接结束营业时间", defaultValue = "22:00:00"),
             @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "BigDecimal", required = true, value = "经度", defaultValue = "121.46626"),
             @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "BigDecimal", required = true, value = "纬度", defaultValue = "31.22046"),
             @ApiImplicitParam(paramType = "query", name = "seatNum", dataType = "Integer", required = true, value = "座位数量", defaultValue = "100"),
@@ -107,8 +107,8 @@ public class StoreController {
     }
     @ApiOperation("门店添加图片")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "url", dataType = "String", required = true, value = "图片url", defaultValue = "")})
+            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "url", dataType = "String", required = true, value = "图片url", defaultValue = "http://wakeup1.oss-cn-beijing.aliyuncs.com/data/1560652556316.jpg?Expires=1876012555&OSSAccessKeyId=LTAIg5AbTypJW01w&Signature=kRfTrTTeEjQCswW%2Be7itqVoYnQA%3D")})
     @RequestMapping(value = "/saveStoreImage", method = RequestMethod.POST)
     public BaseJSON saveStoreInfo(Long storeId,String url) {
         BaseJSON baseJSON = new BaseJSON();
