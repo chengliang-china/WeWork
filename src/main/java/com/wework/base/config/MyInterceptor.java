@@ -36,6 +36,35 @@ public class MyInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if(request.getRequestURI().indexOf("saveStoreInfo") != -1 ){
+            return true;
+        }
+
+
+        if(request.getRequestURI().indexOf("saveStoreImage") != -1 ){
+            return true;
+        }
+
+
+        if(request.getRequestURI().indexOf("deleteStore") != -1 ){
+            return true;
+        }
+
+        if(request.getRequestURI().indexOf("headImgUpload") != -1 ){
+            return true;
+        }
+
+        if(request.getRequestURI().indexOf("updateStoreInfo") != -1 ){
+            return true;
+        }
+
+        if(request.getRequestURI().indexOf("findStoreList") != -1 ){
+            return true;
+        }
+
+        if(request.getRequestURI().indexOf("saveActive") != -1 ){
+            return true;
+        }
         String token = request.getParameter("token");
 
         if(token == null){

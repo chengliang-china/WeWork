@@ -38,6 +38,7 @@
 		A.store_id,
 		A.store_name,
 		A.apply_fee,
+		A.store_introduction,
 		A.open_start_time,
 		A.open_end_time,
 		A.longitude,
@@ -46,11 +47,6 @@
 		A.seat_num
 		FROM store A
 		WHERE  A.is_del = 0
-		AND A.longitude = #{longitude}
-		AND A.latitude = #{latitude}
-		<if test="storeType != null and storeType != ''">
-			AND A.store_type =#{storeType}
-		</if>
 	</select>
 	<!-- 根据城市获取门店列表 -->
 	<select id="getStoreListByCity" resultMap="storeMap">
@@ -71,6 +67,51 @@
 			AND A.store_type =#{storeType}
 		</if>
 	</select>
+
+	<update id="updateStoreInfo">
+		update
+		store
+		set
+		<if test="po.storeName != null and po.storeName != ''">
+			store_name =#{po.storeName},
+		</if>
+		<if test="po.storeType != null and po.storeType != ''">
+			store_type =#{po.storeType},
+		</if>
+		<if test="po.applyFee != null and po.applyFee != ''">
+			apply_fee =#{po.applyFee},
+		</if>
+		<if test="po.city != null and po.city != ''">
+			city =#{po.city},
+		</if>
+		<if test="po.storeIntroduction != null and po.storeIntroduction != ''">
+			store_introduction =#{po.storeIntroduction},
+		</if>
+		<if test="po.arrivalWay != null and po.arrivalWay != ''">
+			arrival_way =#{po.arrivalWay},
+		</if>
+		<if test="po.openStartTime != null">
+			open_start_time =#{po.openStartTime},
+		</if>
+		<if test="po.openEndTime != null">
+			open_end_time =#{po.openEndTime},
+		</if>
+		<if test="po.longitude != null and po.longitude != ''">
+			longitude =#{po.longitude},
+		</if>
+		<if test="po.latitude != null and po.latitude != ''">
+			latitude =#{po.latitude},
+		</if>
+		<if test="po.thumbnailUrl != null and po.thumbnailUrl != ''">
+			thumbnail_url =#{po.thumbnailUrl},
+		</if>
+		<if test="po.seatNum != null and po.seatNum != ''">
+			seat_num =#{po.seatNum},
+		</if>
+		is_del =0
+		where
+		store_id = #{po.storeId}
+	</update>
 	<!-- 获取门店明细 -->
 	<select id="findStoreDetail" resultMap="storeMap">
 		SELECT

@@ -15,7 +15,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -25,8 +24,6 @@ import java.math.BigDecimal;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -41,21 +38,20 @@ public class StoreController {
 
     @ApiOperation("新增门店")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "storeName", dataType = "Sting", required = true, value = "门店名", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "storeName", dataType = "Sting", required = true, value = "门店名", defaultValue = "wakup门店"),
             @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "每小时收费金额", defaultValue = "1"),
-            @ApiImplicitParam(paramType = "query", name = "arrivalWay", dataType = "String", required = true, value = "到达方式", defaultValue = "1"),
-            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "评分", defaultValue = "4.5"),
-            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "评价内容", defaultValue = "未添加任何评价内容"),
-            @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "BigDecimal", required = true, value = "经度", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "BigDecimal", required = true, value = "纬度", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "seatNum", dataType = "Integer", required = true, value = "座位数量", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "Integer", required = true, value = "门店类型", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "city", dataType = "String", required = true, value = "门店城市", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "storeIntroduction", dataType = "String", required = true, value = "门店简介", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "缩略图", defaultValue = "")})
+            @ApiImplicitParam(paramType = "query", name = "arrivalWay", dataType = "String", required = true, value = "到达方式", defaultValue = "地铁二号线"),
+            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "评分", defaultValue = "08:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "评价内容", defaultValue = "22:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "BigDecimal", required = true, value = "经度", defaultValue = "121.46626"),
+            @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "BigDecimal", required = true, value = "纬度", defaultValue = "31.22046"),
+            @ApiImplicitParam(paramType = "query", name = "seatNum", dataType = "Integer", required = true, value = "座位数量", defaultValue = "100"),
+            @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "Integer", required = true, value = "门店类型", defaultValue = "10013001"),
+            @ApiImplicitParam(paramType = "query", name = "city", dataType = "String", required = true, value = "门店城市", defaultValue = "上海市"),
+            @ApiImplicitParam(paramType = "query", name = "storeIntroduction", dataType = "String", required = true, value = "门店简介", defaultValue = "wakup门店"),
+            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "门店缩略图", defaultValue = "")})
     @RequestMapping(value = "/saveStoreInfo", method = RequestMethod.POST)
-    public BaseJSON saveStoreInfo(String token, String storeName, BigDecimal applyFee, String arrivalWay, Time openStartTime, Time openEndTime, BigDecimal longitude,BigDecimal latitude,Integer seatNum, Integer storeType,String storeIntroduction, String thumbnailUrl,String city) {
+    public BaseJSON saveStoreInfo(String storeName, BigDecimal applyFee, String arrivalWay, Time openStartTime, Time openEndTime, BigDecimal longitude,BigDecimal latitude,Integer seatNum, Integer storeType,String storeIntroduction, String thumbnailUrl,String city) {
         BaseJSON baseJSON = new BaseJSON();
         StorePO po = new StorePO();
         po.setStoreName(storeName);
@@ -74,31 +70,56 @@ public class StoreController {
         return baseJSON;
     }
 
+    @ApiOperation("更新门店")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "storeName", dataType = "Sting", required = true, value = "门店名", defaultValue = "wakup门店"),
+            @ApiImplicitParam(paramType = "query", name = "applyFee", dataType = "BigDecimal", required = true, value = "每小时收费金额", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "arrivalWay", dataType = "String", required = true, value = "到达方式", defaultValue = "地铁二号线"),
+            @ApiImplicitParam(paramType = "query", name = "openStartTime", dataType = "Time", required = true, value = "评分", defaultValue = "08:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "openEndTime", dataType = "Time", required = true, value = "评价内容", defaultValue = "22:00:00"),
+            @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "BigDecimal", required = true, value = "经度", defaultValue = "121.46626"),
+            @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "BigDecimal", required = true, value = "纬度", defaultValue = "31.22046"),
+            @ApiImplicitParam(paramType = "query", name = "seatNum", dataType = "Integer", required = true, value = "座位数量", defaultValue = "100"),
+            @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "Integer", required = true, value = "门店类型", defaultValue = "10013001"),
+            @ApiImplicitParam(paramType = "query", name = "city", dataType = "String", required = true, value = "门店城市", defaultValue = "上海市"),
+            @ApiImplicitParam(paramType = "query", name = "storeIntroduction", dataType = "String", required = true, value = "门店简介", defaultValue = "wakup门店"),
+            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "门店缩略图", defaultValue = "")})
+    @RequestMapping(value = "/updateStoreInfo", method = RequestMethod.POST)
+    public BaseJSON updateStoreInfo(Long storeId,String storeName, BigDecimal applyFee, String arrivalWay, Time openStartTime, Time openEndTime, BigDecimal longitude,BigDecimal latitude,Integer seatNum, Integer storeType,String storeIntroduction, String thumbnailUrl,String city) {
+        BaseJSON baseJSON = new BaseJSON();
+        StorePO po = new StorePO();
+        po.setStoreId(storeId);
+        po.setStoreName(storeName);
+        po.setApplyFee(applyFee);
+        po.setArrivalWay(arrivalWay);
+        po.setOpenStartTime(openStartTime);
+        po.setOpenEndTime(openEndTime);
+        po.setLongitude(longitude);
+        po.setLatitude(latitude);
+        po.setStoreType(storeType);
+        po.setSeatNum(seatNum);
+        po.setStoreIntroduction(storeIntroduction);
+        po.setThumbnailUrl(thumbnailUrl);
+        po.setCity(city);
+        storeService.updateStoreInfo(po);
+        return baseJSON;
+    }
     @ApiOperation("门店添加图片")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
             @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = ""),
-            @ApiImplicitParam(paramType = "body", name = "listUrl", dataType = "String", required = true, value = "图片列表", defaultValue = "")})
+            @ApiImplicitParam(paramType = "query", name = "url", dataType = "String", required = true, value = "图片url", defaultValue = "")})
     @RequestMapping(value = "/saveStoreImage", method = RequestMethod.POST)
-    public BaseJSON saveStoreInfo(String token, Long storeId,String listUrl) {
+    public BaseJSON saveStoreInfo(Long storeId,String url) {
         BaseJSON baseJSON = new BaseJSON();
-        String decode = null;
-        try {
-            decode = URLDecoder.decode(listUrl,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        List<String> list = JSON.parseObject(decode, List.class);
-        storeService.saveStoreimage(storeId,list);
+        storeService.saveStoreimage(storeId,url);
         return baseJSON;
     }
 
-    @ApiOperation("门店添加图片")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = "")})
+    @ApiOperation("删除门店")
+    @ApiImplicitParams(value = {@ApiImplicitParam(paramType = "query", name = "storeId", dataType = "Long", required = true, value = "门店id", defaultValue = "")})
     @RequestMapping(value = "/deleteStore", method = RequestMethod.GET)
-    public BaseJSON deleteStore(String token, Long storeId) {
+    public BaseJSON deleteStore( Long storeId) {
         BaseJSON baseJSON = new BaseJSON();
         storeService.deleteStroe(storeId);
         return baseJSON;
@@ -106,16 +127,11 @@ public class StoreController {
     @Autowired
     OrderService orderService;
     @ApiOperation("查找门店")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
-            @ApiImplicitParam(paramType = "query", name = "longitude", dataType = "String", required = true, value = "经度", defaultValue = "116.40"),
-            @ApiImplicitParam(paramType = "query", name = "latitude", dataType = "String", required = true, value = "纬度", defaultValue = "39.90"),
-            @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "String", required = false, value = "门店类型", defaultValue = "")})
-    @RequestMapping(value = "/findStoreList", method = RequestMethod.POST)
-    public BaseJSON findStoreList(String longitude, String latitude,String storeType) {
+    @RequestMapping(value = "/findStoreList", method = RequestMethod.GET)
+    public BaseJSON findStoreList() {
 
         BaseJSON baseJSON = new BaseJSON();
-        List<StoreVO> storeList = storeService.findStoreList(longitude,latitude,storeType);
+        List<StoreVO> storeList = storeService.findStoreList();
         baseJSON.setResult(storeList);
         return baseJSON;
     }

@@ -28,30 +28,22 @@ public class StoreServiceImpl implements StoreService {
     private OrderMapper orderMapper;
 
     @Override
-    public List<StoreVO> findStoreList(String longitude, String latitude, String storeType) {
+    public List<StoreVO> findStoreList() {
 
-        List<StorePO> storePOlist = storeMapper.getStoreList(longitude,latitude,storeType);
+        List<StorePO> storePOlist = storeMapper.getStoreList();
         List<StoreVO> storeVOlist = new ArrayList<>();
         if(storePOlist.size() >0){
             for(StorePO storePo:storePOlist){
                 StoreVO storeVO = new StoreVO();
                 storeVO.setStoreId(storePo.getStoreId());
                 storeVO.setStoreName(storePo.getStoreName());
+                storeVO.setThumbnailUrl(storePo.getThumbnailUrl());
                 storeVO.setLatitude(storePo.getLatitude());
                 storeVO.setLongitude(storePo.getLongitude());
                 storeVO.setOpenStartTime(storePo.getOpenStartTime());
                 storeVO.setOpenEndTime(storePo.getOpenEndTime());
                 storeVO.setApplyFee(storePo.getApplyFee());
                 storeVO.setThumbnailUrl(storePo.getThumbnailUrl());
-
-                //查看已开订单数量，订单和工位一一对应
-                int num = orderMapper.findOrderNumByStatus(0, BaseCode.ORDER_OPENED);
-                int seatNum = storePo.getSeatNum();
-                if(seatNum - num < 10){//座位减去使用数量，等于未使用数量，查看座位是否充足
-                    storeVO.setSeatIsEnough(0);
-                }else{
-                    storeVO.setSeatIsEnough(1);
-                }
                 storeVOlist.add(storeVO);
             }
         }
@@ -141,14 +133,18 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public void saveStoreimage(Long storeId, List<String> list) {
-        for(String url:list){
-            storeMapper.saveStoreImage(storeId,url);
-        }
+    public void saveStoreimage(Long storeId, String url) {
+        storeMapper.saveStoreImage(storeId,url);
     }
 
     @Override
     public void deleteStroe(Long storeId) {
         storeMapper.deleteStroe(storeId);
+        storeMapper.deleteStroeImage(storeId);
+    }
+
+    @Override
+    public void updateStoreInfo(StorePO po) {
+        storeMapper.updateStoreInfo(po);
     }
 }
