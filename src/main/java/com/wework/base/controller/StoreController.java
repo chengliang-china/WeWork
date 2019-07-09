@@ -2,11 +2,13 @@ package com.wework.base.controller;
 ;
 import com.alibaba.fastjson.JSON;
 import com.wework.base.domain.base.BaseJSON;
+import com.wework.base.domain.po.CarouselMapPO;
 import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
 import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
+import com.wework.base.service.ImageService;
 import com.wework.base.service.OrderService;
 import com.wework.base.service.StoreService;
 import io.swagger.annotations.Api;
@@ -17,14 +19,19 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @EnableSwagger2
@@ -35,6 +42,9 @@ public class StoreController {
     public static final String key = "9bf345fc7b5c43e3b71d5ef7c276f030";
     @Autowired
     StoreService storeService;
+
+    @Autowired
+    private ImageService imageService;
 
     @ApiOperation("新增门店")
     @ApiImplicitParams(value = {
@@ -248,5 +258,42 @@ public class StoreController {
             e.printStackTrace();
         }
         return json;
+    }
+
+    @ApiOperation("首页轮播图查询")
+    @RequestMapping(value = "/getHomeImage", method = RequestMethod.GET)
+    public BaseJSON getHomeImage() {
+        BaseJSON baseJSON = new BaseJSON();
+        CarouselMapPO carouselMapPo = storeService.getHomeImage();
+        baseJSON.setResult(carouselMapPo);
+        return baseJSON;
+    }
+
+    @ApiOperation("首页轮播图修改")
+    @RequestMapping(value = "/updateHomeImage", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseJSON updateHomeImage(HttpServletRequest request, MultipartFile activeImage,MultipartFile couponImage,MultipartFile generalImage) {
+        BaseJSON baseJSON = new BaseJSON();
+        if(activeImage== null  || couponImage == null || generalImage == null){
+            baseJSON.setCode(1);
+            baseJSON.setMessage("三张图片不可为空");
+            return baseJSON;
+        }
+        try {
+            String head1 = imageService.uploadImage(activeImage);//此处是调用上传服务接口
+            String head2 = imageService.uploadImage(couponImage);//此处是调用上传服务接口
+            String head3 = imageService.uploadImage(generalImage);//此处是调用上传服务接口
+            CarouselMapPO carouselMapPo = new CarouselMapPO();
+            carouselMapPo.setId(1);
+            carouselMapPo.setActiveImage(head1);
+            carouselMapPo.setCouponImage(head2);
+            carouselMapPo.setGeneralImage(head3);
+            storeService.updateHomeImage(carouselMapPo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            baseJSON.setCode(1);
+            baseJSON.setMessage("图片上传失败");
+        }
+        return baseJSON;
     }
 }

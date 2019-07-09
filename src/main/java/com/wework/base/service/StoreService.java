@@ -1,5 +1,6 @@
 package com.wework.base.service;
 
+import com.wework.base.domain.po.CarouselMapPO;
 import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
@@ -29,4 +30,8 @@ public interface StoreService {
     void deleteStroe(Long storeId);
 
     void updateStoreInfo(StorePO po);
+
+    void updateHomeImage(CarouselMapPO carouselMapPo);
+
+    CarouselMapPO getHomeImage();
 }

@@ -1,9 +1,6 @@
 package com.wework.base.mapper;
 
-import com.wework.base.domain.po.CityStoreNumPO;
-import com.wework.base.domain.po.StoreEvaluatePO;
-import com.wework.base.domain.po.StorePO;
-import com.wework.base.domain.po.StoreServicePO;
+import com.wework.base.domain.po.*;
 import com.wework.base.domain.vo.StoreDetailVO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -51,4 +48,9 @@ public interface StoreMapper {
 	void deleteStroeImage(Long storeId);
 
 	void updateStoreInfo(@Param("po")StorePO po);
+
+    void updateHomeImage(@Param("carouselMapPo")CarouselMapPO carouselMapPo);
+
+    @Select("select * from carousel_map where id = 1")
+	CarouselMapPO getHomeImage();
 }

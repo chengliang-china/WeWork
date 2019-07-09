@@ -1,6 +1,7 @@
 package com.wework.base.service.serviceImpl;
 
 import com.wework.base.config.BaseCode;
+import com.wework.base.domain.po.CarouselMapPO;
 import com.wework.base.domain.po.CityStoreNumPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.po.StorePO;
@@ -146,5 +147,15 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public void updateStoreInfo(StorePO po) {
         storeMapper.updateStoreInfo(po);
+    }
+
+    @Override
+    public void updateHomeImage(CarouselMapPO carouselMapPo) {
+        storeMapper.updateHomeImage(carouselMapPo);
+    }
+
+    @Override
+    public CarouselMapPO getHomeImage() {
+        return storeMapper.getHomeImage();
     }
 }

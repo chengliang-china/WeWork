@@ -180,4 +180,22 @@
 	<select id="findCityStoreNum" resultMap="cityStoreMap">
 		select count(*) num, city from store where is_del = 0 group by city;
 	</select>
+
+
+	<update id="updateHomeImage">
+		update
+		carousel_map
+		set
+		<if test="carouselMapPo.activeImage != null and carouselMapPo.activeImage != ''">
+			active_image =#{carouselMapPo.activeImage},
+		</if>
+		<if test="carouselMapPo.couponImage != null and carouselMapPo.couponImage != ''">
+			coupon_image =#{carouselMapPo.couponImage},
+		</if>
+		<if test="carouselMapPo.generalImage != null and carouselMapPo.generalImage != ''">
+			general_image =#{carouselMapPo.generalImage},
+		</if>
+		where
+		id = #{carouselMapPo.id}
+	</update>
 </mapper>

@@ -40,6 +40,12 @@ public class MyInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if(request.getRequestURI().indexOf("getHomeImage") != -1 ){
+            return true;
+        }
+        if(request.getRequestURI().indexOf("updateHomeImage") != -1 ){
+            return true;
+        }
 
         if(request.getRequestURI().indexOf("saveStoreImage") != -1 ){
             return true;
