@@ -44,7 +44,7 @@ public class CouponServiceImpl implements CouponService {
             CouponPO couponPO = new CouponPO();
             PropertyUtils.copyProperties(couponPO, couponVO);
 
-            if(couponPO.getEndDate().getTime() > new Date().getTime()){
+            if(couponPO.getEndDate().getTime() < new Date().getTime()){
                 baseJSON.setFail("优惠卷过期时间不得小于当前时间");
                 return baseJSON;
             }
@@ -382,5 +382,45 @@ public class CouponServiceImpl implements CouponService {
         }
 
         return rCode;
+    }
+
+    @Override
+    public BaseJSON addCouponShare(String token, long couponId) {
+        BaseJSON baseJSON = new BaseJSON();
+        try{
+
+            UserPO userPO = (UserPO) redisService.get(token);
+
+            if(userPO == null){
+                baseJSON.setFail("token 过期 请重新登陆！");
+                baseJSON.setCode(110);
+                return baseJSON;
+            }
+
+            int i1 = couponMapper.updateAll();
+            // 检测优惠卷是否领取过
+            List<UserCouponPO> userCouponPOS = userCouponMapper.receivedCoupon(userPO.getUserId(), couponId);
+
+            if(userCouponPOS.size() > 0){
+                baseJSON.setFail("已经领取过,请勿重复领取！");
+                return baseJSON;
+            }
+
+            UserCouponPO userCouponPO = new UserCouponPO();
+            userCouponPO.setCouponId(couponId);
+            userCouponPO.setUserId(userPO.getUserId());
+
+            int i = userCouponMapper.receiveCoupon(userCouponPO);
+
+            if(i != 1){
+                baseJSON.setFail("系统异常，请稍后再试！");
+                return baseJSON;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            baseJSON.setFail("系统异常，请稍后再试！");
+        }
+        return baseJSON;
     }
 }

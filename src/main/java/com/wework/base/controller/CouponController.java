@@ -97,4 +97,13 @@ public class CouponController {
     public BaseJSON getUnUsedCouponCount(@RequestParam String token) {
         return couponService.getUnUsedCouponCount(token);
     }
+
+    @ApiOperation("领取分享的优惠卷")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "couponId", dataType = "long", required = true, value = "couponId", defaultValue = "")})
+    @RequestMapping(value = "/addCouponShare", method = RequestMethod.POST)
+    public BaseJSON addCouponShare(@RequestParam String token, @RequestParam long couponId) {
+        return couponService.addCouponShare(token, couponId);
+    }
 }

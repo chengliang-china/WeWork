@@ -10,7 +10,8 @@ import java.util.Date;
 public class CouponVO implements Serializable {
 
     private String couponName ;
-    private long couponRuleId;
+    private long couponRuleId ;
+    private long couponType;
     private Date endDate;
     private Date CreateTime;
     private Date startDate;
@@ -55,11 +56,20 @@ public class CouponVO implements Serializable {
         this.startDate = startDate;
     }
 
+    public long getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(long couponType) {
+        this.couponType = couponType;
+    }
+
     @Override
     public String toString() {
-        return "CouponPO{" +
-                ", couponName='" + couponName + '\'' +
+        return "CouponVO{" +
+                "couponName='" + couponName + '\'' +
                 ", couponRuleId=" + couponRuleId +
+                ", couponType=" + couponType +
                 ", endDate=" + endDate +
                 ", CreateTime=" + CreateTime +
                 ", startDate=" + startDate +

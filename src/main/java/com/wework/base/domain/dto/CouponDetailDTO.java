@@ -7,12 +7,21 @@ public class CouponDetailDTO implements Serializable {
 
     private long couponId;
     private String couponName ;
+    private long couponType;
     private Date startDate;
     private Date endDate;
     private String couponRuleName;
     private String description;
     private long satisfy;
     private long less;
+
+    public long getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(long couponType) {
+        this.couponType = couponType;
+    }
 
     public long getCouponId() {
         return couponId;

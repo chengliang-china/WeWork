@@ -8,6 +8,7 @@ public class CouponPO implements Serializable {
     private long couponId ;
     private String couponName ;
     private long couponRuleId;
+    private long couponType;
     private Date endDate;
     private long couponStatus;
     private Date CreateTime;
@@ -85,6 +86,14 @@ public class CouponPO implements Serializable {
 
     public void setRedemptionCode(String redemptionCode) {
         this.redemptionCode = redemptionCode;
+    }
+
+    public long getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(long couponType) {
+        this.couponType = couponType;
     }
 
     @Override

@@ -66,4 +66,6 @@ public interface CouponService {
      * @return
      */
     BaseJSON getUnUsedCouponCount(String token);
+
+    BaseJSON addCouponShare(String token, long couponId);
 }

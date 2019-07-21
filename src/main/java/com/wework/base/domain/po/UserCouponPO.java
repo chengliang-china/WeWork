@@ -10,9 +10,18 @@ public class UserCouponPO implements Serializable {
     private long id;
     private long userId;
     private Long couponId;
+    private long couponType;
     private long status = BaseCode.TO_BE_USED;
     private Date createTime = new Date();
     private int isDel = BaseCode.UNDEL;
+
+    public long getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(long couponType) {
+        this.couponType = couponType;
+    }
 
     public long getId() {
         return id;

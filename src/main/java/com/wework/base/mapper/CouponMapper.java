@@ -14,8 +14,8 @@ import java.util.List;
 @Repository(value="CouponMapper")
 public interface CouponMapper {
 
-    @Insert({ "insert into coupon(coupon_name,coupon_rule_id,end_date,coupon_status,create_time,is_del,start_date)" +
-            " values(#{couponName},#{couponRuleId},#{endDate},#{couponStatus},#{CreateTime},#{isDel},#{startDate})" })
+    @Insert({ "insert into coupon(coupon_name,coupon_type,coupon_rule_id,end_date,coupon_status,create_time,is_del,start_date)" +
+            " values(#{couponName},#{couponType},#{couponRuleId},#{endDate},#{couponStatus},#{CreateTime},#{isDel},#{startDate})" })
     @Options(useGeneratedKeys = true, keyProperty = "coupon_id")
     int addCoupon(CouponPO couponPO);
 
@@ -28,7 +28,7 @@ public interface CouponMapper {
     @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less FROM coupon c LEFT JOIN coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id ")
     List<CouponDetailDTO> findCouponDetails();
 
-    @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less FROM coupon c LEFT JOIN coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id where c.coupon_status = " + BaseCode.VALID)
+    @Select("select coupon_id,coupon_type,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less FROM coupon c LEFT JOIN coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id where c.coupon_status = " + BaseCode.VALID)
     List<CouponDetailDTO> findCouponDetails4Valid();
 
     @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less FROM coupon c LEFT JOIN coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id where c.coupon_status = " + BaseCode.INVALID)
@@ -42,7 +42,6 @@ public interface CouponMapper {
 
     @Select("select * from coupon where coupon_status = "+BaseCode.VALID+" and is_del = "+BaseCode.UNDEL)
     List<CouponPO> getAllCoupon();
-
 
     @Select("select coupon_id,coupon_name,start_date,end_date,coupon_rule_name,description,satisfy,less from coupon c left join coupon_rule cr on c.coupon_rule_id = cr.coupon_rule_id where c.redemption_code = #{rCode} and c.coupon_status = "+BaseCode.VALID+" and c.is_del = "+BaseCode.UNDEL+" and cr.is_del = "+BaseCode.UNDEL)
     List<CouponDetailDTO> getCoupon4RCode(@Param("rCode") String rCode);
