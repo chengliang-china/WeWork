@@ -1,6 +1,7 @@
 package com.wework.base.domain.vo;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ public class StoreDetailVO {
     private BigDecimal applyFee;
     private String storeIntroduction;
     private String arrivalWay;
+    private Time offStartTime;
+    private Time offEndTime;
     private Date openStartTime;
     private Date openEndTime;
     private long couponId;
@@ -171,4 +174,19 @@ public class StoreDetailVO {
         this.latitude = latitude;
     }
 
+    public Time getOffStartTime() {
+        return offStartTime;
+    }
+
+    public void setOffStartTime(Time offStartTime) {
+        this.offStartTime = offStartTime;
+    }
+
+    public Time getOffEndTime() {
+        return offEndTime;
+    }
+
+    public void setOffEndTime(Time offEndTime) {
+        this.offEndTime = offEndTime;
+    }
 }

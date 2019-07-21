@@ -71,6 +71,10 @@ public class MyInterceptor implements HandlerInterceptor {
         if(request.getRequestURI().indexOf("saveActive") != -1 ){
             return true;
         }
+
+        if(request.getRequestURI().indexOf("updateStoreTypes") != -1 ){
+            return true;
+        }
         String token = request.getParameter("token");
 
         if(token == null){

@@ -34,8 +34,8 @@ public interface StoreMapper {
 	@Insert("insert into store_evaluate_image (evaluate_id,image_url,create_time,is_del) values(#{evaluateId},#{url},now(),0)")
 	void saveStoreEvaluateUrl(@Param("evaluateId")long evaluateId, @Param("url")String url);
 
-	@Insert("insert into store(store_name,store_type,apply_fee,city,store_introduction,arrival_way,open_start_time,open_end_time,longitude,latitude,thumbnail_url,seat_num,create_time,is_del) " +
-			"values(#{storeName},#{storeType},#{applyFee},#{city},#{storeIntroduction},#{arrivalWay},#{openStartTime},#{openEndTime},#{longitude},#{latitude},#{thumbnailUrl},#{seatNum},now(),0)")
+	@Insert("insert into store(store_name,store_type,apply_fee,city,store_introduction,arrival_way,open_start_time,open_end_time,off_start_time,off_end_time,longitude,latitude,thumbnail_url,seat_num,create_time,is_del) " +
+			"values(#{storeName},#{storeType},#{applyFee},#{city},#{storeIntroduction},#{arrivalWay},#{openStartTime},#{openEndTime},#{offStartTime},#{offEndTime},#{longitude},#{latitude},#{thumbnailUrl},#{seatNum},now(),0)")
     void saveStoreinfo(StorePO po);
 
 	@Insert("insert into store_image (store_id,image_url,create_time,is_del) values(#{storeId},#{url},now(),0)")
@@ -53,4 +53,10 @@ public interface StoreMapper {
 
     @Select("select * from carousel_map where id = 1")
 	CarouselMapPO getHomeImage();
+
+    @Select("select code,type from store_division")
+	List<Map<String, Object>> getStoreTypes();
+
+    @Update("update set store_division type = #{type} where id = #{id}")
+	void updateStoreTypes(long id, String type);
 }

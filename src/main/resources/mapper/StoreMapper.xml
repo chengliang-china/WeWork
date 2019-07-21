@@ -13,6 +13,8 @@
 		<result property="arrival_way" column="arrivalWay" jdbcType="VARCHAR" />
 		<result property="open_start_time" column="openStartTime" jdbcType="TIMESTAMP" />
 		<result property="open_end_time" column="openEndTime" jdbcType="TIMESTAMP" />
+		<result property="off_start_time" column="openStartTime" jdbcType="TIMESTAMP" />
+		<result property="off_end_time" column="offEndTime" jdbcType="TIMESTAMP" />
 		<result property="coupon_id" column="couponId" jdbcType="BIGINT" />
 		<result property="longitude" column="longitude" jdbcType="DECIMAL" />
 		<result property="latitude" column="latitude" jdbcType="DECIMAL" />
@@ -41,6 +43,8 @@
 		A.store_introduction,
 		A.open_start_time,
 		A.open_end_time,
+		A.off_start_time,
+		A.off_end_time,
 		A.longitude,
 		A.latitude,
 		A.thumbnail_url,
@@ -56,6 +60,8 @@
 		A.apply_fee,
 		A.open_start_time,
 		A.open_end_time,
+		A.off_start_time,
+		A.off_end_time,
 		A.longitude,
 		A.latitude,
 		A.thumbnail_url,
@@ -96,6 +102,12 @@
 		<if test="po.openEndTime != null">
 			open_end_time =#{po.openEndTime},
 		</if>
+		<if test="po.offStartTime != null">
+			off_start_time =#{po.offStartTime},
+		</if>
+		<if test="po.offEndTime != null">
+			off_end_time =#{po.offEndTime},
+		</if>
 		<if test="po.longitude != null and po.longitude != ''">
 			longitude =#{po.longitude},
 		</if>
@@ -122,6 +134,8 @@
 		A.store_introduction,
 		A.open_start_time,
 		A.open_end_time,
+		A.off_start_time,
+		A.off_end_time,
 		A.longitude,
 		A.latitude
 		FROM store A
@@ -193,7 +207,7 @@
 			coupon_image =#{carouselMapPo.couponImage},
 		</if>
 		<if test="carouselMapPo.generalImage != null and carouselMapPo.generalImage != ''">
-			general_image =#{carouselMapPo.generalImage},
+			general_image =#{carouselMapPo.generalImage}
 		</if>
 		where
 		id = #{carouselMapPo.id}

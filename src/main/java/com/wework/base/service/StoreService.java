@@ -8,6 +8,7 @@ import com.wework.base.domain.vo.StoreDetailVO;
 import com.wework.base.domain.vo.StoreVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StoreService {
 
@@ -34,4 +35,8 @@ public interface StoreService {
     void updateHomeImage(CarouselMapPO carouselMapPo);
 
     CarouselMapPO getHomeImage();
+
+    List<Map<String, Object>> getStoreTypes();
+
+    void updateStoreTypes(String one, String two, String three, String four);
 }

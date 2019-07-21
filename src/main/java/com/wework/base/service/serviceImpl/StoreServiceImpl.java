@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -43,6 +44,8 @@ public class StoreServiceImpl implements StoreService {
                 storeVO.setLongitude(storePo.getLongitude());
                 storeVO.setOpenStartTime(storePo.getOpenStartTime());
                 storeVO.setOpenEndTime(storePo.getOpenEndTime());
+                storeVO.setOffStartTime(storePo.getOffStartTime());
+                storeVO.setOffEndTime(storePo.getOffEndTime());
                 storeVO.setApplyFee(storePo.getApplyFee());
                 storeVO.setThumbnailUrl(storePo.getThumbnailUrl());
                 storeVOlist.add(storeVO);
@@ -74,6 +77,8 @@ public class StoreServiceImpl implements StoreService {
         storeDetailVO.setLongitude(storePO.getLongitude());
         storeDetailVO.setOpenStartTime(storePO.getOpenStartTime());
         storeDetailVO.setOpenEndTime(storePO.getOpenEndTime());
+        storeDetailVO.setOffStartTime(storePO.getOffStartTime());
+        storeDetailVO.setOffEndTime(storePO.getOffEndTime());
 
         //获取最新评价
         StoreEvaluatePO storeEvaluatePO = storeMapper.findEvaluate(storeId);
@@ -104,6 +109,8 @@ public class StoreServiceImpl implements StoreService {
                 storeVO.setLongitude(storePo.getLongitude());
                 storeVO.setOpenStartTime(storePo.getOpenStartTime());
                 storeVO.setOpenEndTime(storePo.getOpenEndTime());
+                storeVO.setOffStartTime(storePo.getOffStartTime());
+                storeVO.setOffEndTime(storePo.getOffEndTime());
                 storeVO.setApplyFee(storePo.getApplyFee());
                 storeVO.setThumbnailUrl(storePo.getThumbnailUrl());
 
@@ -157,5 +164,19 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public CarouselMapPO getHomeImage() {
         return storeMapper.getHomeImage();
+    }
+
+    @Override
+    public List<Map<String, Object>> getStoreTypes() {
+        return storeMapper.getStoreTypes();
+    }
+
+    @Override
+    public void updateStoreTypes(String one, String two, String three, String four) {
+        storeMapper.updateStoreTypes(1,one);
+        storeMapper.updateStoreTypes(2,two);
+        storeMapper.updateStoreTypes(3,three);
+        storeMapper.updateStoreTypes(4,four);
+
     }
 }
