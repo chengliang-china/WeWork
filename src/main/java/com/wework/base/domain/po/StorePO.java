@@ -14,6 +14,8 @@ public class StorePO {
     private String arrivalWay;
     private Time openStartTime;
     private Time openEndTime;
+    private Time offStartTime;
+    private Time offEndTime;
     private long couponId;
     private Date createTime;
     private long isDel;
@@ -148,5 +150,21 @@ public class StorePO {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public Time getOffStartTime() {
+        return offStartTime;
+    }
+
+    public void setOffStartTime(Time offStartTime) {
+        this.offStartTime = offStartTime;
+    }
+
+    public Time getOffEndTime() {
+        return offEndTime;
+    }
+
+    public void setOffEndTime(Time offEndTime) {
+        this.offEndTime = offEndTime;
     }
 }
