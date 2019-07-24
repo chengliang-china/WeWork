@@ -57,6 +57,6 @@ public interface StoreMapper {
     @Select("select code,type from store_division")
 	List<Map<String, Object>> getStoreTypes();
 
-    @Update("update set store_division type = #{type} where id = #{id}")
+    @Update("update store_division set type = #{type} where id = #{id}")
 	void updateStoreTypes(long id, String type);
 }

@@ -58,6 +58,8 @@
 		A.store_id,
 		A.store_name,
 		A.apply_fee,
+		A.arrival_way,
+		A.store_introduction,
 		A.open_start_time,
 		A.open_end_time,
 		A.off_start_time,

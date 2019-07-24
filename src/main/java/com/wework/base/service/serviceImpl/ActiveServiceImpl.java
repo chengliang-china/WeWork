@@ -1,10 +1,7 @@
 package com.wework.base.service.serviceImpl;
 
 import com.wework.base.config.BaseCode;
-import com.wework.base.domain.po.ActivePO;
-import com.wework.base.domain.po.ActiveUserPO;
-import com.wework.base.domain.po.OrderTablePO;
-import com.wework.base.domain.po.StorePO;
+import com.wework.base.domain.po.*;
 import com.wework.base.domain.vo.ActiveUserVO;
 import com.wework.base.domain.vo.ActiveVO;
 import com.wework.base.domain.vo.OrderDetailVO;
@@ -83,5 +80,15 @@ public class ActiveServiceImpl implements ActiveService {
         //step 将所有进行中的活动置为已结束
         activeMapper.updateActive();
         return activeMapper.saveActive(activePo);
+    }
+
+    @Override
+    public void saveMemberInfo(MemberPO memberPO) {
+        activeMapper.saveMemberInfo(memberPO);
+    }
+
+    @Override
+    public List<MemberPO> findMemberList() {
+        return activeMapper.findMemberList();
     }
 }

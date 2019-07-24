@@ -1,11 +1,10 @@
 package com.wework.base.mapper;
 
-import com.wework.base.domain.po.ActivePO;
-import com.wework.base.domain.po.ActiveUserPO;
-import com.wework.base.domain.po.StoreEvaluatePO;
-import com.wework.base.domain.po.StorePO;
+import com.wework.base.domain.po.*;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,4 +27,11 @@ public interface ActiveMapper {
 	public int saveActive(@Param("po") ActivePO activePo);
 
 	public void updateActive();
+
+	@Insert("insert into member(user_id,name,phone,wechat_no,mail,company,position,create_time,is_del)" +
+				   "values(#{po.userId},#{po.name},#{po.phone},#{po.wechatNo},#{po.mail},#{po.company},#{po.position},now(),0)")
+	int saveMemberInfo(@Param("po") MemberPO memberPO);
+
+	@Select("select user_id,name,phone,wechat_no,mail,company,position from member where is_del = 0")
+	List<MemberPO> findMemberList();
 }

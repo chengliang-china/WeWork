@@ -10,12 +10,8 @@ import com.wework.base.domain.vo.StoreVO;
 import com.wework.base.mapper.OrderMapper;
 import com.wework.base.mapper.StoreMapper;
 import com.wework.base.service.StoreService;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -113,7 +109,8 @@ public class StoreServiceImpl implements StoreService {
                 storeVO.setOffEndTime(storePo.getOffEndTime());
                 storeVO.setApplyFee(storePo.getApplyFee());
                 storeVO.setThumbnailUrl(storePo.getThumbnailUrl());
-
+                storeVO.setArrivalWay(storePo.getArrivalWay());
+                storeVO.setStoreIntroduction(storePo.getStoreIntroduction());
                 //查看已开订单数量，订单和工位一一对应
                 int num = orderMapper.findOrderNumByStatus(0, BaseCode.ORDER_OPENED);
                 int seatNum = storePo.getSeatNum();

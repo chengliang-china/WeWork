@@ -4,6 +4,7 @@ package com.wework.base.controller;
 import com.wework.base.config.BaseCode;
 import com.wework.base.domain.base.BaseJSON;
 import com.wework.base.domain.po.ActivePO;
+import com.wework.base.domain.po.MemberPO;
 import com.wework.base.domain.po.UserPO;
 import com.wework.base.domain.vo.ActiveUserVO;
 import com.wework.base.domain.vo.ActiveVO;
@@ -84,6 +85,41 @@ public class ActiveController {
         return baseJSON;
     }*/
 
+    @ApiOperation("用户添加会员信息")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "userId", dataType = "long", required = true, value = "用户id", defaultValue = ""),
+            @ApiImplicitParam(paramType = "query", name = "name", dataType = "String", required = true, value = "姓名", defaultValue = "小明"),
+            @ApiImplicitParam(paramType = "query", name = "phone", dataType = "String", required = true, value = "电话", defaultValue = "18876543210"),
+            @ApiImplicitParam(paramType = "query", name = "wechatNo", dataType = "String", required = true, value = "微信号", defaultValue = "18876543210"),
+            @ApiImplicitParam(paramType = "query", name = "mail", dataType = "String", required = true, value = "邮箱", defaultValue = "123@163.com"),
+            @ApiImplicitParam(paramType = "query", name = "company", dataType = "String", required = true, value = "公司名称", defaultValue = "苹果"),
+            @ApiImplicitParam(paramType = "query", name = "position", dataType = "String", required = true, value = "职位", defaultValue = "ceo")})
+    @RequestMapping(value = "/saveMemberInfo", method = RequestMethod.POST)
+    public BaseJSON saveMemberInfo(String token, long userId, String name,String phone,String wechatNo,String mail,String company,String position) {
+
+        BaseJSON baseJSON = new BaseJSON();
+        MemberPO memberPO =new MemberPO();
+        memberPO.setUserId(userId);
+        memberPO.setName(name);
+        memberPO.setPhone(phone);
+        memberPO.setWechatNo(wechatNo);
+        memberPO.setMail(mail);
+        memberPO.setCompany(company);
+        memberPO.setPosition(position);
+        activeService.saveMemberInfo(memberPO);
+        return baseJSON;
+    }
+
+    @ApiOperation("查询会员信息")
+    @RequestMapping(value = "/findMemberList", method = RequestMethod.GET)
+    public BaseJSON findMemberList() {
+
+        BaseJSON baseJSON = new BaseJSON();
+        List<MemberPO> list = activeService.findMemberList();
+        baseJSON.setResult(list);
+        return baseJSON;
+    }
     @ApiOperation("根据活动状态查询活动信息")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(paramType = "query", name = "token", dataType = "String", required = true, value = "token", defaultValue = ""),

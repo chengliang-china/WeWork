@@ -61,7 +61,7 @@ public class StoreController {
             @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "Integer", required = true, value = "门店类型", defaultValue = "10013001"),
             @ApiImplicitParam(paramType = "query", name = "city", dataType = "String", required = true, value = "门店城市", defaultValue = "上海市"),
             @ApiImplicitParam(paramType = "query", name = "storeIntroduction", dataType = "String", required = true, value = "门店简介", defaultValue = "wakup门店"),
-            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "门店缩略图", defaultValue = "")})
+            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "门店缩略图", defaultValue = "http://wakeup1.oss-cn-beijing.aliyuncs.com/data/1560652646864.jpg?Expires=1876012646&OSSAccessKeyId=LTAIg5AbTypJW01w&Signature=FLXpwZAej9rvAVNg5msHLgXFwuI%3D")})
     @RequestMapping(value = "/saveStoreInfo", method = RequestMethod.POST)
     public BaseJSON saveStoreInfo(String storeName, BigDecimal applyFee, String arrivalWay, Time openStartTime, Time offEndTime, Time offStartTime, Time openEndTime,BigDecimal longitude,BigDecimal latitude,Integer seatNum, Integer storeType,String storeIntroduction, String thumbnailUrl,String city) {
         BaseJSON baseJSON = new BaseJSON();
@@ -100,7 +100,7 @@ public class StoreController {
             @ApiImplicitParam(paramType = "query", name = "storeType", dataType = "Integer", required = true, value = "门店类型", defaultValue = "10013001"),
             @ApiImplicitParam(paramType = "query", name = "city", dataType = "String", required = true, value = "门店城市", defaultValue = "上海市"),
             @ApiImplicitParam(paramType = "query", name = "storeIntroduction", dataType = "String", required = true, value = "门店简介", defaultValue = "wakup门店"),
-            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "门店缩略图", defaultValue = "")})
+            @ApiImplicitParam(paramType = "query", name = "thumbnailUrl", dataType = "String", required = true, value = "门店缩略图", defaultValue = "http://wakeup1.oss-cn-beijing.aliyuncs.com/data/1560652646864.jpg?Expires=1876012646&OSSAccessKeyId=LTAIg5AbTypJW01w&Signature=FLXpwZAej9rvAVNg5msHLgXFwuI%3D")})
     @RequestMapping(value = "/updateStoreInfo", method = RequestMethod.POST)
     public BaseJSON updateStoreInfo(Long storeId,String storeName, BigDecimal applyFee, String arrivalWay, Time openStartTime, Time openEndTime,Time offEndTime, Time offStartTime, BigDecimal longitude,BigDecimal latitude,Integer seatNum, Integer storeType,String storeIntroduction, String thumbnailUrl,String city) {
         BaseJSON baseJSON = new BaseJSON();

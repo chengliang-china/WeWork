@@ -26,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class OSSClientUtil {
 
     Log log = LogFactory.getLog(OSSClientUtil.class);
-    // endpoint以杭州为例，其它region请按实际情况填写
     private final String endpoint  = "http://oss-cn-beijing.aliyuncs.com";
     private final String accessKeyId = "LTAIg5AbTypJW01w";
     private final String accessKeySecret = "Ck5kRMitT3JQ5G0FmiDqSlDYQyHc9G";

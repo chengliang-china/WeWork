@@ -1,6 +1,7 @@
 package com.wework.base.service;
 
 import com.wework.base.domain.po.ActivePO;
+import com.wework.base.domain.po.MemberPO;
 import com.wework.base.domain.po.StoreEvaluatePO;
 import com.wework.base.domain.vo.ActiveUserVO;
 import com.wework.base.domain.vo.ActiveVO;
@@ -18,4 +19,8 @@ public interface ActiveService {
     List<ActiveVO> findActiveByStatus(long userId, int activeStatus);
 
     public int saveActive(ActivePO activePo);
+
+    void saveMemberInfo(MemberPO memberPO);
+
+    List<MemberPO> findMemberList();
 }
