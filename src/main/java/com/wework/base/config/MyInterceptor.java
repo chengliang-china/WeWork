@@ -36,6 +36,10 @@ public class MyInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if(request.getRequestURI().indexOf("coupon/rule") != -1 ){
+            return true;
+        }
+
         if(request.getRequestURI().indexOf("saveStoreInfo") != -1 ){
             return true;
         }
@@ -50,6 +54,7 @@ public class MyInterceptor implements HandlerInterceptor {
         if(request.getRequestURI().indexOf("saveStoreImage") != -1 ){
             return true;
         }
+
 
         if(request.getRequestURI().indexOf("deleteStore") != -1 ){
             return true;
@@ -74,11 +79,6 @@ public class MyInterceptor implements HandlerInterceptor {
         if(request.getRequestURI().indexOf("updateStoreTypes") != -1 ){
             return true;
         }
-
-        if(request.getRequestURI().indexOf("findMemberList") != -1 ){
-            return true;
-        }
-
         String token = request.getParameter("token");
 
         if(token == null){
@@ -91,6 +91,7 @@ public class MyInterceptor implements HandlerInterceptor {
         }
 
         Object object = redisService.get(token);
+
         try{
             if(object != null)
                 return true;
